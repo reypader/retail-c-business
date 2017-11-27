@@ -1,0 +1,6 @@
+Django
+MySQL-python
+social-auth-app-django
+django-environ
+django-extensions
+django-cities
