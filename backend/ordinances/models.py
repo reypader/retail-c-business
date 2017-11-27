@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models as django_models
-from cities import models as cities_models
 from django.core.exceptions import ValidationError
 
 # Create your models here.
@@ -36,12 +35,29 @@ LGU_TYPES = (
 )
 
 
-def get_us():
-    return cities_models.Country.objects.get(code="US")
+class Place(django_models.Model):
+    name = django_models.CharField(max_length=100)
+    name_std = django_models.CharField(max_length=100)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.name_std
 
 
-def get_california():
-    return cities_models.Region.objects.get(country__code="US", code="CA")
+class Region(Place):
+    code = django_models.CharField(max_length=50)
+
+
+class SubRegion(Place):
+    region = django_models.ForeignKey(Region, on_delete=django_models.CASCADE)
+    code = django_models.CharField(max_length=50)
+
+
+class City(Place):
+    region = django_models.ForeignKey(Region, on_delete=django_models.CASCADE)
+    subregion = django_models.ForeignKey(SubRegion, on_delete=django_models.CASCADE)
 
 
 class ConsultantCompany(django_models.Model):
@@ -52,6 +68,10 @@ class ConsultantCompany(django_models.Model):
     telephone_number = django_models.CharField(max_length=20)
     fax_number = django_models.CharField(max_length=20)
     notes = django_models.TextField()
+
+    class Meta:
+        verbose_name = "Consultant Company"
+        verbose_name_plural = "Consultant Companies"
 
 
 class Consultant(django_models.Model):
@@ -65,7 +85,60 @@ class Consultant(django_models.Model):
     company = django_models.ForeignKey(ConsultantCompany, on_delete=django_models.CASCADE, null=True)
 
 
-class BusinessInfo(django_models.Model):
+class LocalGovUnit(django_models.Model):
+    state = django_models.ForeignKey(Region, on_delete=django_models.CASCADE, limit_choices_to={"code": "CA"})
+    county = django_models.ForeignKey(SubRegion, on_delete=django_models.CASCADE,
+                                      limit_choices_to={"region__code": "CA"})
+    city = django_models.ForeignKey(City, on_delete=django_models.CASCADE, null=True,
+                                    limit_choices_to={"region__code": "CA"})
+    postal_code = django_models.CharField(max_length=50, blank=False, null=False)
+
+    class Meta:
+        unique_together = (
+            ("county", "city"),
+        )
+        verbose_name = "Local Government Unit"
+
+    def __str__(self):
+        if self.city is not None:
+            return "%s, %s (%s)" % (self.city, self.county, self.postal_code)
+        else:
+            return "%s (%s)" % (self.county, self.postal_code)
+
+    def clean(self):
+        if self.county.region != self.state:
+            raise ValidationError({"county": "County is not within the selected State"})
+
+        if self.city is not None and self.city.subregion != self.county:
+            raise ValidationError({"city": "City is not within the selected County"})
+
+
+class BoardMember(django_models.Model):
+    group = django_models.CharField(max_length=10, choices=LGU_STAFF_GROUPS)
+    name = django_models.CharField(max_length=100)
+    date_of_birth = django_models.DateField()
+    gender = django_models.CharField(max_length=5, choices=GENDERS)
+    address = django_models.CharField(max_length=255)
+    postal_code = django_models.CharField(max_length=20)
+    email = django_models.EmailField()
+    civil_status = django_models.CharField(max_length=5, choices=CIVIL_STATUSES)
+    job_title = django_models.CharField(max_length=20)
+    department = django_models.CharField(max_length=50)
+    political_stance = django_models.CharField(max_length=5, choices=POLITICAL_STANCES)
+    supports_cannabis_usage = django_models.BooleanField(default=False)
+    annual_financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
+    annual_tax = django_models.DecimalField(max_digits=12, decimal_places=2)
+    organizations = django_models.TextField()
+    notes = django_models.TextField()
+    local_gov_unit = django_models.ForeignKey(LocalGovUnit, on_delete=django_models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = "Board Member"
+
+
+class Agenda(django_models.Model):
+    local_gov_unit = django_models.ForeignKey(LocalGovUnit, on_delete=django_models.CASCADE, null=True)
+    land_area = django_models.DecimalField(max_digits=12, decimal_places=4)
     population = django_models.PositiveIntegerField()
     financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
     financial_income_per_capita = django_models.DecimalField(max_digits=12, decimal_places=2)
@@ -91,57 +164,9 @@ class BusinessInfo(django_models.Model):
                                                    on_delete=django_models.SET_NULL)
     cannabis_consultant_start_date = django_models.DateField(null=True, blank=True)
     other_localities_consulted = django_models.TextField()
-
-
-class LocalGovUnit(django_models.Model):
-    country = django_models.ForeignKey(cities_models.Country,
-                                       default=get_us,
-                                       limit_choices_to={"code": "US"})
-    state = django_models.ForeignKey(cities_models.Region,
-                                     default=get_california,
-                                     limit_choices_to={"code": "CA", "country__code": "US"})
-    county = django_models.ForeignKey(cities_models.Subregion,
-                                      limit_choices_to={"region__code": "CA", "region__country__code": "US"})
-    city = django_models.ForeignKey(cities_models.City,
-                                    limit_choices_to={"region__code": "CA", "country__code": "US"},
-                                    null=True)
-    postal_code = django_models.ForeignKey(cities_models.PostalCode,
-                                           limit_choices_to={"region__code": "CA", "country__code": "US"})
-    land_area = django_models.DecimalField(max_digits=12, decimal_places=4)
-
-    class Meta:
-        unique_together = (
-            ("county", "city"),
-        )
-
-    def clean(self):
-        if self.city is not None and self.city.region != self.county:
-            raise ValidationError({"city": "City is not within the selected County"})
-
-
-class BoardMember(django_models.Model):
-    group = django_models.CharField(max_length=10, choices=LGU_STAFF_GROUPS)
-    name = django_models.CharField(max_length=100)
-    date_of_birth = django_models.DateField()
-    gender = django_models.CharField(max_length=5, choices=GENDERS)
-    address = django_models.CharField(max_length=255)
-    postal_code = django_models.CharField(max_length=20)
-    email = django_models.EmailField()
-    civil_status = django_models.CharField(max_length=5, choices=CIVIL_STATUSES)
-    job_title = django_models.CharField(max_length=20)
-    department = django_models.CharField(max_length=50)
-    political_stance = django_models.CharField(max_length=5, choices=POLITICAL_STANCES)
-    supports_cannabis_usage = django_models.BooleanField(default=False)
-    annual_financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
-    annual_tax = django_models.DecimalField(max_digits=12, decimal_places=2)
-    organizations = django_models.TextField()
-    notes = django_models.TextField()
-    local_gov_unit = django_models.ForeignKey(LocalGovUnit, on_delete=django_models.CASCADE, null=True)
-
-
-class Agenda(django_models.Model):
-    local_gov_unit = django_models.ForeignKey(LocalGovUnit, on_delete=django_models.CASCADE, null=True)
-    business_info = django_models.OneToOneField(BusinessInfo, on_delete=django_models.CASCADE, null=True)
     link_to_video = django_models.URLField(null=True, blank=True)
     date = django_models.DateField()
     notes = django_models.TextField()
+
+    def __str__(self):
+        return "[%s] %s" % (self.date, self.local_gov_unit)

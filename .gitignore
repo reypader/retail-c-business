@@ -1,3 +1,11 @@
+backend/lib
+backend/.idea
+backend/*.iml
+backend/static
+frontend/node_modules
+frontend/.idea
+frontend/*.iml
+.DS_store
 # Logs
 logs
 *.log

@@ -4,10 +4,10 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 # Register your models here.
-from ordinances.models import LocalGovUnit, BusinessInfo, ConsultantCompany, BoardMember, Consultant
+from ordinances import models
 
-admin.site.register(LocalGovUnit)
-admin.site.register(BusinessInfo)
-admin.site.register(ConsultantCompany)
-admin.site.register(Consultant)
-admin.site.register(BoardMember)
+admin.site.register(models.LocalGovUnit)
+admin.site.register(models.ConsultantCompany)
+admin.site.register(models.Consultant)
+admin.site.register(models.BoardMember)
+admin.site.register(models.Agenda)
