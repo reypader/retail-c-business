@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/purple-green.css";
+
+body {
+  width: 100%;
+}
+
+.container {
+  width: 80%;
+  min-width: 800px;
+  margin: 0 auto;
+}
+
+.nav-bar {
+  background: transparent;
+}
+
+.nav-tab-group {
+  float: left;
+}
+
+.nav-user-group {
+  width: 100%;
+  text-align: right;
+}
+
+.card-item {
+  width: 100px;
+  margin: 10px;
+}

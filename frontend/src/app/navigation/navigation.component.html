@@ -1,0 +1,21 @@
+<mat-toolbar class="nav-bar">
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link [routerLink]="['/browse','regions',{parentCode:'CA'}]" routerLinkActive [active]="activeLinkIndex === 0"
+       (click)="activeLinkIndex = 0">
+      States
+    </a>
+    <a mat-tab-link [routerLink]="['/browse', 'subregions']" routerLinkActive [active]="activeLinkIndex === 1"
+       (click)="activeLinkIndex = 1">
+      Counties
+    </a>
+    <a mat-tab-link [routerLink]="['/browse','cities']" routerLinkActive [active]="activeLinkIndex === 2"
+       (click)="activeLinkIndex = 2">
+      Cities
+    </a>
+  </nav>
+
+  <div class="nav-user-group">
+    <app-user></app-user>
+  </div>
+
+</mat-toolbar>

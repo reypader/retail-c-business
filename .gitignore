@@ -2,7 +2,7 @@ backend/lib
 backend/.idea
 backend/*.iml
 backend/static
-backends/uploads
+backend/uploads
 frontend/node_modules
 frontend/.idea
 frontend/*.iml

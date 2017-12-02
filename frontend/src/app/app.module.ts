@@ -1,13 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app.routing';
-import { PagesModule } from './pages/pages.module';
-
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
+import {NavigationModule} from "./navigation/navigation.module";
+import {SessionService} from "./services/session.service";
+import {BackendService} from "./services/backend.service";
+import {AppRoutingModule} from './app-routing.module';
+import {ListingModule} from "./listing/listing.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {RegionService} from "./services/region.service";
+import {SubregionService} from "./services/subregion.service";
+import {CityService} from "./services/city.service";
 
 @NgModule({
   declarations: [
@@ -15,14 +19,14 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    RouterModule,
-
+    BrowserAnimationsModule,
+    HttpClientModule,
+    NavigationModule,
+    ListingModule,
     AppRoutingModule,
-    PagesModule,
   ],
-  providers: [],
+  providers: [SessionService, BackendService, RegionService, SubregionService, CityService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

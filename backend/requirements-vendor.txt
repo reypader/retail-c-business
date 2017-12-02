@@ -1,4 +1,8 @@
 Django
 social-auth-app-django
+djangorestframework
+django-filter
+markdown
 django-environ
 django-extensions
+django-cors-headers
