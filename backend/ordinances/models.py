@@ -52,13 +52,13 @@ class Region(Place):
 
 
 class SubRegion(Place):
-    region = django_models.ForeignKey(Region, on_delete=django_models.CASCADE)
+    region = django_models.ForeignKey(Region, related_name="subregions", on_delete=django_models.CASCADE)
     code = django_models.CharField(max_length=50)
 
 
 class City(Place):
-    region = django_models.ForeignKey(Region, on_delete=django_models.CASCADE)
-    subregion = django_models.ForeignKey(SubRegion, on_delete=django_models.CASCADE)
+    region = django_models.ForeignKey(Region, related_name="cities", on_delete=django_models.CASCADE)
+    subregion = django_models.ForeignKey(SubRegion, related_name="cities", on_delete=django_models.CASCADE)
 
 
 class ConsultantCompany(django_models.Model):
@@ -83,7 +83,7 @@ class Consultant(django_models.Model):
     email = django_models.EmailField()
     telephone_number = django_models.CharField(max_length=20)
     notes = django_models.TextField()
-    company = django_models.ForeignKey(ConsultantCompany, on_delete=django_models.CASCADE, null=True)
+    company = django_models.ForeignKey(ConsultantCompany, related_name="consultants", on_delete=django_models.CASCADE, null=True)
 
 
 class LocalGovUnit(django_models.Model):
@@ -131,14 +131,14 @@ class BoardMember(django_models.Model):
     annual_tax = django_models.DecimalField(max_digits=12, decimal_places=2)
     organizations = django_models.TextField()
     notes = django_models.TextField()
-    local_gov_unit = django_models.ForeignKey(LocalGovUnit, on_delete=django_models.CASCADE, null=True)
+    local_gov_unit = django_models.ForeignKey(LocalGovUnit, related_name="board_members", on_delete=django_models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Board Member"
 
 
 class Agenda(django_models.Model):
-    local_gov_unit = django_models.ForeignKey(LocalGovUnit, on_delete=django_models.CASCADE, null=True)
+    local_gov_unit = django_models.ForeignKey(LocalGovUnit, related_name="agendas", on_delete=django_models.CASCADE, null=True)
     land_area = django_models.DecimalField(max_digits=12, decimal_places=4)
     population = django_models.PositiveIntegerField()
     financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
