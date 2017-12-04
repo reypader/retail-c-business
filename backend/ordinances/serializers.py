@@ -30,7 +30,7 @@ class RegionSerializer(CustomSerializer):
     class Meta:
         model = Region
         fields = "__all__"
-        extra_fields = ["subregions"]
+        extra_fields = ["id"]
 
     def get_subregions(self, obj):
         request = self.context["request"]
@@ -47,12 +47,13 @@ class RegionSerializer(CustomSerializer):
         return result
 
 
-class SubRegionSerializer(serializers.HyperlinkedModelSerializer):
+class SubRegionSerializer(CustomSerializer):
     cities = serializers.SerializerMethodField()
 
     class Meta:
         model = SubRegion
         fields = "__all__"
+        extra_fields = ["id"]
 
     def get_cities(self, obj):
         request = self.context["request"]
@@ -62,7 +63,8 @@ class SubRegionSerializer(serializers.HyperlinkedModelSerializer):
         return result
 
 
-class CitySerializer(serializers.HyperlinkedModelSerializer):
+class CitySerializer(CustomSerializer):
     class Meta:
         model = City
         fields = "__all__"
+        extra_fields = ["id"]

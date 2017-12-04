@@ -1,12 +1,18 @@
 import {Injectable} from '@angular/core';
 import {BackendService} from "./backend.service";
 import {ResultListingService} from "./result-listing.service";
-import {Place} from "../types";
+import {Place, SubRegion} from "../types";
 
 @Injectable()
-export class SubregionService extends ResultListingService<Place> {
+export class SubregionService extends ResultListingService<SubRegion> {
   getType(): string {
     return "subregions";
+  }
+
+  enrich(o: SubRegion): SubRegion {
+    o.subdivisions = o.cities;
+    o.subdivisionRoute = "/browse/cities";
+    return o;
   }
 
   constructor(backend: BackendService) {

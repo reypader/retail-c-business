@@ -6,8 +6,24 @@ export interface PaginatedResult<T> {
 }
 
 export interface Place {
-  url: string;
+  url: URL;
   name: string;
+  subdivisions: URL;
+  subdivisionRoute: string;
+  id: number;
+}
+
+export interface Region extends Place {
+  subregions: URL;
+  cities: URL;
+}
+
+export interface SubRegion extends Place {
+  cities: URL;
+}
+
+export interface City extends Place {
+  agendas: URL;
 }
 
 export interface User {

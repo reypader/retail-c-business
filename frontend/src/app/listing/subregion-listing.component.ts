@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ActivatedRoute, ParamMap, Params} from "@angular/router";
 import {RegionService} from "../services/region.service";
 import {SubregionService} from "../services/subregion.service";
 import {CityService} from "../services/city.service";
@@ -17,12 +17,11 @@ export class SubregionListingComponent extends ListingComponent {
     super(route, subregions);
   }
 
-  createFilter(params: ParamMap): Object {
-    const type = params.get('type');
-    const parent_code = params.get('parentCode');
+  createFilter(params: Params): Object {
+    const parent_code = params['parent_code'];
     return {
-      code: parent_code
-    }
+      region__id: parent_code
+    };
   }
 
 }

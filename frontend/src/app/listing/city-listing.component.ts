@@ -18,10 +18,9 @@ export class CityListingComponent extends ListingComponent {
   }
 
   createFilter(params: ParamMap): Object {
-    const type = params.get('type');
-    const parent_code = params.get('parentCode');
+    const parent_code = params['parent_code'];
     return {
-      subregion__code: parent_code
+      subregion__id: parent_code
     }
   }
 

@@ -1,15 +1,15 @@
 <mat-toolbar class="nav-bar">
   <nav mat-tab-nav-bar>
-    <a mat-tab-link [routerLink]="['/browse','regions',{parentCode:'CA'}]" routerLinkActive [active]="activeLinkIndex === 0"
-       (click)="activeLinkIndex = 0">
+    <a mat-tab-link [routerLink]="['/browse','regions']" routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
       States
     </a>
-    <a mat-tab-link [routerLink]="['/browse', 'subregions']" routerLinkActive [active]="activeLinkIndex === 1"
-       (click)="activeLinkIndex = 1">
+    <a mat-tab-link [routerLink]="['/browse', 'subregions']" routerLinkActive #rlb="routerLinkActive"
+       [active]="rlb.isActive">
       Counties
     </a>
-    <a mat-tab-link [routerLink]="['/browse','cities']" routerLinkActive [active]="activeLinkIndex === 2"
-       (click)="activeLinkIndex = 2">
+    <a mat-tab-link [routerLink]="['/browse','cities']" routerLinkActive #rlc="routerLinkActive"
+       [active]="rlc.isActive">
       Cities
     </a>
   </nav>

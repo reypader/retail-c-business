@@ -1,8 +1,7 @@
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ActivatedRoute, ParamMap, Params} from "@angular/router";
 import {PaginatedResult, Place} from "../types";
 import {ResultListingService} from "../services/result-listing.service";
-
-
+import 'rxjs/add/operator/switchMap';
 export abstract class ListingComponent {
 
   currentPage: PaginatedResult<Place>;
@@ -24,11 +23,16 @@ export abstract class ListingComponent {
     this.accumulatedResult = this.accumulatedResult.concat(page.results);
   }
 
-  abstract createFilter(params: ParamMap): Object;
+  abstract createFilter(params: Params): Object;
 
   getItems(): void {
     console.log("Fetching items");
-    const params = this.route.snapshot.paramMap;
+    // this.route.queryParams
+    //   .map(params => this.createFilter(params))
+    //   .switchMap(filter => this.service.getList(filter))
+    //   .map(page=>this.collectResult(page));
+
+    const params = this.route.snapshot.queryParams;
     const filter = this.createFilter(params);
     this.service.getList(filter).subscribe(page => {
       this.collectResult(page);

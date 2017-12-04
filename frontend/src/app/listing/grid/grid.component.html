@@ -1,5 +1,5 @@
 <div fxLayout="row column" fxLayoutAlign="center center">
-  <mat-card class="card-item" *ngFor="let item of resultList">
+  <mat-card class="card-item" *ngFor="let item of resultList" (click)="navigate(item)">
     <mat-card-header>
       <mat-card-title>{{item.name}}</mat-card-title>
     </mat-card-header>

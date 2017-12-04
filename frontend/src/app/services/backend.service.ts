@@ -23,34 +23,34 @@ export class BackendService {
 
   get<T>(url: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<T> {
     const s = url.split("?", 2);
-    const u = s[0];
+    const u = this.normalize(s[0]);
     const p = this.addParams(s[1], params);
     console.log("Sending GET request to " + u);
-    return this.http.get<T>(this.normalize(u), {headers: headers, params: p, withCredentials: true});
+    return this.http.get<T>(u, {headers: headers, params: p, withCredentials: true});
   }
 
   delete<T>(url: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<T> {
     const s = url.split("?", 2);
-    const u = s[0];
+    const u = this.normalize(s[0]);
     const p = this.addParams(s[1], params);
     console.log("Sending DELETE request to " + u);
-    return this.http.delete<T>(this.normalize(u), {headers: headers, params: params, withCredentials: true});
+    return this.http.delete<T>(u, {headers: headers, params: p, withCredentials: true});
   }
 
   post<T>(url: string, body: Object, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<T> {
     const s = url.split("?", 2);
-    const u = s[0];
+    const u = this.normalize(s[0]);
     const p = this.addParams(s[1], params);
     console.log("Sending POST request to " + u);
-    return this.http.post<T>(this.normalize(u), body, {headers: headers, params: params, withCredentials: true});
+    return this.http.post<T>(u, body, {headers: headers, params: p, withCredentials: true});
   }
 
   put<T>(url: string, body: Object, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<T> {
     const s = url.split("?", 2);
-    const u = s[0];
+    const u = this.normalize(s[0]);
     const p = this.addParams(s[1], params);
     console.log("Sending PUTT request to " + u);
-    return this.http.put<T>(this.normalize(u), body, {headers: headers, params: params, withCredentials: true});
+    return this.http.put<T>(u, body, {headers: headers, params: p, withCredentials: true});
   }
 
   private normalize(url: string): string {
@@ -68,7 +68,9 @@ export class BackendService {
       const p = q.split("&");
       for (let i of p) {
         let x = i.split("=")
-        z = z.set(x[0], x[1]);
+        if (x[1]) {
+          z = z.set(x[0], x[1]);
+        }
       }
     }
     return z;
