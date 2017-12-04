@@ -86,34 +86,6 @@ class Consultant(django_models.Model):
     company = django_models.ForeignKey(ConsultantCompany, related_name="consultants", on_delete=django_models.CASCADE, null=True)
 
 
-class LocalGovUnit(django_models.Model):
-    state = django_models.ForeignKey(Region, on_delete=django_models.CASCADE, limit_choices_to={"code": "CA"})
-    county = django_models.ForeignKey(SubRegion, on_delete=django_models.CASCADE,
-                                      limit_choices_to={"region__code": "CA"})
-    city = django_models.ForeignKey(City, on_delete=django_models.CASCADE, null=True,
-                                    limit_choices_to={"region__code": "CA"})
-    postal_code = django_models.CharField(max_length=50, blank=False, null=False)
-
-    class Meta:
-        unique_together = (
-            ("county", "city"),
-        )
-        verbose_name = "Local Government Unit"
-
-    def __str__(self):
-        if self.city is not None:
-            return "%s, %s (%s)" % (self.city, self.county, self.postal_code)
-        else:
-            return "%s (%s)" % (self.county, self.postal_code)
-
-    def clean(self):
-        if self.county.region != self.state:
-            raise ValidationError({"county": "County is not within the selected State"})
-
-        if self.city is not None and self.city.subregion != self.county:
-            raise ValidationError({"city": "City is not within the selected County"})
-
-
 class BoardMember(django_models.Model):
     group = django_models.CharField(max_length=10, choices=LGU_STAFF_GROUPS)
     name = django_models.CharField(max_length=100)
@@ -131,14 +103,14 @@ class BoardMember(django_models.Model):
     annual_tax = django_models.DecimalField(max_digits=12, decimal_places=2)
     organizations = django_models.TextField()
     notes = django_models.TextField()
-    local_gov_unit = django_models.ForeignKey(LocalGovUnit, related_name="board_members", on_delete=django_models.CASCADE, null=True)
+    city = django_models.ForeignKey(City, related_name="board_members", on_delete=django_models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Board Member"
 
 
 class Agenda(django_models.Model):
-    local_gov_unit = django_models.ForeignKey(LocalGovUnit, related_name="agendas", on_delete=django_models.CASCADE, null=True)
+    city = django_models.ForeignKey(City, related_name="agendas", on_delete=django_models.CASCADE, null=True)
     land_area = django_models.DecimalField(max_digits=12, decimal_places=4)
     population = django_models.PositiveIntegerField()
     financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
