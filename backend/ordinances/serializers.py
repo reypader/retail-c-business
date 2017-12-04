@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.relations import HyperlinkedIdentityField
 from rest_framework.reverse import reverse
 
-from ordinances.models import SubRegion, City, Region
+from ordinances.models import SubRegion, City, Region, Agenda
 
 
 class CustomSerializer(serializers.HyperlinkedModelSerializer):
@@ -66,5 +66,12 @@ class SubRegionSerializer(CustomSerializer):
 class CitySerializer(CustomSerializer):
     class Meta:
         model = City
+        fields = "__all__"
+        extra_fields = ["id"]
+
+
+class AgendaSerializer(CustomSerializer):
+    class Meta:
+        model = Agenda
         fields = "__all__"
         extra_fields = ["id"]

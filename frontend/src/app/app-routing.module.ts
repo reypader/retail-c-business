@@ -1,16 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {RegionListingComponent} from "./listing/region-listing.component";
-import {CityListingComponent} from "./listing/city-listing.component";
-import {SubregionListingComponent} from "./listing/subregion-listing.component";
+import {ListingComponent} from "./listing/listing.component";
 
 const routes: Routes = [
-  {path: 'browse/regions', component: RegionListingComponent},
-  {path: 'browse/subregions', component: SubregionListingComponent},
-  {path: 'browse/cities', component: CityListingComponent},
+  {path: 'home', component: ListingComponent},
   {
     path: '',
-    redirectTo: 'browse/regions',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
 ];

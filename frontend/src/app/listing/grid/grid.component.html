@@ -1,7 +1,13 @@
 <div fxLayout="row column" fxLayoutAlign="center center">
-  <mat-card class="card-item" *ngFor="let item of resultList" (click)="navigate(item)">
+  <mat-card class="card-item" *ngFor="let item of resultList" (click)="select(item.subdivisions)">
     <mat-card-header>
-      <mat-card-title>{{item.name}}</mat-card-title>
+      <mat-card-title class="government-name">{{item.name}}</mat-card-title>
     </mat-card-header>
+    <!--<mat-card-content>-->
+    <!--{{item.name}}-->
+    <!--</mat-card-content>-->
   </mat-card>
+</div>
+<div style="width: 100%; text-align: center ">
+  <button mat-raised-button color="primary" (click)="next()">Load More</button>
 </div>

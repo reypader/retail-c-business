@@ -2,47 +2,44 @@ import {ActivatedRoute, ParamMap, Params} from "@angular/router";
 import {PaginatedResult, Place} from "../types";
 import {ResultListingService} from "../services/result-listing.service";
 import 'rxjs/add/operator/switchMap';
-export abstract class ListingComponent {
+import {Component} from "@angular/core";
 
-  currentPage: PaginatedResult<Place>;
-  accumulatedResult: Place[] = [];
+@Component({
+  selector: 'listing',
+  templateUrl: './listing.component.html',
+  styleUrls: ['./listing.component.css']
+})
+export class ListingComponent {
+  currentTab: number = 0;
+  currentRegionsURL: URL;
+  currentSubregionsURL: URL;
+  currentCitiesURL: URL;
 
-  constructor(private route: ActivatedRoute, private service: ResultListingService<Place>) {
-    this.currentPage = {} as PaginatedResult<Place>;
-    this.currentPage.results = [];
-    console.log("init")
+  constructor() {
   }
 
-  ngOnInit(): void {
-    console.log("Fetching data")
-    this.getItems();
+  updateTab($index) {
+    this.currentTab = $index;
   }
 
-  private collectResult(page: PaginatedResult<Place>) {
-    this.currentPage = page;
-    this.accumulatedResult = this.accumulatedResult.concat(page.results);
+  updateRegions($url) {
+    console.log("Updating regions with " + $url);
+    this.currentRegionsURL = $url;
   }
 
-  abstract createFilter(params: Params): Object;
-
-  getItems(): void {
-    console.log("Fetching items");
-    // this.route.queryParams
-    //   .map(params => this.createFilter(params))
-    //   .switchMap(filter => this.service.getList(filter))
-    //   .map(page=>this.collectResult(page));
-
-    const params = this.route.snapshot.queryParams;
-    const filter = this.createFilter(params);
-    this.service.getList(filter).subscribe(page => {
-      this.collectResult(page);
-    });
+  updateSubregions($url) {
+    console.log("Updating subregions with " + $url);
+    this.currentSubregionsURL = $url;
+    this.currentTab = 1;
   }
 
-  next(): void {
-    console.log("Fetching next items");
-    this.service.getNext(this.currentPage).subscribe(page => {
-      this.collectResult(page);
-    });
+  updateCities($url) {
+    console.log("Updating cities with " + $url);
+    this.currentCitiesURL = $url;
+    this.currentTab = 2;
+  }
+
+  viewAgendas($url) {
+    alert("Go to " + $url);
   }
 }

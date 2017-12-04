@@ -1,26 +1,100 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {PaginatedResult, Place} from "../../types";
-import {Router} from "@angular/router";
-import {unescape} from "querystring";
+import {ResultListingService} from "../../services/result-listing.service";
+import {RegionService} from "../../services/region.service";
+import {SubregionService} from "../../services/subregion.service";
+import {CityService} from "../../services/city.service";
+
+export abstract class GridComponent implements OnInit {
+
+  @Output() itemSelected = new EventEmitter<URL>();
+  _currentURL: URL;
+  currentPage: PaginatedResult<Place>;
+  resultList: Place[] = [];
+
+  constructor(private service: ResultListingService<Place>) {
+    this.currentPage = {} as PaginatedResult<Place>;
+    this.currentPage.results = [];
+    console.log("init")
+  }
+
+  ngOnInit(): void {
+    console.log("Fetching data")
+    this.getItems();
+  }
+
+  select(url: URL): void {
+    console.log("Selected " + url);
+    this.itemSelected.emit(url);
+  }
+
+  private collectResult(page: PaginatedResult<Place>) {
+    this.currentPage = page;
+    this.resultList = this.resultList.concat(page.results);
+  }
+
+  @Input() set currentURL(value: URL) {
+    this._currentURL = value;
+    this.getItems();
+  }
+
+  getItems(): void {
+    this.resultList = [];
+    if (this._currentURL) {
+      this.service.getListFor(this._currentURL).subscribe(page => {
+        this.collectResult(page);
+      });
+    } else {
+      this.service.getList().subscribe(page => {
+        this.collectResult(page);
+      });
+    }
+  }
+
+  next(): void {
+    console.log("Fetching next items");
+    this.service.getNext(this.currentPage).subscribe(page => {
+      this.collectResult(page);
+    });
+  }
+
+}
 
 @Component({
-  selector: 'app-grid',
+  selector: 'region-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css']
 })
-export class GridComponent implements OnInit {
+export class RegionGridComponent extends GridComponent {
 
-  @Input() resultList: PaginatedResult<Place>
-
-  constructor( private router: Router) {
+  constructor(regions: RegionService) {
+    super(regions);
   }
 
-  ngOnInit() {
+}
+
+@Component({
+  selector: 'subregion-grid',
+  templateUrl: './grid.component.html',
+  styleUrls: ['./grid.component.css']
+})
+export class SubregionGridComponent extends GridComponent {
+
+  constructor(subregions: SubregionService) {
+    super(subregions);
   }
 
-  navigate(p:Place){
-    console.log("Navigating to "+ p.subdivisionRoute);
-    this.router.navigate([p.subdivisionRoute], { queryParams: {  parent_code: p.id} });
+}
+
+@Component({
+  selector: 'city-grid',
+  templateUrl: './grid.component.html',
+  styleUrls: ['./grid.component.css']
+})
+export class CityGridComponent extends GridComponent {
+
+  constructor(city: CityService) {
+    super(city);
   }
 
 }

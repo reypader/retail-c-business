@@ -19,13 +19,14 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from rest_framework import routers
 
-from ordinances.viewsets import UserViewSet, SubRegionViewSet, RegionViewSet, CityViewSet
+from ordinances.viewsets import UserViewSet, SubRegionViewSet, RegionViewSet, CityViewSet, AgendaViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'regions', RegionViewSet)
 router.register(r'subregions', SubRegionViewSet)
 router.register(r'cities', CityViewSet)
+router.register(r'agendas', AgendaViewSet)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'),

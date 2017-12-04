@@ -1,18 +1,5 @@
 <mat-toolbar class="nav-bar">
-  <nav mat-tab-nav-bar>
-    <a mat-tab-link [routerLink]="['/browse','regions']" routerLinkActive #rla="routerLinkActive"
-       [active]="rla.isActive">
-      States
-    </a>
-    <a mat-tab-link [routerLink]="['/browse', 'subregions']" routerLinkActive #rlb="routerLinkActive"
-       [active]="rlb.isActive">
-      Counties
-    </a>
-    <a mat-tab-link [routerLink]="['/browse','cities']" routerLinkActive #rlc="routerLinkActive"
-       [active]="rlc.isActive">
-      Cities
-    </a>
-  </nav>
+  <div class="nav-tab-group">RETAIL TEST</div>
 
   <div class="nav-user-group">
     <app-user></app-user>

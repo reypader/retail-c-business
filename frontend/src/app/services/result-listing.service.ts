@@ -19,6 +19,12 @@ export abstract class ResultListingService<T> {
     return this.backend.getUrl(this.getType()).switchMap(url => this.backend.get<PaginatedResult<T>>(url, q).map(data => this.enrichList(data)));
   }
 
+  getListFor(url: URL,filter?: Object) : Observable<PaginatedResult<T>>{
+    console.log("Get listing for " + this.getType());
+    let q = this.getFilter(filter);
+    return this.backend.get<PaginatedResult<T>>(url.toString(), q).map(data => this.enrichList(data));
+  }
+
   getNext(current: PaginatedResult<T>): Observable<PaginatedResult<T>> {
     console.log("Get next for " + this.getType());
     return this.backend.get<PaginatedResult<T>>(current.next).map(data => this.enrichList(data));

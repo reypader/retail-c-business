@@ -142,4 +142,4 @@ class Agenda(django_models.Model):
     notes = django_models.TextField()
 
     def __str__(self):
-        return "[%s] %s" % (self.date, self.local_gov_unit)
+        return "[%s] %s" % (self.date, self.city)

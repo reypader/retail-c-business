@@ -1,4 +1,12 @@
 .card-item {
   height: 70px;
+  width: 150px;
   cursor: pointer;
+}
+
+.government-name {
+  width: 150px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
 }

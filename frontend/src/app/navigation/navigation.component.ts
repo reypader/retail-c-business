@@ -6,7 +6,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent {
-  activeLinkIndex : number = 0;
 
   constructor() {
   }
