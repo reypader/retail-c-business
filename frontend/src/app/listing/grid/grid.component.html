@@ -1,5 +1,5 @@
 <div fxLayout="row column" fxLayoutAlign="center center">
-  <mat-card class="card-item" *ngFor="let item of resultList" (click)="select(item.subdivisions)">
+  <mat-card class="card-item" *ngFor="let item of resultList" (click)="select(item.subdivisions, item.id)">
     <mat-card-header>
       <mat-card-title class="government-name">{{item.name}}</mat-card-title>
     </mat-card-header>

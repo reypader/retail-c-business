@@ -1,0 +1,8 @@
+<h1>{{city.name}}</h1>
+<h3><span *ngIf="subregion">{{subregion.name}}, </span><span *ngIf="region">{{region.name}}</span></h3>
+<mat-accordion [multi]="true">
+    <agenda-detail [agendaUrl]="item" *ngFor="let item of city.agendas"></agenda-detail>
+</mat-accordion>
+<button mat-fab class="add-agenda-button">
+  <mat-icon class="" aria-label="">add</mat-icon>
+</button>

@@ -11,7 +11,6 @@ export class SubregionService extends ResultListingService<SubRegion> {
 
   enrich(o: SubRegion): SubRegion {
     o.subdivisions = o.cities;
-    o.subdivisionRoute = "/browse/cities";
     return o;
   }
 

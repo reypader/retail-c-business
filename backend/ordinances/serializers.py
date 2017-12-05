@@ -64,6 +64,19 @@ class SubRegionSerializer(CustomSerializer):
 
 
 class CitySerializer(CustomSerializer):
+    agendas = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='agenda-detail'
+    )
+
+    class Meta:
+        model = City
+        fields = "__all__"
+        extra_fields = ["id", "agendas",]
+
+
+class CityAgendaSerializer(CustomSerializer):
     class Meta:
         model = City
         fields = "__all__"
@@ -74,4 +87,3 @@ class AgendaSerializer(CustomSerializer):
     class Meta:
         model = Agenda
         fields = "__all__"
-        extra_fields = ["id"]

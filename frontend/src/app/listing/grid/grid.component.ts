@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {PaginatedResult, Place} from "../../types";
+import {PaginatedResult, Place, Entity} from "../../types";
 import {ResultListingService} from "../../services/result-listing.service";
 import {RegionService} from "../../services/region.service";
 import {SubregionService} from "../../services/subregion.service";
@@ -7,7 +7,7 @@ import {CityService} from "../../services/city.service";
 
 export abstract class GridComponent implements OnInit {
 
-  @Output() itemSelected = new EventEmitter<URL>();
+  @Output() itemSelected = new EventEmitter<Entity>();
   _currentURL: URL;
   currentPage: PaginatedResult<Place>;
   resultList: Place[] = [];
@@ -19,13 +19,11 @@ export abstract class GridComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Fetching data")
-    this.getItems();
   }
 
-  select(url: URL): void {
+  select(url: URL, id: number): void {
     console.log("Selected " + url);
-    this.itemSelected.emit(url);
+    this.itemSelected.emit({id: id, url: url} as Entity);
   }
 
   private collectResult(page: PaginatedResult<Place>) {

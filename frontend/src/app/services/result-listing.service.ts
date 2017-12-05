@@ -8,9 +8,14 @@ export abstract class ResultListingService<T> {
   constructor(private backend: BackendService) {
   }
 
-  get(id: string): Observable<T> {
+  get(id: number): Observable<T> {
     console.log("Get details for " + this.getType());
     return this.backend.getUrl(this.getType()).switchMap(url => this.backend.get<T>(url + id).map(data => this.enrich(data)));
+  }
+
+  getFor(url: URL): Observable<T> {
+    console.log("Get details for " + this.getType());
+    return this.backend.get<T>(url.toString()).map(data => this.enrich(data));
   }
 
   getList(filter?: Object): Observable<PaginatedResult<T>> {
@@ -19,7 +24,7 @@ export abstract class ResultListingService<T> {
     return this.backend.getUrl(this.getType()).switchMap(url => this.backend.get<PaginatedResult<T>>(url, q).map(data => this.enrichList(data)));
   }
 
-  getListFor(url: URL,filter?: Object) : Observable<PaginatedResult<T>>{
+  getListFor(url: URL, filter?: Object): Observable<PaginatedResult<T>> {
     console.log("Get listing for " + this.getType());
     let q = this.getFilter(filter);
     return this.backend.get<PaginatedResult<T>>(url.toString(), q).map(data => this.enrichList(data));

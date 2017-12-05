@@ -12,6 +12,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RegionService} from "./services/region.service";
 import {SubregionService} from "./services/subregion.service";
 import {CityService} from "./services/city.service";
+import {AgendaModule} from "./agenda/agenda.module";
+import {AgendaService} from "./services/agenda.service";
+import {CityResolver} from "./resolvers/city.resolver";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -24,8 +28,9 @@ import {CityService} from "./services/city.service";
     NavigationModule,
     ListingModule,
     AppRoutingModule,
+    AgendaModule
   ],
-  providers: [SessionService, BackendService, RegionService, SubregionService, CityService],
+  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule {
