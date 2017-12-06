@@ -5,37 +5,14 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
     <style>
-        .dark-primary-color {
-            background: #00796B;
-        }
-
-        .default-primary-color {
-            background: #009688;
-        }
-
-        .light-primary-color {
-            background: #B2DFDB;
-        }
-
-        .text-primary-color {
-            color: #FFFFFF;
-        }
-
-        .accent-color {
-            background: #FF9800;
-        }
-
-        .primary-text-color {
-            color: #212121;
-        }
-
-        .secondary-text-color {
-            color: #757575;
-        }
-
-        .divider-color {
-            border-color: #BDBDBD;
-        }
+        .dark-primary-color    { background: #00796B; }
+.default-primary-color { background: #009688; }
+.light-primary-color   { background: #B2DFDB; }
+.text-primary-color    { color: #FFFFFF; }
+.accent-color          { background: #FF9800; }
+.primary-text-color    { color: #212121; }
+.secondary-text-color  { color: #757575; }
+.divider-color         { border-color: #BDBDBD; }
 
         body {
             display: flex;
@@ -48,7 +25,7 @@
         }
 
         body {
-            background: url('/static/assets/california.jpg') fixed center;
+            background: #fff;
         }
 
         .input-field input[type=date]:focus + label,
@@ -68,11 +45,6 @@
 
         .input-field input {
             width: 260px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.87);
-        }
-
-        input::placeholder {
-            color: rgba(0, 0, 0, 0.87);
         }
     </style>
 </head>
@@ -85,11 +57,10 @@
         <div class="section"></div>
 
         <div class="container">
-            <div class="transparent lighten-4 row"
-                 style="display: inline-block; padding: 32px 48px 0px 48px;">
-                <h3>Title goes here</h3>
+            <div class="z-depth-1 grey lighten-4 row"
+                 style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
                 <form class="col s12" method="post">
-                    <input type="hidden" name="next" value="{{next}}" />
                     {% csrf_token %}
                     <div class='row'>
                         <div class='col s12'>

@@ -17,7 +17,7 @@ import {AgendaService} from "./services/agenda.service";
 import {CityResolver} from "./resolvers/city.resolver";
 import {FormsModule} from "@angular/forms";
 import {DateDialogComponent} from "./agenda/date-dialog/date-dialog.component";
-import {MatNativeDateModule} from "@angular/material";
+import {MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS} from "@angular/material";
 import {EditingSnackbarComponent} from "./agenda/editing-snackbar/editing-snackbar.component";
 import {HttpClientXsrfModule} from "@angular/common/http";
 

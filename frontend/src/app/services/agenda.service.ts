@@ -20,12 +20,19 @@ export class AgendaService extends ResultListingService<Agenda> {
     super(backend);
   }
 
+  private _to2digit(n: number) {
+    return ('00' + n).slice(-2);
+  }
+
   save(agenda: Agenda): Observable<Agenda> {
     return this.backend.getUrl(this.getType())
       .switchMap(url => {
           let d = agenda.date;
+          console.log(d)
           let o = this.deepCopy(agenda);
-          o['date'] = d.toISOString().substr(0, "YYYY-MM-DD".length);
+          o['date'] = d.getFullYear() + "-" + this._to2digit(d.getMonth() + 1) + "-" + this._to2digit(d.getDate());
+          console.log(o['date']);
+
           return this.backend.post<Agenda>(url, o);
         }
       )

@@ -6,19 +6,14 @@ import {CityResolver} from "./resolvers/city.resolver";
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: ListingComponent
   },
   {
     path: 'cities/:id',
     component: AgendaComponent,
     resolve: {city: CityResolver}
-  },
-  {
-    path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
-  },
+  }
 ];
 
 @NgModule({

@@ -21,4 +21,8 @@ export class UserComponent implements OnInit {
     });
   }
 
+  logout() {
+    window.location.href = "/logout";
+  }
+
 }

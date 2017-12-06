@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import environ
 import os
 
+project_root = environ.Path(__file__) - 3
+PROJ_DIR = project_root()
 root = environ.Path(__file__) - 2
 BASE_DIR = root()  # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 env = environ.Env(DEBUG=(bool, False))
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'retail_cannabis_business_app.custom_middlware.AuthRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'retail_cannabis_business_app.urls'
@@ -136,13 +139,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
-CSRF_USE_SESSIONS = True
+STATICFILES_DIRS = (
+    os.path.join(PROJ_DIR, 'frontend/dist'),
+)
+CSRF_USE_SESSIONS = False
 
 #######################
 #     SOCIAL AUTH     #
 #######################
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/app'
+LOGOUT_REDIRECT_URL = '/login'
 
 AUTHENTICATION_BACKENDS = (
     # 'social_core.backends.open_id.OpenIdAuth',

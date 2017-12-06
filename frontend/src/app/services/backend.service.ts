@@ -3,16 +3,16 @@ import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject, Subject} from "rxjs";
 import {HttpHeaders} from "@angular/common/http";
 import {HttpParams} from "@angular/common/http";
-
+import {environment} from "../../environments/environment"
 @Injectable()
 export class BackendService {
 
-  HOST: string = "http://127.0.0.1:8000";
+  HOST: string = environment.HOST;
   ROOT: string = this.HOST + "/api/"
   baseUrls: ReplaySubject<Object> = new ReplaySubject<Object>();
 
   constructor(private http: HttpClient) {
-    http.get(this.ROOT).subscribe(data=> this.baseUrls.next(data));
+    http.get(this.ROOT, {withCredentials: true}).subscribe(data=> this.baseUrls.next(data));
   }
 
   getUrl(name: string): Observable<string> {
@@ -56,13 +56,18 @@ export class BackendService {
 
   private normalize(url: string): string {
     let u = url.replace(/([^:]\/)\/+/g, "$1");
-    // if(u.lastIndexOf(this.HOST) == 0){
-    //   u = u.substr(this.HOST.length);
-    // }
+    let n;
     if (u.lastIndexOf("/") == u.length - 1) {
-      return u;
+      n = new URL(u);
     } else {
-      return u + "/";
+      n = new URL(u + "/");
+    }
+
+    if (this.HOST.length > 0) {
+      return n.toString();
+    } else {
+      let s = n.protocol + "://" + n.host;
+      return u.substr(s.length-1);
     }
   }
 

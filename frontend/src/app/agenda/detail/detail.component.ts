@@ -57,7 +57,7 @@ export class DetailComponent implements OnInit {
       if (this.agenda) {
         throw new Error("[agendaUrl] and [agenda] cannot both have values");
       }
-      this.agendas.getFor(this.agendaUrl).delay(500).subscribe(data=>this.agenda = data);
+      this.agendas.getFor(this.agendaUrl).subscribe(data=>this.agenda = data);
     }
   }
 
