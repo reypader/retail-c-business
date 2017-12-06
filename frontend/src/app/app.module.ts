@@ -18,6 +18,8 @@ import {CityResolver} from "./resolvers/city.resolver";
 import {FormsModule} from "@angular/forms";
 import {DateDialogComponent} from "./agenda/date-dialog/date-dialog.component";
 import {MatNativeDateModule} from "@angular/material";
+import {EditingSnackbarComponent} from "./agenda/editing-snackbar/editing-snackbar.component";
+import {HttpClientXsrfModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -27,12 +29,16 @@ import {MatNativeDateModule} from "@angular/material";
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken',
+    }),
     NavigationModule,
     ListingModule,
     AppRoutingModule,
-    AgendaModule,
+    AgendaModule
   ],
-  entryComponents: [DateDialogComponent],
+  entryComponents: [DateDialogComponent, EditingSnackbarComponent],
   providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver],
   bootstrap: [AppComponent]
 })

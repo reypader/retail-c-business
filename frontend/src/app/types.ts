@@ -36,40 +36,42 @@ export interface User {
 }
 
 export interface AgendaListItem extends Entity {
-  "city": URL;
-  "date": Date;
+  city: URL;
+  date: Date;
 }
 
 export interface Agenda extends Entity {
-  "land_area": number;
-  "population": number;
-  "financial_income": number;
-  "financial_income_per_capita": number;
-  "business_tax": number;
-  "cannabis_tax": number;
-  "dominant_political_stance": string;
-  "vote_percent_democrat": number;
-  "vote_percent_republican": number;
-  "approved_cannabis": boolean;
-  "prop_64_vote": boolean;
-  "vote_percent_prop_64": number;
-  "medical_use": boolean;
-  "cultivation_license": boolean;
-  "cultivation_allowed_areas": string;
-  "manufacturing_license": boolean;
-  "manufacturing_allowed_areas": string;
-  "retail_license": boolean;
-  "retail_allowed_areas": string;
-  "distribution_license": boolean;
-  "microbusiness_license": boolean;
-  "laboratory_license": boolean;
-  "cannabis_consultant_start_date": Date;
-  "other_localities_consulted": string;
-  "link_to_video": URL;
-  "date": Date;
-  "notes": string;
-  "city": URL;
-  "cannabis_consultant": ConsultantCompany;
+  new: boolean;
+  land_area: number;
+  population: number;
+  financial_income: number;
+  financial_income_per_capita: number;
+  business_tax: number;
+  cannabis_tax: number;
+  dominant_political_stance: string;
+  vote_percent_democrat: number;
+  vote_percent_republican: number;
+  approved_cannabis: boolean;
+  prop_64_vote: boolean;
+  vote_percent_prop_64: number;
+  medical_use: boolean;
+  cultivation_license: boolean;
+  cultivation_allowed_areas: string;
+  manufacturing_license: boolean;
+  manufacturing_allowed_areas: string;
+  retail_license: boolean;
+  retail_allowed_areas: string;
+  distribution_license: boolean;
+  microbusiness_license: boolean;
+  laboratory_license: boolean;
+  cannabis_consultant_start_date: Date;
+  other_localities_consulted: string;
+  link_to_video: URL;
+  date: Date;
+  dateString: string
+  notes: string;
+  city: URL;
+  cannabis_consultant: ConsultantCompany;
 }
 
 

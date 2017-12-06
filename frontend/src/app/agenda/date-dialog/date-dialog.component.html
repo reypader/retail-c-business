@@ -6,8 +6,7 @@
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions >
+<mat-dialog-actions>
   <span style="flex: 1 1 auto;"></span>
-    <button mat-button mat-dialog-close align="end">Proceed</button>
-
+  <button mat-button [mat-dialog-close]="date" align="end">Proceed</button>
 </mat-dialog-actions>

@@ -5,7 +5,7 @@ import {HttpParams} from "@angular/common/http";
 
 export abstract class ResultListingService<T> {
 
-  constructor(private backend: BackendService) {
+  constructor(protected backend: BackendService) {
   }
 
   get(id: number): Observable<T> {

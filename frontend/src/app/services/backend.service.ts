@@ -7,11 +7,12 @@ import {HttpParams} from "@angular/common/http";
 @Injectable()
 export class BackendService {
 
-  HOST: string = "http://127.0.0.1:8000/api/"
+  HOST: string = "http://127.0.0.1:8000";
+  ROOT: string = this.HOST + "/api/"
   baseUrls: ReplaySubject<Object> = new ReplaySubject<Object>();
 
   constructor(private http: HttpClient) {
-    http.get(this.HOST).subscribe(data=> this.baseUrls.next(data));
+    http.get(this.ROOT).subscribe(data=> this.baseUrls.next(data));
   }
 
   getUrl(name: string): Observable<string> {
@@ -55,6 +56,9 @@ export class BackendService {
 
   private normalize(url: string): string {
     let u = url.replace(/([^:]\/)\/+/g, "$1");
+    // if(u.lastIndexOf(this.HOST) == 0){
+    //   u = u.substr(this.HOST.length);
+    // }
     if (u.lastIndexOf("/") == u.length - 1) {
       return u;
     } else {

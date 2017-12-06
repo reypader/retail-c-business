@@ -125,21 +125,24 @@ class Agenda(django_models.Model):
     vote_percent_prop_64 = django_models.DecimalField(max_digits=5, decimal_places=2)
     medical_use = django_models.BooleanField(default=False)
     cultivation_license = django_models.BooleanField(default=False)
-    cultivation_allowed_areas = django_models.TextField()
+    cultivation_allowed_areas = django_models.TextField(null=True, blank=True)
     manufacturing_license = django_models.BooleanField(default=False)
-    manufacturing_allowed_areas = django_models.TextField()
+    manufacturing_allowed_areas = django_models.TextField(null=True, blank=True)
     retail_license = django_models.BooleanField(default=False)
-    retail_allowed_areas = django_models.TextField()
+    retail_allowed_areas = django_models.TextField(null=True, blank=True)
     distribution_license = django_models.BooleanField(default=False)
     microbusiness_license = django_models.BooleanField(default=False)
     laboratory_license = django_models.BooleanField(default=False)
     cannabis_consultant = django_models.ForeignKey(ConsultantCompany, null=True, blank=True,
                                                    on_delete=django_models.SET_NULL)
     cannabis_consultant_start_date = django_models.DateField(null=True, blank=True)
-    other_localities_consulted = django_models.TextField()
+    other_localities_consulted = django_models.TextField(null=True, blank=True)
     link_to_video = django_models.URLField(null=True, blank=True)
     date = django_models.DateField()
     notes = django_models.TextField()
+
+    class Meta:
+        ordering = ('-date',)
 
     def __str__(self):
         return "[%s] %s" % (self.date, self.city)

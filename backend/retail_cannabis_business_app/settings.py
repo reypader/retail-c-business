@@ -89,6 +89,8 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         }
     }
 else:
+    MIDDLEWARE = ['retail_cannabis_business_app.custom_middlware.DisableCsrfCheck'] + MIDDLEWARE
+    CSRF_TRUSTED_ORIGINS = ['127.0.0.1:4200', ]
     CORS_ORIGIN_WHITELIST = (
         '127.0.0.1:4200'
     )
@@ -134,6 +136,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+CSRF_USE_SESSIONS = True
 
 #######################
 #     SOCIAL AUTH     #
