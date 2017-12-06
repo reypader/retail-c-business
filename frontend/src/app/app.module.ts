@@ -16,6 +16,8 @@ import {AgendaModule} from "./agenda/agenda.module";
 import {AgendaService} from "./services/agenda.service";
 import {CityResolver} from "./resolvers/city.resolver";
 import {FormsModule} from "@angular/forms";
+import {DateDialogComponent} from "./agenda/date-dialog/date-dialog.component";
+import {MatNativeDateModule} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -28,8 +30,9 @@ import {FormsModule} from "@angular/forms";
     NavigationModule,
     ListingModule,
     AppRoutingModule,
-    AgendaModule
+    AgendaModule,
   ],
+  entryComponents: [DateDialogComponent],
   providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver],
   bootstrap: [AppComponent]
 })
