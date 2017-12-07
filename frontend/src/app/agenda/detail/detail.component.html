@@ -1,88 +1,121 @@
-<mat-expansion-panel [expanded]="open">
+<mat-expansion-panel [expanded]='open'>
   <mat-expansion-panel-header>
-    <span class="mat-body-2" *ngIf="agenda">{{agenda.dateString}}</span>
-    <span class="mat-body-1" *ngIf="agenda && agenda.new"><i>&nbsp;&nbsp;(Draft)</i></span>
-    <mat-spinner *ngIf="!agenda" [diameter]="25"></mat-spinner>
+    <span class='mat-body-2' *ngIf='agenda'>{{agenda.dateString}}</span>
+    <span class='mat-body-1' *ngIf='agenda && agenda.new'><i>&nbsp;&nbsp;(Draft)</i></span>
+    <mat-spinner *ngIf='!agenda' [diameter]='25'></mat-spinner>
   </mat-expansion-panel-header>
-  <div style="width:100%; text-align: center" *ngIf="!agenda">
+  <div style='width:100%; text-align: center' *ngIf='!agenda'>
     <h3>Loading agenda details</h3>
-    <mat-progress-bar [mode]="'indeterminate'" style="width:100%;"></mat-progress-bar>
+    <mat-progress-bar [mode]="indeterminate"
+                      style="width:100%;"></mat-progress-bar>
   </div>
-  <div *ngIf="agenda" class="detail-container" fxLayout="column">
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Land Area" [(ngModel)]="agenda.land_area">
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Population" [(ngModel)]="agenda.population">
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Financial Income" [(ngModel)]="agenda.financial_income">
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Financial Income Per Capita"
-             [(ngModel)]="agenda.financial_income_per_capita">
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Business Tax" [(ngModel)]="agenda.business_tax">
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Cannabis Tax" [(ngModel)]="agenda.cannabis_tax">
-    </mat-form-field>
-    <div fxFlex>
-      <span>Democrats ({{agenda.vote_percent_democrat}})</span>
-      <mat-slider [disabled]="!agenda.new" thumbLabel min="0" max="100" step="1" value="50"
-                  [(ngModel)]="agenda.vote_percent_democrat" (change)="adjustRepublicans($event)"></mat-slider>
-      <span>Republicans ({{agenda.vote_percent_republican}})</span>
-      <mat-slider [disabled]="!agenda.new" thumbLabel min="0" max="100" step="1" value="50"
-                  [(ngModel)]="agenda.vote_percent_republican" (change)="adjustDemocrats($event)"></mat-slider>
-      <br/>
-      <mat-radio-group [disabled]="!agenda.new || !voteTie" [(ngModel)]="agenda.dominant_political_stance">
-        <mat-radio-button value="R">Republican</mat-radio-button>
-        <mat-radio-button value="D">Democrat</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <div fxFlex>
-      <mat-slider [disabled]="!agenda.new" thumbLabel min="0" max="100" step="1" value="50"
-                  [(ngModel)]="agenda.vote_percent_prop_64" (change)="recalculatePropVotes($event)"></mat-slider>
-      <br/>
-      <mat-checkbox disabled [(ngModel)]="agenda.prop_64_vote">Agreed to Proposition 64</mat-checkbox>
-      <br/>
-      <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.approved_cannabis">Approved Cannabis</mat-checkbox>
-      <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.medical_use">Medical Use</mat-checkbox>
-    </div>
-
-    <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.cultivation_license">Cultivation License</mat-checkbox>
-    <mat-form-field fxFlex>
-      <textarea matInput [disabled]="!agenda.new" placeholder="Allowed areas for cultivating cannabis"
-                matAutosizeMinRows="3"
-                matAutosizeMaxRows="10" [(ngModel)]="agenda.cultivation_allowed_areas"></textarea>
-    </mat-form-field>
-    <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.manufacturing_license">Manufacturing License
-    </mat-checkbox>
-    <mat-form-field fxFlex>
-      <textarea matInput [disabled]="!agenda.new" placeholder="Allowed areas for manufacturing cannabis products"
-                matAutosizeMinRows="3"
-                matAutosizeMaxRows="10" [(ngModel)]="agenda.manufacturing_allowed_areas"></textarea>
-    </mat-form-field>
-    <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.retail_license">Retail License</mat-checkbox>
-    <mat-form-field fxFlex>
-      <textarea matInput [disabled]="!agenda.new" placeholder="Allowed areas for retailing cannabis products"
-                matAutosizeMinRows="3"
-                matAutosizeMaxRows="10" [(ngModel)]="agenda.retail_allowed_areas"></textarea>
-    </mat-form-field>
-    <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.distribution_license">Distribution License</mat-checkbox>
-    <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.microbusiness_license">Microbusiness License
-    </mat-checkbox>
-    <mat-checkbox [disabled]="!agenda.new" [(ngModel)]="agenda.laboratory_license">Laboratory License</mat-checkbox>
-    <mat-form-field fxFlex>
-      <input matInput [disabled]="!agenda.new" placeholder="Link to agenda video" type="url"
-             [(ngModel)]="agenda.link_to_video">
-      <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <textarea matInput [disabled]="!agenda.new" placeholder="Agenda notes" matTextareaAutosize matAutosizeMinRows="3"
-                matAutosizeMaxRows="10" [(ngModel)]="agenda.notes"></textarea>
-    </mat-form-field>
-
+  <div *ngIf='agenda' class='detail-container' fxLayout="row" fxLayoutWrap>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><h3>Demographics</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout='row' fxLayoutGap="10px">
+          <mat-form-field fxFlex>
+            <input matInput [disabled]='!agenda.new' placeholder='Land Area' [(ngModel)]='agenda.land_area'>
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <input matInput [disabled]='!agenda.new' placeholder='Population' [(ngModel)]='agenda.population'>
+          </mat-form-field>
+        </div>
+        <div fxLayout='row' fxLayoutGap="10px">
+          <mat-form-field fxFlex>
+            <input matInput [disabled]='!agenda.new' placeholder='Financial Income'
+                   [(ngModel)]='agenda.financial_income'>
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <input matInput [disabled]='!agenda.new' placeholder='Financial Income Per Capita'
+                   [(ngModel)]='agenda.financial_income_per_capita'>
+          </mat-form-field>
+        </div>
+        <div fxLayout='row' fxLayoutGap="10px">
+          <mat-form-field fxFlex>
+            <input matInput [disabled]='!agenda.new' placeholder='Business Tax' [(ngModel)]='agenda.business_tax'>
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <input matInput [disabled]='!agenda.new' placeholder='Cannabis Tax' [(ngModel)]='agenda.cannabis_tax'>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><h3>Votes</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout='row' fxLayoutGap="10px">
+          <span>Democrats<br/>({{agenda.vote_percent_democrat}})</span>
+          <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
+                      [(ngModel)]='agenda.vote_percent_democrat' (change)='adjustRepublicans($event)'></mat-slider>
+          <span>Republicans<br/>({{agenda.vote_percent_republican}})</span>
+          <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
+                      [(ngModel)]='agenda.vote_percent_republican' (change)='adjustDemocrats($event)'></mat-slider>
+        </div>
+        <hr/>
+        <div fxLayout='row' fxLayoutGap="10px">
+          <span>Voted 'Yes'<br/>({{agenda.vote_percent_prop_64}})</span>
+          <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
+                      [(ngModel)]='agenda.vote_percent_prop_64' (change)='recalculatePropVotes($event)'></mat-slider>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-checkbox disabled [(ngModel)]='agenda.prop_64_vote'>Agreed to Proposition 64</mat-checkbox>
+          <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.approved_cannabis'>Approved Cannabis</mat-checkbox>
+          <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.medical_use'>Medical Use</mat-checkbox>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><h3>Licenses</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.cultivation_license'>Cultivation License
+        </mat-checkbox>
+        <mat-form-field fxFlex>
+      <textarea matInput [disabled]='!agenda.new' placeholder='Allowed areas for cultivating cannabis'
+                matAutosizeMinRows='3'
+                matAutosizeMaxRows='10' [(ngModel)]='agenda.cultivation_allowed_areas'></textarea>
+        </mat-form-field>
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.manufacturing_license'>Manufacturing License
+        </mat-checkbox>
+        <mat-form-field fxFlex>
+      <textarea matInput [disabled]='!agenda.new' placeholder='Allowed areas for manufacturing cannabis products'
+                matAutosizeMinRows='3'
+                matAutosizeMaxRows='10' [(ngModel)]='agenda.manufacturing_allowed_areas'></textarea>
+        </mat-form-field>
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.retail_license'>Retail License</mat-checkbox>
+        <mat-form-field fxFlex>
+      <textarea matInput [disabled]='!agenda.new' placeholder='Allowed areas for retailing cannabis products'
+                matAutosizeMinRows='3'
+                matAutosizeMaxRows='10' [(ngModel)]='agenda.retail_allowed_areas'></textarea>
+        </mat-form-field>
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.distribution_license'>Distribution License
+        </mat-checkbox>
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.microbusiness_license'>Microbusiness License
+        </mat-checkbox>
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.laboratory_license'>Laboratory License</mat-checkbox>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><h3>Notes</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column">
+        <mat-form-field fxFlex>
+          <input matInput [disabled]='!agenda.new' placeholder='Link to agenda video' type='url'
+                 [(ngModel)]='agenda.link_to_video'>
+          <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+      <textarea matInput [disabled]='!agenda.new' placeholder='Agenda notes' matTextareaAutosize matAutosizeMinRows='3'
+                matAutosizeMaxRows='10' [(ngModel)]='agenda.notes'></textarea>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
   </div>
 </mat-expansion-panel>

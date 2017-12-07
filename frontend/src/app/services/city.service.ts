@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BackendService} from "./backend.service";
-import {ResultListingService} from "./result-listing.service";
-import {Place, City} from "../types";
-import {Observable, ReplaySubject} from "rxjs";
+import {BackendService} from './backend.service';
+import {ResultListingService} from './result-listing.service';
+import {Place, City} from '../types';
+import {Observable, ReplaySubject} from 'rxjs';
 
 @Injectable()
 export class CityService extends ResultListingService<City> {
@@ -10,7 +10,7 @@ export class CityService extends ResultListingService<City> {
   current: ReplaySubject<City>;
 
   getType(): string {
-    return "cities";
+    return 'cities';
   }
 
   enrich(o: City): City {

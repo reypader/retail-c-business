@@ -1,9 +1,9 @@
-import {ActivatedRoute, ParamMap, Params, Router} from "@angular/router";
-import {PaginatedResult, Place, Entity} from "../types";
-import {ResultListingService} from "../services/result-listing.service";
+import {ActivatedRoute, ParamMap, Params, Router} from '@angular/router';
+import {PaginatedResult, Place, Entity} from '../types';
+import {ResultListingService} from '../services/result-listing.service';
 import 'rxjs/add/operator/switchMap';
-import {Component} from "@angular/core";
-import {CityService} from "../services/city.service";
+import {Component} from '@angular/core';
+import {CityService} from '../services/city.service';
 
 @Component({
   selector: 'listing',
@@ -24,25 +24,25 @@ export class ListingComponent {
   }
 
   updateRegions($e: Entity) {
-    console.log("Updating regions with " + $e.url);
+    console.log('Updating regions with ' + $e.url);
     this.currentRegionsURL = $e.url;
   }
 
   updateSubregions($e: Entity) {
-    console.log("Updating subregions with " + $e.url);
+    console.log('Updating subregions with ' + $e.url);
     this.currentSubregionsURL = $e.url;
     this.currentTab = 1;
   }
 
   updateCities($e: Entity) {
-    console.log("Updating cities with " + $e.url);
+    console.log('Updating cities with ' + $e.url);
     this.currentCitiesURL = $e.url;
     this.currentTab = 2;
   }
 
   viewAgendas($e: Entity) {
     this.cities.getFor($e.url);
-    console.log("Navigating to Cities")
-    this.router.navigate(["cities/" + $e.id])
+    console.log('Navigating to Cities')
+    this.router.navigate(['cities/' + $e.id])
   }
 }

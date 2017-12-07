@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import {CityResolver} from "./city.resolver";
+import {CityResolver} from './city.resolver';
 
 
 describe('AgendaService', () => {

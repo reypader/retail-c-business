@@ -1,17 +1,17 @@
-<mat-tab-group class="gov-listing-tab-group" [selectedIndex]="currentTab" (selectedIndexChange)="updateTab($event)">
-  <!--<mat-tab label="States">-->
-    <!--<div class="gov-listing-tab-content">-->
-      <!--<region-grid [currentURL]="currentRegionsURL" (itemSelected)="updateSubregions($event)"></region-grid>-->
+<mat-tab-group class='gov-listing-tab-group' [selectedIndex]='currentTab' (selectedIndexChange)='updateTab($event)'>
+  <!--<mat-tab label='States'>-->
+    <!--<div class='gov-listing-tab-content'>-->
+      <!--<region-grid [currentURL]='currentRegionsURL' (itemSelected)='updateSubregions($event)'></region-grid>-->
     <!--</div>-->
   <!--</mat-tab>-->
-  <mat-tab label="Counties">
-    <div class="gov-listing-tab-content">
-      <subregion-grid [currentURL]="currentSubregionsURL" (itemSelected)="updateCities($event)"></subregion-grid>
+  <mat-tab label='Counties'>
+    <div class='gov-listing-tab-content'>
+      <subregion-grid [currentURL]='currentSubregionsURL' (itemSelected)='updateCities($event)'></subregion-grid>
     </div>
   </mat-tab>
-  <mat-tab label="Cities">
-    <div class="gov-listing-tab-content">
-      <city-grid [currentURL]="currentCitiesURL" (itemSelected)="viewAgendas($event)"></city-grid>
+  <mat-tab label='Cities'>
+    <div class='gov-listing-tab-content'>
+      <city-grid [currentURL]='currentCitiesURL' (itemSelected)='viewAgendas($event)'></city-grid>
     </div>
   </mat-tab>
 </mat-tab-group>

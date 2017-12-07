@@ -5,8 +5,8 @@ import {
   MatToolbarModule, MatMenuModule, MatIconModule,
   MatButtonModule
 } from '@angular/material';
-import {NavigationComponent} from "./navigation.component";
-import {AppRoutingModule} from "../app-routing.module";
+import {NavigationComponent} from './navigation.component';
+import {AppRoutingModule} from '../app-routing.module';
 
 @NgModule({
   imports: [

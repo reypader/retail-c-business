@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import {ResultListingService} from "./result-listing.service";
-import {BackendService} from "./backend.service";
-import {Agenda} from "../types";
-import {Observable} from "rxjs";
+import {ResultListingService} from './result-listing.service';
+import {BackendService} from './backend.service';
+import {Agenda} from '../types';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class AgendaService extends ResultListingService<Agenda> {
   getType(): string {
-    return "agendas";
+    return 'agendas';
   }
 
   enrich(o: Agenda): Agenda {
@@ -27,10 +27,9 @@ export class AgendaService extends ResultListingService<Agenda> {
   save(agenda: Agenda): Observable<Agenda> {
     return this.backend.getUrl(this.getType())
       .switchMap(url => {
-          let d = agenda.date;
-          console.log(d)
-          let o = this.deepCopy(agenda);
-          o['date'] = d.getFullYear() + "-" + this._to2digit(d.getMonth() + 1) + "-" + this._to2digit(d.getDate());
+          const d = agenda.date;
+          const o = this.deepCopy(agenda);
+          o['date'] = d.getFullYear() + '-' + this._to2digit(d.getMonth() + 1) + '-' + this._to2digit(d.getDate());
           console.log(o['date']);
 
           return this.backend.post<Agenda>(url, o);
@@ -45,7 +44,7 @@ export class AgendaService extends ResultListingService<Agenda> {
   private deepCopy(obj: Object): Object {
     var copy;
 
-    if (null == obj || "object" != typeof obj) return obj;
+    if (null == obj || 'object' != typeof obj) return obj;
 
     if (obj instanceof Date) {
       copy = new Date();
@@ -67,7 +66,7 @@ export class AgendaService extends ResultListingService<Agenda> {
       return copy;
     }
 
-    throw new Error("Unable to copy obj! Its type isn't supported.");
+    throw new Error('Unable to copy obj! Its type isn\'t supported.');
   }
 
 }

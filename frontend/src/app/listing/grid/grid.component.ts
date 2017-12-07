@@ -1,9 +1,9 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {PaginatedResult, Place, Entity} from "../../types";
-import {ResultListingService} from "../../services/result-listing.service";
-import {RegionService} from "../../services/region.service";
-import {SubregionService} from "../../services/subregion.service";
-import {CityService} from "../../services/city.service";
+import {PaginatedResult, Place, Entity} from '../../types';
+import {ResultListingService} from '../../services/result-listing.service';
+import {RegionService} from '../../services/region.service';
+import {SubregionService} from '../../services/subregion.service';
+import {CityService} from '../../services/city.service';
 
 export abstract class GridComponent implements OnInit {
 
@@ -15,14 +15,14 @@ export abstract class GridComponent implements OnInit {
   constructor(private service: ResultListingService<Place>) {
     this.currentPage = {} as PaginatedResult<Place>;
     this.currentPage.results = [];
-    console.log("init")
+    console.log('init')
   }
 
   ngOnInit(): void {
   }
 
   select(url: URL, id: number): void {
-    console.log("Selected " + url);
+    console.log('Selected ' + url);
     this.itemSelected.emit({id: id, url: url} as Entity);
   }
 
@@ -50,7 +50,7 @@ export abstract class GridComponent implements OnInit {
   }
 
   next(): void {
-    console.log("Fetching next items");
+    console.log('Fetching next items');
     this.service.getNext(this.currentPage).subscribe(page => {
       this.collectResult(page);
     });

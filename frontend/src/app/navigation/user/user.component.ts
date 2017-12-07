@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {SessionService} from "../../services/session.service";
-import {User} from "../../types";
+import {SessionService} from '../../services/session.service';
+import {User} from '../../types';
 
 @Component({
   selector: 'app-user',
@@ -22,7 +22,7 @@ export class UserComponent implements OnInit {
   }
 
   logout() {
-    window.location.href = "/logout";
+    window.location.href = '/logout';
   }
 
 }

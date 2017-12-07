@@ -1,10 +1,10 @@
-<button mat-button *ngIf="!currentUser.username"><a href="/login">Login</a></button>
-<button mat-button [matMenuTriggerFor]="menu" *ngIf="currentUser.username">
+<button mat-button *ngIf='!currentUser.username'><a href='/login'>Login</a></button>
+<button mat-button [matMenuTriggerFor]='menu' *ngIf='currentUser.username'>
   {{currentUser.username}}
   <mat-icon>more_vert</mat-icon>
 </button>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="logout($event)">
+<mat-menu #menu='matMenu'>
+  <button mat-menu-item (click)='logout($event)'>
     <span>Logout</span>
   </button>
 </mat-menu>

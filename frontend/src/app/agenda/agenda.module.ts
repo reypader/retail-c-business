@@ -4,13 +4,12 @@ import { DetailComponent } from './detail/detail.component';
 import {
   MatExpansionModule, MatFormFieldModule, MatOptionModule, MatSelectModule,
   MatInputModule, MatIconModule, MatProgressSpinnerModule, MatSliderModule, MatRadioModule, MatCheckboxModule,
-  MatButtonModule, MatProgressBarModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatSnackBarModule
-} from "@angular/material";
-import {AgendaComponent} from "./agenda.component";
-import {AppRoutingModule} from "../app-routing.module";
-import {FlexLayoutModule} from "@angular/flex-layout";
-import {NgcFloatButtonModule} from 'ngc-float-button';
-import {FormsModule} from "@angular/forms";
+  MatButtonModule, MatProgressBarModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatSnackBarModule, MatCardModule
+} from '@angular/material';
+import {AgendaComponent} from './agenda.component';
+import {AppRoutingModule} from '../app-routing.module';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {FormsModule} from '@angular/forms';
 import { DateDialogComponent } from './date-dialog/date-dialog.component';
 import { EditingSnackbarComponent } from './editing-snackbar/editing-snackbar.component';
 
@@ -30,13 +29,13 @@ import { EditingSnackbarComponent } from './editing-snackbar/editing-snackbar.co
     MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
-    NgcFloatButtonModule,
     FormsModule,
     MatProgressBarModule,
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule
   ],
   exports: [AgendaComponent],
   declarations: [AgendaComponent, DetailComponent, DateDialogComponent, EditingSnackbarComponent]

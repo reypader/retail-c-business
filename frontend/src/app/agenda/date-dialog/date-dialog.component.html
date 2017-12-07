@@ -1,12 +1,12 @@
 <h2 mat-dialog-title>What date is the agenda for?</h2>
 <mat-dialog-content>
   <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <input matInput [matDatepicker]='picker' placeholder='Choose a date' [(ngModel)]='date'>
+    <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <span style="flex: 1 1 auto;"></span>
-  <button mat-button [mat-dialog-close]="date" align="end">Proceed</button>
+  <span style='flex: 1 1 auto;'></span>
+  <button mat-button [mat-dialog-close]='date' align='end'>Proceed</button>
 </mat-dialog-actions>
