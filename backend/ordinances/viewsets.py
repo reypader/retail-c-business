@@ -26,14 +26,14 @@ class RegionViewSet(viewsets.ModelViewSet):
 
 
 class SubRegionViewSet(viewsets.ModelViewSet):
-    queryset = SubRegion.objects.all()
+    queryset = SubRegion.objects.filter(region__id=5332921)
     serializer_class = SubRegionSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('region__id',)
 
 
 class CityViewSet(viewsets.ModelViewSet):
-    queryset = City.objects.all()
+    queryset = City.objects.filter(region__id=5332921)
     serializer_class = CitySerializer
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('subregion__id', 'region__id',)
