@@ -36,3 +36,4 @@ skip_files:
 - ^(.*/)?\..*$
 - ^(.*/)?setuptools/script \(dev\).tmpl$
 - ^(.*/)?.*\.sh$
+- ^(.*/)?venv/.*

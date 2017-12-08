@@ -12,7 +12,7 @@
   <div *ngIf='agenda' class='detail-container' fxLayout="row" fxLayoutWrap>
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
-        <mat-card-title><h3>Demographics</h3></mat-card-title>
+        <mat-card-title><span class="detail-title"><mat-icon>people</mat-icon>&nbsp;<h3 style="display: inline-block">Demographics</h3></span> </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div fxLayout='row' fxLayoutGap="10px">
@@ -45,7 +45,7 @@
     </mat-card>
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
-        <mat-card-title><h3>Votes</h3></mat-card-title>
+        <mat-card-title><span class="detail-title"><mat-icon>polls</mat-icon>&nbsp;<h3>Votes</h3></span></mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div fxLayout='row' fxLayoutGap="10px">
@@ -71,7 +71,7 @@
     </mat-card>
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
-        <mat-card-title><h3>Licenses</h3></mat-card-title>
+        <mat-card-title><span class="detail-title"><mat-icon>assignment_turned_in</mat-icon>&nbsp;<h3>Licenses</h3></span></mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayout="column">
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.cultivation_license'>Cultivation License
@@ -103,7 +103,7 @@
     </mat-card>
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
-        <mat-card-title><h3>Notes</h3></mat-card-title>
+        <mat-card-title><span class="detail-title"><mat-icon>speaker_notes</mat-icon>&nbsp;<h3>Notes</h3></span></mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayout="column">
         <mat-form-field fxFlex>

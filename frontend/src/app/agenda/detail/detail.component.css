@@ -1,3 +1,9 @@
 .detail-container .detail-section {
   margin: 10px;
 }
+
+
+.detail-title{
+  display: inline-flex;
+  vertical-align: middle;
+}
