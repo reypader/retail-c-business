@@ -1,8 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
 
-from ordinances.models import SubRegion, City, Region, Agenda
+from ordinances.models import SubRegion, City, Region, Agenda, ConsultantCompany
 from ordinances.serializers import UserSerializer, SubRegionSerializer, CitySerializer, RegionSerializer, \
-    AgendaSerializer
+    AgendaSerializer, ConsultantCompanySerializer
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 
@@ -44,3 +44,8 @@ class AgendaViewSet(viewsets.ModelViewSet):
     serializer_class = AgendaSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('city__id',)
+
+
+class ConsultantCompanyViewSet(viewsets.ModelViewSet):
+    queryset = ConsultantCompany.objects.all()
+    serializer_class = ConsultantCompanySerializer
