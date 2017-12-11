@@ -1,7 +1,8 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AgendaService} from '../../services/agenda.service';
 import {Agenda} from '../../types';
 import 'rxjs/add/operator/delay';
+
 @Component({
   selector: 'agenda-detail',
   templateUrl: './detail.component.html',
@@ -10,7 +11,7 @@ import 'rxjs/add/operator/delay';
 export class DetailComponent implements OnInit {
 
   @Input() agendaUrl: URL;
-  @Input() agenda: Agenda
+  @Input() agenda: Agenda;
   @Input() open: boolean;
   voteTie: boolean = false;
   propVoteTie: boolean = false;
@@ -26,18 +27,6 @@ export class DetailComponent implements OnInit {
   adjustDemocrats($event): void {
     this.agenda.vote_percent_democrat = 100 - this.agenda.vote_percent_republican;
     this.recalculateVotes();
-  }
-
-  private recalculateVotes(): void {
-    if (this.agenda.vote_percent_republican > this.agenda.vote_percent_democrat) {
-      this.agenda.dominant_political_stance = 'R';
-      this.voteTie = false;
-    } else if (this.agenda.vote_percent_republican === this.agenda.vote_percent_democrat) {
-      this.voteTie = true;
-    } else {
-      this.agenda.dominant_political_stance = 'D';
-      this.voteTie = false;
-    }
   }
 
   recalculatePropVotes($val): void {
@@ -57,7 +46,19 @@ export class DetailComponent implements OnInit {
       if (this.agenda) {
         throw new Error('[agendaUrl] and [agenda] cannot both have values');
       }
-      this.agendas.getFor(this.agendaUrl).subscribe(data=>this.agenda = data);
+      this.agendas.getFor(this.agendaUrl).subscribe(data => this.agenda = data);
+    }
+  }
+
+  private recalculateVotes(): void {
+    if (this.agenda.vote_percent_republican > this.agenda.vote_percent_democrat) {
+      this.agenda.dominant_political_stance = 'R';
+      this.voteTie = false;
+    } else if (this.agenda.vote_percent_republican === this.agenda.vote_percent_democrat) {
+      this.voteTie = true;
+    } else {
+      this.agenda.dominant_political_stance = 'D';
+      this.voteTie = false;
     }
   }
 

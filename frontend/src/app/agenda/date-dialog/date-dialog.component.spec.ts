@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DateDialogComponent } from './date-dialog.component';
+import {DateDialogComponent} from './date-dialog.component';
 
 describe('DateDialogComponent', () => {
   let component: DateDialogComponent;
@@ -8,9 +8,9 @@ describe('DateDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DateDialogComponent ]
+      declarations: [DateDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

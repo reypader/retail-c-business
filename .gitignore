@@ -7,6 +7,7 @@ frontend/node_modules
 frontend/.idea
 frontend/*.iml
 .DS_store
+*.idea
 # Logs
 logs
 *.log
@@ -66,5 +67,5 @@ typings/
 # dotenv environment variables file
 .env
 
-backend/venv
-*.pyc
+venv/
+# *.pyc

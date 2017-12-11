@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { SubregionService } from './subregion.service';
+import {SubregionService} from './subregion.service';
 
 describe('SubregionService', () => {
   beforeEach(() => {

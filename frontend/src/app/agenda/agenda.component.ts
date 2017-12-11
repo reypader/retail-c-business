@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AgendaListItem, City, SubRegion, Region, Agenda} from '../types';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Agenda, City, Region, SubRegion} from '../types';
+import {ActivatedRoute} from '@angular/router';
 import {SubregionService} from '../services/subregion.service';
 import {RegionService} from '../services/region.service';
-import {MatDialog, MatDialogRef, MatSnackBar, MatSnackBarRef} from '@angular/material';
+import {MatDialog, MatSnackBar, MatSnackBarRef} from '@angular/material';
 import {DateDialogComponent} from './date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.component';
 import {AgendaService} from '../services/agenda.service';
