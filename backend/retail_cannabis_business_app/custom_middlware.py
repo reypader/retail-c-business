@@ -15,5 +15,6 @@ class AuthRequiredMiddleware(MiddlewareMixin):
         print request.user.is_authenticated
         print request.path
         print request.path.startswith('/login')
-        if not request.user.is_authenticated and (request.path == '/' or request.path.startswith('/app') or request.path.startswith('/api')):
+        if not request.user.is_authenticated and (
+                request.path == '/' or request.path.startswith('/app') or request.path.startswith('/api')):
             return HttpResponseRedirect(reverse('login') + "?next=" + request.path)

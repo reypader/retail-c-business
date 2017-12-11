@@ -1,10 +1,11 @@
 import urllib
-from rest_framework import serializers
+
 from django.contrib.auth.models import User
-from rest_framework.relations import HyperlinkedIdentityField
+from rest_framework import serializers
 from rest_framework.reverse import reverse
 
-from ordinances.models import SubRegion, City, Region, Agenda, ConsultantCompany, Consultant
+from ordinances.models import Consultant
+from ordinances.models import SubRegion, City, Region, Agenda, ConsultantCompany
 
 
 class CustomSerializer(serializers.HyperlinkedModelSerializer):

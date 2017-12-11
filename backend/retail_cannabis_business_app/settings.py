@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import environ
 import os
+
+import environ
 
 project_root = environ.Path(__file__) - 3
 PROJ_DIR = project_root()

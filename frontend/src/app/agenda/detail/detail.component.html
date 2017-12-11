@@ -50,6 +50,7 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <h4><i>Political Parties</i></h4>
         <div fxLayout='row' fxLayoutGap="10px">
           <span>Democrats<br/>({{ agenda.vote_percent_democrat }})</span>
           <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
@@ -59,6 +60,7 @@
                       [(ngModel)]='agenda.vote_percent_republican' (change)='adjustDemocrats($event)'></mat-slider>
         </div>
         <hr/>
+        <h4><i>Proposition 64</i></h4>
         <div fxLayout='row' fxLayoutGap="10px">
           <span>Voted 'Yes'<br/>({{ agenda.vote_percent_prop_64 }})</span>
           <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'

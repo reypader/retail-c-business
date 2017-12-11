@@ -1,10 +1,12 @@
-from django_filters.rest_framework import DjangoFilterBackend
-
-from ordinances.models import SubRegion, City, Region, Agenda, ConsultantCompany, Consultant
-from ordinances.serializers import UserSerializer, SubRegionSerializer, CitySerializer, RegionSerializer, \
-    AgendaSerializer, ConsultantCompanySerializer, ConsultantSerializer
 from django.contrib.auth.models import User
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+
+from ordinances.models import Consultant
+from ordinances.models import SubRegion, City, Region, Agenda, ConsultantCompany
+from ordinances.serializers import ConsultantSerializer
+from ordinances.serializers import UserSerializer, SubRegionSerializer, CitySerializer, RegionSerializer, \
+    AgendaSerializer, ConsultantCompanySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):

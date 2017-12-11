@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models as django_models
-from django.core.exceptions import ValidationError
 
 # Create your models here.
 
