@@ -6,6 +6,9 @@ import {FormControl} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {Observable} from 'rxjs/Observable';
+import {ConsultantCompanyComponent} from '../consultant-company/consultant-company.component';
+import {MatAutocompleteSelectedEvent, MatDialog} from '@angular/material';
+import {ConsultantCompanyService} from '../../services/consultant-company.service';
 
 @Component({
   selector: 'app-agenda-detail',
@@ -19,12 +22,13 @@ export class DetailComponent implements OnInit {
   @Input() open: boolean;
   @Input() companies: Array<ConsultantCompany>;
   filteredCompanies: Observable<Array<ConsultantCompany>>;
+  consultantCompany: ConsultantCompany;
   voteTie = false;
   propVoteTie = false;
 
   detailControl: FormControl = new FormControl();
 
-  constructor(private agendas: AgendaService) {
+  constructor(private agendas: AgendaService, private dialog: MatDialog, private consultantCompanies: ConsultantCompanyService) {
   }
 
   ngOnInit() {
@@ -36,15 +40,34 @@ export class DetailComponent implements OnInit {
     }
     this.filteredCompanies = this.detailControl.valueChanges
       .pipe(
-        startWith(''),
-        map(val => this.filter(val))
+        startWith({} as ConsultantCompany),
+        map<any, string>(company => company && typeof company === 'object' ? company.name : company),
+        map<string, ConsultantCompany[]>(val => val ? this.filter(val) : this.companies.slice())
       );
   }
 
+  clearConsultantCompany($event): void {
+    this.consultantCompany = null;
+  }
+
+
   filter(val: string): ConsultantCompany[] {
-    console.log(this.companies);
     return this.companies.filter(company =>
-      company.name.toLowerCase().indexOf(val.toLowerCase()) === 0);
+      company.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+  }
+
+  updateConsultantCompany($event: MatAutocompleteSelectedEvent): void {
+    this.consultantCompany = $event.option.value as ConsultantCompany;
+  }
+
+  createConsultantCompanyDialog(): void {
+    const dialogRef = this.dialog.open(ConsultantCompanyComponent);
+    dialogRef.afterClosed().switchMap(result => {
+      return this.consultantCompanies.save(result);
+    }).switchMap(data => {
+      this.consultantCompany = data;
+      return this.consultantCompanies.getList();
+    }).subscribe(data => this.companies = data.results);
   }
 
   adjustRepublicans($event): void {
@@ -79,6 +102,10 @@ export class DetailComponent implements OnInit {
       this.agenda.dominant_political_stance = 'D';
       this.voteTie = false;
     }
+  }
+
+  displayCompany(c: ConsultantCompany): string {
+    return c ? c.name : '';
   }
 
 }

@@ -27,6 +27,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DateDialogComponent} from './date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.component';
+import {ConsultantCompanyComponent} from './consultant-company/consultant-company.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,13 @@ import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.comp
     MatAutocompleteModule
   ],
   exports: [AgendaComponent],
-  declarations: [AgendaComponent, DetailComponent, DateDialogComponent, EditingSnackbarComponent]
+  declarations: [
+    AgendaComponent,
+    DetailComponent,
+    DateDialogComponent,
+    EditingSnackbarComponent,
+    ConsultantCompanyComponent
+  ]
 })
 export class AgendaModule {
 }

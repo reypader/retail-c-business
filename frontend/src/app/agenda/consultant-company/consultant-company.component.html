@@ -1,0 +1,30 @@
+<div fxLayout="column">
+  <h3 class="detail-title" *ngIf="!disabled">
+    <mat-icon>business</mat-icon>&nbsp;Add a consultant company
+  </h3>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Company Name' [(ngModel)]='consultantCompany.name'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Address' [(ngModel)]='consultantCompany.address'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Postal Code' [(ngModel)]='consultantCompany.postal_code'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Email Address' [(ngModel)]='consultantCompany.email'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Telephone Number'
+           [(ngModel)]='consultantCompany.telephone_number'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Fax Number' [(ngModel)]='consultantCompany.fax_number'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <textarea matInput matTextareaAutosize matAutosizeMinRows='3'
+              matAutosizeMaxRows='10' [disabled]='disabled' placeholder='Notes'
+              [(ngModel)]='consultantCompany.notes'></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="accent" *ngIf="!disabled" [mat-dialog-close]='consultantCompany'>Save</button>
+</div>

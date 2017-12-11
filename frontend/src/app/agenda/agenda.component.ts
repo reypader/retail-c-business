@@ -8,6 +8,7 @@ import {DateDialogComponent} from './date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.component';
 import {AgendaService} from '../services/agenda.service';
 import {CityService} from '../services/city.service';
+import {ConsultantCompanyComponent} from './consultant-company/consultant-company.component';
 
 @Component({
   selector: 'app-agenda-list',
@@ -40,7 +41,7 @@ export class AgendaComponent implements OnInit {
     this.subregions.getFor(this.city.subregion).subscribe(data => this.subregion = data);
   }
 
-  createDialog(scrollTarget): void {
+  createAgendaDialog(scrollTarget): void {
     const dialogRef = this.dialog.open(DateDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       const r = result as Date;

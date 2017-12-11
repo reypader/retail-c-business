@@ -20,13 +20,15 @@ export abstract class ResultListingService<T> {
 
   getList(filter?: Object): Observable<PaginatedResult<T>> {
     console.log('Get listing for ' + this.getType());
-    let q = this.getFilter(filter);
-    return this.backend.getUrl(this.getType()).switchMap(url => this.backend.get<PaginatedResult<T>>(url, q).map(data => this.enrichList(data)));
+    const q = this.getFilter(filter);
+    return this.backend.getUrl(this.getType())
+      .switchMap(url => this.backend.get<PaginatedResult<T>>(url, q)
+        .map(data => this.enrichList(data)));
   }
 
   getListFor(url: URL, filter?: Object): Observable<PaginatedResult<T>> {
     console.log('Get listing for ' + this.getType());
-    let q = this.getFilter(filter);
+    const q = this.getFilter(filter);
     return this.backend.get<PaginatedResult<T>>(url.toString(), q).map(data => this.enrichList(data));
   }
 
@@ -40,6 +42,54 @@ export abstract class ResultListingService<T> {
     return this.backend.get<PaginatedResult<T>>(current.previous).map(data => this.enrichList(data));
   }
 
+  save(t: T): Observable<T> {
+    return this.backend.getUrl(this.getType())
+      .switchMap(url => {
+          const o = this.prepareSave(this.deepCopy(t) as T);
+          return this.backend.post<T>(url, o);
+        }
+      )
+      .map(data => {
+        return this.enrich(data);
+      });
+  }
+
+  protected prepareSave(t: T): T {
+    return t;
+  }
+
+  private deepCopy(obj: Object): Object {
+    let copy;
+
+    if (null == obj || 'object' !== typeof obj) {
+      return obj;
+    }
+
+    if (obj instanceof Date) {
+      copy = new Date();
+      copy.setTime(obj.getTime());
+      return copy;
+    }
+    if (obj instanceof Array) {
+      copy = [];
+      for (let i = 0, len = obj.length; i < len; i++) {
+        copy[i] = this.deepCopy(obj[i]);
+      }
+      return copy;
+    }
+    if (obj instanceof Object) {
+      copy = {};
+      for (const attr in obj) {
+        if (obj.hasOwnProperty(attr)) {
+          copy[attr] = this.deepCopy(obj[attr]);
+        }
+      }
+      return copy;
+    }
+
+    throw new Error('Unable to copy obj! Its type isn\'t supported.');
+  }
+
   abstract getType(): string;
 
   enrich(o: T): T {
@@ -48,9 +98,9 @@ export abstract class ResultListingService<T> {
 
   enrichList(o: PaginatedResult<T>): PaginatedResult<T> {
     if (o.results) {
-      let _this = this;
+      const _this = this;
       o.results.forEach(function (part, index, r) {
-        let x = r[index];
+        const x = r[index];
         r[index] = _this.enrich(x);
       });
     }
@@ -60,7 +110,7 @@ export abstract class ResultListingService<T> {
   private getFilter(filter: Object): HttpParams {
     console.log('Generating query params');
     let p = new HttpParams();
-    for (let f in filter) {
+    for (const f in filter) {
       if (filter[f]) {
         p = p.set(f, filter[f]);
       }

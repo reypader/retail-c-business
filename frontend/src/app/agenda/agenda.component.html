@@ -6,7 +6,7 @@
   <app-agenda-detail [agendaUrl]='item' *ngFor='let item of city.agendas'
                      [companies]="consultantCompanies"></app-agenda-detail>
 </mat-accordion>
-<button mat-fab class='add-agenda-button' (click)='createDialog(target)' *ngIf='!newAgenda'>
+<button mat-fab class='add-agenda-button' (click)='createAgendaDialog(target)' *ngIf='!newAgenda'>
   <mat-icon>add</mat-icon>
 </button>
 <button mat-fab class='add-agenda-button' color='primary' (click)='save($event)' *ngIf='newAgenda'>

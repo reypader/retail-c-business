@@ -67,8 +67,8 @@ export interface Agenda extends Entity {
   cannabis_consultant_start_date: Date;
   other_localities_consulted: string;
   link_to_video: URL;
-  date: Date;
-  dateString: string
+  date: any;
+  dateString: string;
   notes: string;
   city: URL;
   cannabis_consultant: ConsultantCompany;

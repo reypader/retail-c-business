@@ -10,8 +10,7 @@ export class DateDialogComponent implements OnInit {
 
   date: Date = new Date();
 
-  constructor(public dialogRef: MatDialogRef<DateDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor() {
   }
 
   ngOnInit() {

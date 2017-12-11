@@ -84,20 +84,20 @@
         <mat-form-field fxFlex>
       <textarea matInput [disabled]='!agenda.new' placeholder='Allowed areas for cultivating cannabis'
                 matAutosizeMinRows='3'
-                matAutosizeMaxRows='10' [(ngModel)]='agenda.cultivation_allowed_areas'></textarea>
+                matAutosizeMaxRows='10' matTextareaAutosize [(ngModel)]='agenda.cultivation_allowed_areas'></textarea>
         </mat-form-field>
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.manufacturing_license'>Manufacturing License
         </mat-checkbox>
         <mat-form-field fxFlex>
       <textarea matInput [disabled]='!agenda.new' placeholder='Allowed areas for manufacturing cannabis products'
                 matAutosizeMinRows='3'
-                matAutosizeMaxRows='10' [(ngModel)]='agenda.manufacturing_allowed_areas'></textarea>
+                matAutosizeMaxRows='10' matTextareaAutosize [(ngModel)]='agenda.manufacturing_allowed_areas'></textarea>
         </mat-form-field>
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.retail_license'>Retail License</mat-checkbox>
         <mat-form-field fxFlex>
       <textarea matInput [disabled]='!agenda.new' placeholder='Allowed areas for retailing cannabis products'
                 matAutosizeMinRows='3'
-                matAutosizeMaxRows='10' [(ngModel)]='agenda.retail_allowed_areas'></textarea>
+                matAutosizeMaxRows='10' matTextareaAutosize [(ngModel)]='agenda.retail_allowed_areas'></textarea>
         </mat-form-field>
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.distribution_license'>Distribution License
         </mat-checkbox>
@@ -107,39 +107,50 @@
       </mat-card-content>
     </mat-card>
     <div fxLayout="row" fxFlex="100">
-    <mat-card class="detail-section" fxFlex>
-      <mat-card-header>
-        <mat-card-title><span class="detail-title"><mat-icon>business</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant Company</h3></span>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div fxLayout="column">
-          <mat-form-field>
-            <input placeholder="Search for a consultant company" matInput [matAutocomplete]="companies"
-                   [formControl]="detailControl">
-          </mat-form-field>
-          <mat-autocomplete #companies="matAutocomplete">
-            <mat-option *ngFor="let option of filteredCompanies | async" [value]="option">
-              {{ option.name }}
-            </mat-option>
-          </mat-autocomplete>
-          <div style="text-align: center">OR</div>
-          <br/>
-          <div fxFlex style="text-align: center">
-          <button mat-raised-button color="accent"><mat-icon>add</mat-icon>&nbsp;Add a consultant company</button>
+      <mat-card class="detail-section" fxFlex>
+        <mat-card-header fxLayout="row">
+          <div fxFlex="grow">
+            <mat-card-title><span class="detail-title"><mat-icon>business</mat-icon>&nbsp;<h3
+              style="display: inline-block">Consultant Company</h3></span>
+            </mat-card-title>
           </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="detail-section" fxFlex>
-      <mat-card-header>
-        <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant</h3></span>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+          <button *ngIf="consultantCompany && agenda.new" (click)="clearConsultantCompany($event)" mat-icon-button color="warn" style="float:right">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <app-consultant-company *ngIf="(consultantCompany && agenda.new)||!agenda.new"
+                                  [consultantCompany]="consultantCompany" [disabled]="true"></app-consultant-company>
+          <div *ngIf="!consultantCompany && agenda.new" fxLayout="column">
+            <mat-form-field>
+              <input placeholder="Search for a consultant company" matInput [matAutocomplete]="companies"
+                     [formControl]="detailControl">
+            </mat-form-field>
+            <mat-autocomplete #companies="matAutocomplete" [displayWith]="displayCompany"
+                              (optionSelected)="updateConsultantCompany($event)">
+              <mat-option *ngFor="let option of filteredCompanies | async" [value]="option">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+            <div style="text-align: center">OR</div>
+            <br/>
+            <div fxFlex style="text-align: center">
+              <button mat-raised-button color="accent" (click)="createConsultantCompanyDialog($event)">
+                <mat-icon>add</mat-icon>&nbsp;Add a consultant company
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="detail-section" fxFlex>
+        <mat-card-header>
+          <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant</h3></span>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
 
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
     </div>
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
@@ -154,7 +165,7 @@
         </mat-form-field>
         <mat-form-field fxFlex>
       <textarea matInput [disabled]='!agenda.new' placeholder='Agenda notes' matTextareaAutosize matAutosizeMinRows='3'
-                matAutosizeMaxRows='10' [(ngModel)]='agenda.notes'></textarea>
+                matAutosizeMaxRows='10' matTextareaAutosize [(ngModel)]='agenda.notes'></textarea>
         </mat-form-field>
       </mat-card-content>
     </mat-card>
