@@ -6,7 +6,7 @@
 
 .government-name {
   width: 150px;
-  overflow:hidden;
-  white-space:nowrap;
+  overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }

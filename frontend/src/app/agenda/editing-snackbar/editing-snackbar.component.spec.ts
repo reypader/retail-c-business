@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EditingSnackbarComponent } from './editing-snackbar.component';
+import {EditingSnackbarComponent} from './editing-snackbar.component';
 
 describe('EditingSnackbarComponent', () => {
   let component: EditingSnackbarComponent;
@@ -8,9 +8,9 @@ describe('EditingSnackbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditingSnackbarComponent ]
+      declarations: [EditingSnackbarComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

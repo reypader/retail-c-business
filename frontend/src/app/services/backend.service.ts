@@ -1,23 +1,22 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject, Subject} from 'rxjs';
-import {HttpHeaders} from '@angular/common/http';
-import {HttpParams} from '@angular/common/http';
-import {environment} from '../../environments/environment'
+import {Observable, ReplaySubject} from 'rxjs';
+import {environment} from '../../environments/environment';
+
 @Injectable()
 export class BackendService {
 
   HOST: string = environment.HOST;
-  ROOT: string = this.HOST + '/api/'
+  ROOT: string = this.HOST + '/api/';
   baseUrls: ReplaySubject<Object> = new ReplaySubject<Object>();
 
   constructor(private http: HttpClient) {
-    http.get(this.ROOT, {withCredentials: true}).subscribe(data=> this.baseUrls.next(data));
+    http.get(this.ROOT, {withCredentials: true}).subscribe(data => this.baseUrls.next(data));
   }
 
   getUrl(name: string): Observable<string> {
     console.log('Fetching base urls');
-    return this.baseUrls.map(data=> {
+    return this.baseUrls.map(data => {
       return data[name];
     });
   }
@@ -67,7 +66,7 @@ export class BackendService {
       return n.toString();
     } else {
       let s = n.protocol + '://' + n.host;
-      return u.substr(s.length-1);
+      return u.substr(s.length - 1);
     }
   }
 
@@ -76,7 +75,7 @@ export class BackendService {
     if (q) {
       const p = q.split('&');
       for (let i of p) {
-        let x = i.split('=')
+        let x = i.split('=');
         if (x[1]) {
           z = z.set(x[0], x[1]);
         }

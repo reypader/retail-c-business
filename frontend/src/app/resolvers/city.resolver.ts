@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {AgendaListItem, PaginatedResult, City} from '../types';
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
-import {AgendaService} from '../services/agenda.service';
+import {City} from '../types';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from 'rxjs';
 import {CityService} from '../services/city.service';
 
@@ -12,7 +11,7 @@ export class CityResolver implements Resolve<City> {
   constructor(private cities: CityService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot) : Observable<City> {
+  resolve(route: ActivatedRouteSnapshot): Observable<City> {
     return this.cities.get(+route.paramMap.get('id')).first();
   }
 }

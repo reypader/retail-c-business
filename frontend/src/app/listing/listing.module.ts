@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CityGridComponent, SubregionGridComponent, RegionGridComponent} from './grid/grid.component';
-import {MatCardModule, MatButtonModule, MatTabsModule} from '@angular/material';
+import {CityGridComponent, RegionGridComponent, SubregionGridComponent} from './grid/grid.component';
+import {MatButtonModule, MatCardModule, MatTabsModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ListingComponent} from './listing.component';
 

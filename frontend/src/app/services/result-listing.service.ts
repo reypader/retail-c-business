@@ -42,17 +42,6 @@ export abstract class ResultListingService<T> {
 
   abstract getType(): string;
 
-  private getFilter(filter: Object): HttpParams {
-    console.log('Generating query params');
-    let p = new HttpParams();
-    for (let f in filter) {
-      if (filter[f]) {
-        p = p.set(f, filter[f]);
-      }
-    }
-    return p;
-  }
-
   enrich(o: T): T {
     return o;
   }
@@ -66,6 +55,17 @@ export abstract class ResultListingService<T> {
       });
     }
     return o;
+  }
+
+  private getFilter(filter: Object): HttpParams {
+    console.log('Generating query params');
+    let p = new HttpParams();
+    for (let f in filter) {
+      if (filter[f]) {
+        p = p.set(f, filter[f]);
+      }
+    }
+    return p;
   }
 
 

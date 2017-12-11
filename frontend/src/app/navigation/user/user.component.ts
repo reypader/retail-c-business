@@ -12,7 +12,7 @@ export class UserComponent implements OnInit {
   currentUser: User;
 
   constructor(private sessionService: SessionService) {
-    this.currentUser = {} as User
+    this.currentUser = {} as User;
   }
 
   ngOnInit(): void {

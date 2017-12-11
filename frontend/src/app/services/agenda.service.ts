@@ -6,6 +6,10 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class AgendaService extends ResultListingService<Agenda> {
+  constructor(backend: BackendService) {
+    super(backend);
+  }
+
   getType(): string {
     return 'agendas';
   }
@@ -14,14 +18,6 @@ export class AgendaService extends ResultListingService<Agenda> {
     o.date = new Date(o.date);
     o.dateString = o.date.toDateString();
     return o;
-  }
-
-  constructor(backend: BackendService) {
-    super(backend);
-  }
-
-  private _to2digit(n: number) {
-    return ('00' + n).slice(-2);
   }
 
   save(agenda: Agenda): Observable<Agenda> {
@@ -39,6 +35,10 @@ export class AgendaService extends ResultListingService<Agenda> {
         data.new = false;
         return this.enrich(data);
       });
+  }
+
+  private _to2digit(n: number) {
+    return ('00' + n).slice(-2);
   }
 
   private deepCopy(obj: Object): Object {

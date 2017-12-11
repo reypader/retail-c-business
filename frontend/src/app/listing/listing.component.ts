@@ -1,6 +1,5 @@
-import {ActivatedRoute, ParamMap, Params, Router} from '@angular/router';
-import {PaginatedResult, Place, Entity} from '../types';
-import {ResultListingService} from '../services/result-listing.service';
+import {Router} from '@angular/router';
+import {Entity} from '../types';
 import 'rxjs/add/operator/switchMap';
 import {Component} from '@angular/core';
 import {CityService} from '../services/city.service';
@@ -42,7 +41,7 @@ export class ListingComponent {
 
   viewAgendas($e: Entity) {
     this.cities.getFor($e.url);
-    console.log('Navigating to Cities')
-    this.router.navigate(['cities/' + $e.id])
+    console.log('Navigating to Cities');
+    this.router.navigate(['cities/' + $e.id]);
   }
 }

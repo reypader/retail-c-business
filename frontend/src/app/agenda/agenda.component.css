@@ -1,14 +1,13 @@
-.add-agenda-button{
-  position:fixed;
+.add-agenda-button {
+  position: fixed;
   bottom: 0;
-  right:0;
+  right: 0;
   margin: 50px;
 }
 
-
-.cancel-agenda-button{
-  position:fixed;
+.cancel-agenda-button {
+  position: fixed;
   bottom: 75px;
-  right:0;
+  right: 0;
   margin: 50px;
 }

@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {PaginatedResult, Place, Entity} from '../../types';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Entity, PaginatedResult, Place} from '../../types';
 import {ResultListingService} from '../../services/result-listing.service';
 import {RegionService} from '../../services/region.service';
 import {SubregionService} from '../../services/subregion.service';
@@ -8,14 +8,20 @@ import {CityService} from '../../services/city.service';
 export abstract class GridComponent implements OnInit {
 
   @Output() itemSelected = new EventEmitter<Entity>();
-  _currentURL: URL;
   currentPage: PaginatedResult<Place>;
   resultList: Place[] = [];
 
   constructor(private service: ResultListingService<Place>) {
     this.currentPage = {} as PaginatedResult<Place>;
     this.currentPage.results = [];
-    console.log('init')
+    console.log('init');
+  }
+
+  _currentURL: URL;
+
+  @Input() set currentURL(value: URL) {
+    this._currentURL = value;
+    this.getItems();
   }
 
   ngOnInit(): void {
@@ -24,16 +30,6 @@ export abstract class GridComponent implements OnInit {
   select(url: URL, id: number): void {
     console.log('Selected ' + url);
     this.itemSelected.emit({id: id, url: url} as Entity);
-  }
-
-  private collectResult(page: PaginatedResult<Place>) {
-    this.currentPage = page;
-    this.resultList = this.resultList.concat(page.results);
-  }
-
-  @Input() set currentURL(value: URL) {
-    this._currentURL = value;
-    this.getItems();
   }
 
   getItems(): void {
@@ -54,6 +50,11 @@ export abstract class GridComponent implements OnInit {
     this.service.getNext(this.currentPage).subscribe(page => {
       this.collectResult(page);
     });
+  }
+
+  private collectResult(page: PaginatedResult<Place>) {
+    this.currentPage = page;
+    this.resultList = this.resultList.concat(page.results);
   }
 
 }
