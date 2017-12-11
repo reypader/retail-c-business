@@ -73,7 +73,7 @@
         </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="detail-section" fxFlex>
+    <mat-card class="detail-section" fxFlex="100">
       <mat-card-header>
         <mat-card-title><span class="detail-title"><mat-icon>assignment_turned_in</mat-icon>&nbsp;<h3>Licenses</h3></span>
         </mat-card-title>
@@ -106,18 +106,10 @@
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.laboratory_license'>Laboratory License</mat-checkbox>
       </mat-card-content>
     </mat-card>
+    <div fxLayout="row" fxFlex="100">
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
         <mat-card-title><span class="detail-title"><mat-icon>business</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant Company</h3></span>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="detail-section" fxFlex>
-      <mat-card-header>
-        <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant</h3></span>
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -133,10 +125,22 @@
           </mat-autocomplete>
           <div style="text-align: center">OR</div>
           <br/>
-          <span class="detail-title"><mat-icon>add</mat-icon>&nbsp;Add a consultant company</span>
+          <div fxFlex style="text-align: center">
+          <button mat-raised-button color="accent"><mat-icon>add</mat-icon>&nbsp;Add a consultant company</button>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant</h3></span>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+      </mat-card-content>
+    </mat-card>
+    </div>
     <mat-card class="detail-section" fxFlex>
       <mat-card-header>
         <mat-card-title><span class="detail-title"><mat-icon>speaker_notes</mat-icon>&nbsp;<h3>Notes</h3></span>
