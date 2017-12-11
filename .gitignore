@@ -3,6 +3,7 @@ backend/.idea
 backend/*.iml
 backend/static
 backend/uploads
+frontend/package-lock.json
 frontend/node_modules
 frontend/.idea
 frontend/*.iml
@@ -68,4 +69,4 @@ typings/
 .env
 
 venv/
-# *.pyc
+*.pyc

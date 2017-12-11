@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Agenda, City, Region, SubRegion} from '../types';
+import {Agenda, City, ConsultantCompany, Region, SubRegion} from '../types';
 import {ActivatedRoute} from '@angular/router';
 import {SubregionService} from '../services/subregion.service';
 import {RegionService} from '../services/region.service';
@@ -10,7 +10,7 @@ import {AgendaService} from '../services/agenda.service';
 import {CityService} from '../services/city.service';
 
 @Component({
-  selector: 'agenda-list',
+  selector: 'app-agenda-list',
   templateUrl: './agenda.component.html',
   styleUrls: ['./agenda.component.css']
 })
@@ -21,22 +21,29 @@ export class AgendaComponent implements OnInit {
   region: Region;
   newAgenda: Agenda;
   snackBarRef: MatSnackBarRef<EditingSnackbarComponent>;
+  consultantCompanies: Array<ConsultantCompany>;
 
-  constructor(private route: ActivatedRoute, private cities: CityService, public dialog: MatDialog, private snackbar: MatSnackBar, private regions: RegionService, private subregions: SubregionService, private agendas: AgendaService) {
+  constructor(private route: ActivatedRoute,
+              private cities: CityService,
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar,
+              private regions: RegionService,
+              private subregions: SubregionService,
+              private agendas: AgendaService) {
   }
 
 
   ngOnInit() {
     this.city = this.route.snapshot.data['city'];
+    this.consultantCompanies = this.route.snapshot.data['companies'].results;
     this.regions.getFor(this.city.region).subscribe(data => this.region = data);
     this.subregions.getFor(this.city.subregion).subscribe(data => this.subregion = data);
-    console.log('Resolving city to ' + this.city.name);
   }
 
   createDialog(scrollTarget): void {
-    let dialogRef = this.dialog.open(DateDialogComponent);
+    const dialogRef = this.dialog.open(DateDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
-      let r = result as Date;
+      const r = result as Date;
       this.newAgenda = {
         'new': true,
         city: this.city.url,

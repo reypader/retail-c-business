@@ -84,3 +84,13 @@ export interface ConsultantCompany extends Entity {
   fax_number: string;
   notes: string;
 }
+
+export interface Consultant extends Entity {
+  name: string;
+  address: string;
+  postal_code: string;
+  email: string;
+  telephone_number: string;
+  fax_number: string;
+  notes: string;
+}

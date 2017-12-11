@@ -1,6 +1,6 @@
 <mat-expansion-panel [expanded]='open'>
   <mat-expansion-panel-header>
-    <span class='mat-body-2' *ngIf='agenda'>{{agenda.dateString}}</span>
+    <span class='mat-body-2' *ngIf='agenda'>{{ agenda.dateString }}</span>
     <span class='mat-body-1' *ngIf='agenda && agenda.new'><i>&nbsp;&nbsp;(Draft)</i></span>
     <mat-spinner *ngIf='!agenda' [diameter]='25'></mat-spinner>
   </mat-expansion-panel-header>
@@ -51,16 +51,16 @@
       </mat-card-header>
       <mat-card-content>
         <div fxLayout='row' fxLayoutGap="10px">
-          <span>Democrats<br/>({{agenda.vote_percent_democrat}})</span>
+          <span>Democrats<br/>({{ agenda.vote_percent_democrat }})</span>
           <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
                       [(ngModel)]='agenda.vote_percent_democrat' (change)='adjustRepublicans($event)'></mat-slider>
-          <span>Republicans<br/>({{agenda.vote_percent_republican}})</span>
+          <span>Republicans<br/>({{ agenda.vote_percent_republican }})</span>
           <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
                       [(ngModel)]='agenda.vote_percent_republican' (change)='adjustDemocrats($event)'></mat-slider>
         </div>
         <hr/>
         <div fxLayout='row' fxLayoutGap="10px">
-          <span>Voted 'Yes'<br/>({{agenda.vote_percent_prop_64}})</span>
+          <span>Voted 'Yes'<br/>({{ agenda.vote_percent_prop_64 }})</span>
           <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
                       [(ngModel)]='agenda.vote_percent_prop_64' (change)='recalculatePropVotes($event)'></mat-slider>
         </div>
@@ -102,6 +102,37 @@
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.microbusiness_license'>Microbusiness License
         </mat-checkbox>
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.laboratory_license'>Laboratory License</mat-checkbox>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><span class="detail-title"><mat-icon>business</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant Company</h3></span>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="detail-section" fxFlex>
+      <mat-card-header>
+        <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant</h3></span>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="column">
+          <mat-form-field>
+            <input placeholder="Search for a consultant company" matInput [matAutocomplete]="companies"
+                   [formControl]="detailControl">
+          </mat-form-field>
+          <mat-autocomplete #companies="matAutocomplete">
+            <mat-option *ngFor="let option of filteredCompanies | async" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+          <div style="text-align: center">OR</div>
+          <br/>
+          <span class="detail-title"><mat-icon>add</mat-icon>&nbsp;Add a consultant company</span>
+        </div>
       </mat-card-content>
     </mat-card>
     <mat-card class="detail-section" fxFlex>

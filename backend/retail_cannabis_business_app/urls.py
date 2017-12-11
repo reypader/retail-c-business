@@ -22,7 +22,8 @@ from django.views.generic import TemplateView
 from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static
-from ordinances.viewsets import UserViewSet, SubRegionViewSet, RegionViewSet, CityViewSet, AgendaViewSet
+from ordinances.viewsets import UserViewSet, SubRegionViewSet, RegionViewSet, CityViewSet, AgendaViewSet, \
+    ConsultantCompanyViewSet, ConsultantViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -30,6 +31,8 @@ router.register(r'regions', RegionViewSet)
 router.register(r'subregions', SubRegionViewSet)
 router.register(r'cities', CityViewSet)
 router.register(r'agendas', AgendaViewSet)
+router.register(r'consultants', ConsultantViewSet)
+router.register(r'consultant_companies', ConsultantCompanyViewSet)
 
 urlpatterns = [
                   url(r'^$', TemplateView.as_view(template_name='index.html'),

@@ -73,6 +73,7 @@ class ConsultantCompany(django_models.Model):
     class Meta:
         verbose_name = "Consultant Company"
         verbose_name_plural = "Consultant Companies"
+        ordering = ('name',)
 
 
 class Consultant(django_models.Model):
@@ -83,7 +84,11 @@ class Consultant(django_models.Model):
     email = django_models.EmailField()
     telephone_number = django_models.CharField(max_length=20)
     notes = django_models.TextField()
-    company = django_models.ForeignKey(ConsultantCompany, related_name="consultants", on_delete=django_models.CASCADE, null=True)
+    company = django_models.ForeignKey(ConsultantCompany, related_name="consultants", on_delete=django_models.CASCADE,
+                                       null=True)
+
+    class Meta:
+        ordering = ('name',)
 
 
 class BoardMember(django_models.Model):
@@ -133,8 +138,10 @@ class Agenda(django_models.Model):
     distribution_license = django_models.BooleanField(default=False)
     microbusiness_license = django_models.BooleanField(default=False)
     laboratory_license = django_models.BooleanField(default=False)
-    cannabis_consultant = django_models.ForeignKey(ConsultantCompany, null=True, blank=True,
-                                                   on_delete=django_models.SET_NULL)
+    cannabis_consultant_company = django_models.ForeignKey(ConsultantCompany, null=True, blank=True,
+                                                           on_delete=django_models.SET_NULL)
+    cannabis_consultant_employee = django_models.ForeignKey(Consultant, null=True, blank=True,
+                                                            on_delete=django_models.SET_NULL)
     cannabis_consultant_start_date = django_models.DateField(null=True, blank=True)
     other_localities_consulted = django_models.TextField(null=True, blank=True)
     link_to_video = django_models.URLField(null=True, blank=True)

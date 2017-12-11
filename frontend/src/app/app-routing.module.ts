@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {ListingComponent} from './listing/listing.component';
 import {AgendaComponent} from './agenda/agenda.component';
 import {CityResolver} from './resolvers/city.resolver';
+import {ConsultantCompanyResolver} from './resolvers/consultant-company.resolver';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
   {
     path: 'cities/:id',
     component: AgendaComponent,
-    resolve: {city: CityResolver}
+    resolve: {city: CityResolver, companies: ConsultantCompanyResolver}
   }
 ];
 

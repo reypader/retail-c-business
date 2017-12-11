@@ -1,8 +1,10 @@
 <h1 #target>{{city.name}}</h1>
 <h3><span *ngIf='subregion'>{{subregion.name}}, </span><span *ngIf='region'>{{region.name}}</span></h3>
 <mat-accordion [multi]='true'>
-  <agenda-detail *ngIf='newAgenda' [agenda]='newAgenda' [open]='true'></agenda-detail>
-  <agenda-detail [agendaUrl]='item' *ngFor='let item of city.agendas'></agenda-detail>
+  <app-agenda-detail *ngIf='newAgenda' [agenda]='newAgenda' [open]='true'
+                     [companies]="consultantCompanies"></app-agenda-detail>
+  <app-agenda-detail [agendaUrl]='item' *ngFor='let item of city.agendas'
+                     [companies]="consultantCompanies"></app-agenda-detail>
 </mat-accordion>
 <button mat-fab class='add-agenda-button' (click)='createDialog(target)' *ngIf='!newAgenda'>
   <mat-icon>add</mat-icon>

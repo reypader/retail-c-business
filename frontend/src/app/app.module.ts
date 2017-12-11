@@ -17,6 +17,8 @@ import {AgendaService} from './services/agenda.service';
 import {CityResolver} from './resolvers/city.resolver';
 import {DateDialogComponent} from './agenda/date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './agenda/editing-snackbar/editing-snackbar.component';
+import {ConsultantCompanyService} from './services/consultant-company.service';
+import {ConsultantCompanyResolver} from './resolvers/consultant-company.resolver';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import {EditingSnackbarComponent} from './agenda/editing-snackbar/editing-snackb
     AgendaModule
   ],
   entryComponents: [DateDialogComponent, EditingSnackbarComponent],
-  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver],
+  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver, ConsultantCompanyService, ConsultantCompanyResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule {
