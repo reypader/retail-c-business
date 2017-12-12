@@ -57,7 +57,7 @@ export class AgendaComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       const r = result as DateDialogOutput;
-      if (r.copyOfLatest) {
+      if (r.copyOfLatest && this.latestAgenda) {
         this.newAgenda = deepCopy(this.latestAgenda) as Agenda;
         this.newAgenda.new = true;
         this.newAgenda.date = r.date;
@@ -70,7 +70,8 @@ export class AgendaComponent implements OnInit {
           dateString: r.date.toDateString(),
           vote_percent_democrat: 50,
           vote_percent_republican: 50,
-          vote_percent_prop_64: 50
+          vote_percent_prop_64: 50,
+          dominant_political_stance: 'R'
         } as Agenda;
       }
       this.snackBarRef = this.snackbar.openFromComponent(EditingSnackbarComponent);
