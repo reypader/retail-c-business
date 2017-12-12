@@ -71,7 +71,7 @@ export interface Agenda extends Entity {
   dateString: string;
   notes: string;
   city: URL;
-  cannabis_consultant: ConsultantCompany;
+  cannabis_consultant_company: URL;
 }
 
 

@@ -5,10 +5,12 @@ import 'rxjs/add/operator/delay';
 import {FormControl} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
+import 'rxjs/add/operator/partition';
 import {Observable} from 'rxjs/Observable';
 import {ConsultantCompanyComponent} from '../consultant-company/consultant-company.component';
 import {MatAutocompleteSelectedEvent, MatDialog} from '@angular/material';
 import {ConsultantCompanyService} from '../../services/consultant-company.service';
+
 
 @Component({
   selector: 'app-agenda-detail',
@@ -36,7 +38,14 @@ export class DetailComponent implements OnInit {
       if (this.agenda) {
         throw new Error('[agendaUrl] and [agenda] cannot both have values');
       }
-      this.agendas.getFor(this.agendaUrl).subscribe(data => this.agenda = data);
+      const parts = this.agendas.getFor(this.agendaUrl).partition(data => data.cannabis_consultant_company ? true : false);
+      // parts[0] are those agendas with consultant company
+      parts[0].switchMap(data => {
+        this.agenda = data;
+        return this.consultantCompanies.getFor(data.cannabis_consultant_company);
+      }).subscribe(data => this.consultantCompany = data);
+      // parts[1] are those agendas without consultant company
+      parts[1].subscribe(data => this.agenda = data);
     }
     this.filteredCompanies = this.detailControl.valueChanges
       .pipe(
@@ -48,6 +57,7 @@ export class DetailComponent implements OnInit {
 
   clearConsultantCompany($event): void {
     this.consultantCompany = null;
+    this.agenda.cannabis_consultant_company = null;
   }
 
 
@@ -58,6 +68,7 @@ export class DetailComponent implements OnInit {
 
   updateConsultantCompany($event: MatAutocompleteSelectedEvent): void {
     this.consultantCompany = $event.option.value as ConsultantCompany;
+    this.agenda.cannabis_consultant_company = this.consultantCompany.url;
   }
 
   createConsultantCompanyDialog(): void {
@@ -66,6 +77,7 @@ export class DetailComponent implements OnInit {
       return this.consultantCompanies.save(result);
     }).switchMap(data => {
       this.consultantCompany = data;
+      this.agenda.cannabis_consultant_company = this.consultantCompany.url;
       return this.consultantCompanies.getList();
     }).subscribe(data => this.companies = data.results);
   }

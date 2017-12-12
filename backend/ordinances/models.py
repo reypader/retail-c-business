@@ -61,6 +61,8 @@ class City(Place):
 
 
 class ConsultantCompany(django_models.Model):
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
     name = django_models.CharField(max_length=100)
     address = django_models.CharField(max_length=255)
     postal_code = django_models.CharField(max_length=20)
@@ -76,6 +78,8 @@ class ConsultantCompany(django_models.Model):
 
 
 class Consultant(django_models.Model):
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
     name = django_models.CharField(max_length=100)
     age = django_models.PositiveSmallIntegerField()
     address = django_models.CharField(max_length=255)
@@ -91,6 +95,8 @@ class Consultant(django_models.Model):
 
 
 class BoardMember(django_models.Model):
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
     group = django_models.CharField(max_length=10, choices=LGU_STAFF_GROUPS)
     name = django_models.CharField(max_length=100)
     date_of_birth = django_models.DateField()
@@ -114,6 +120,8 @@ class BoardMember(django_models.Model):
 
 
 class Agenda(django_models.Model):
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
     city = django_models.ForeignKey(City, related_name="agendas", on_delete=django_models.CASCADE, null=True)
     land_area = django_models.DecimalField(max_digits=12, decimal_places=4)
     population = django_models.PositiveIntegerField()
@@ -148,7 +156,7 @@ class Agenda(django_models.Model):
     notes = django_models.TextField()
 
     class Meta:
-        ordering = ('-date',)
+        ordering = ('-date', '-created_at',)
 
     def __str__(self):
         return "[%s] %s" % (self.date, self.city)
