@@ -177,8 +177,9 @@
               </button>
             </div>
           </div>
-          <div *ngIf="!consultantCompany">
-            <span class="mat-subheader">Select a consultant company first</span>
+          <div *ngIf="!consultantCompany" fxFlex style="text-align: center">
+            <span *ngIf="agenda.new" class="mat-subheader">Select a consultant company first</span>
+            <span *ngIf="!agenda.new" class="mat-subheader">Not applicable</span>
           </div>
         </mat-card-content>
       </mat-card>
