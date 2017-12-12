@@ -72,6 +72,7 @@ export interface Agenda extends Entity {
   notes: string;
   city: URL;
   cannabis_consultant_company: URL;
+  cannabis_consultant_employee: URL;
 }
 
 
@@ -93,4 +94,5 @@ export interface Consultant extends Entity {
   telephone_number: string;
   fax_number: string;
   notes: string;
+  company: URL;
 }

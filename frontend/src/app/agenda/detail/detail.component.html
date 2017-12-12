@@ -114,7 +114,8 @@
               style="display: inline-block">Consultant Company</h3></span>
             </mat-card-title>
           </div>
-          <button *ngIf="consultantCompany && agenda.new" (click)="clearConsultantCompany($event)" mat-icon-button color="warn" style="float:right">
+          <button *ngIf="consultantCompany && agenda.new" (click)="clearConsultantCompany($event)" mat-icon-button
+                  color="warn" style="float:right">
             <mat-icon>close</mat-icon>
           </button>
         </mat-card-header>
@@ -126,7 +127,7 @@
               <input placeholder="Search for a consultant company" matInput [matAutocomplete]="companies"
                      [formControl]="detailControl">
             </mat-form-field>
-            <mat-autocomplete #companies="matAutocomplete" [displayWith]="displayCompany"
+            <mat-autocomplete #companies="matAutocomplete" [displayWith]="display"
                               (optionSelected)="updateConsultantCompany($event)">
               <mat-option *ngFor="let option of filteredCompanies | async" [value]="option">
                 {{ option.name }}
@@ -144,11 +145,41 @@
       </mat-card>
       <mat-card class="detail-section" fxFlex>
         <mat-card-header>
-          <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3 style="display: inline-block">Consultant</h3></span>
-          </mat-card-title>
+          <div fxFlex="grow">
+            <mat-card-title><span class="detail-title"><mat-icon>person</mat-icon>&nbsp;<h3
+              style="display: inline-block">Consultant</h3></span>
+            </mat-card-title>
+          </div>
+          <button *ngIf="consultant && agenda.new" (click)="clearConsultant($event)" mat-icon-button color="warn"
+                  style="float:right">
+            <mat-icon>close</mat-icon>
+          </button>
         </mat-card-header>
         <mat-card-content>
-
+          <app-consultant-employee *ngIf="consultantCompany && ((consultant && agenda.new)||!agenda.new)"
+                                   [consultant]="consultant" [disabled]="true"></app-consultant-employee>
+          <div *ngIf="consultantCompany && (!consultant && agenda.new)" fxLayout="column">
+            <mat-form-field>
+              <input placeholder="Search for a consultant" matInput [matAutocomplete]="employees"
+                     [formControl]="employeeControl">
+            </mat-form-field>
+            <mat-autocomplete #employees="matAutocomplete" [displayWith]="display"
+                              (optionSelected)="updateConsultant($event)">
+              <mat-option *ngFor="let option of filteredEmployees | async" [value]="option">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+            <div style="text-align: center">OR</div>
+            <br/>
+            <div fxFlex style="text-align: center">
+              <button mat-raised-button color="accent" (click)="createConsultantDialog($event)">
+                <mat-icon>add</mat-icon>&nbsp;Add a consultant
+              </button>
+            </div>
+          </div>
+          <div *ngIf="!consultantCompany">
+            <span class="mat-subheader">Select a consultant company first</span>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>

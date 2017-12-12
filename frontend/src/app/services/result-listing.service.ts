@@ -14,8 +14,12 @@ export abstract class ResultListingService<T> {
   }
 
   getFor(url: URL): Observable<T> {
-    console.log('Get details for ' + this.getType());
-    return this.backend.get<T>(url.toString()).map(data => this.enrich(data));
+    if (url) {
+      console.log('Get details for ' + this.getType());
+      return this.backend.get<T>(url.toString()).map(data => this.enrich(data));
+    } else {
+      return Observable.of(null);
+    }
   }
 
   getList(filter?: Object): Observable<PaginatedResult<T>> {
@@ -27,9 +31,13 @@ export abstract class ResultListingService<T> {
   }
 
   getListFor(url: URL, filter?: Object): Observable<PaginatedResult<T>> {
-    console.log('Get listing for ' + this.getType());
-    const q = this.getFilter(filter);
-    return this.backend.get<PaginatedResult<T>>(url.toString(), q).map(data => this.enrichList(data));
+    if (url) {
+      console.log('Get listing for ' + this.getType());
+      const q = this.getFilter(filter);
+      return this.backend.get<PaginatedResult<T>>(url.toString(), q).map(data => this.enrichList(data));
+    } else {
+      return Observable.of(null);
+    }
   }
 
   getNext(current: PaginatedResult<T>): Observable<PaginatedResult<T>> {

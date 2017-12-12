@@ -1,0 +1,33 @@
+<div fxLayout="column">
+  <h3 class="detail-title" *ngIf="!disabled">
+    <mat-icon>business</mat-icon>&nbsp;Add a consultant company
+  </h3>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Name' [(ngModel)]='consultant.name'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' type="number" placeholder='Age' [(ngModel)]='consultant.age'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Address' [(ngModel)]='consultant.address'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Postal Code' [(ngModel)]='consultant.postal_code'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Email Address' [(ngModel)]='consultant.email'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Telephone Number'
+           [(ngModel)]='consultant.telephone_number'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <input matInput [disabled]='disabled' placeholder='Fax Number' [(ngModel)]='consultant.fax_number'>
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <textarea matInput matTextareaAutosize matAutosizeMinRows='3'
+              matAutosizeMaxRows='10' [disabled]='disabled' placeholder='Notes'
+              [(ngModel)]='consultant.notes'></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="accent" *ngIf="!disabled" [mat-dialog-close]='consultant'>Save</button>
+</div>

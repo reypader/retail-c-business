@@ -1,15 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AgendaService} from '../../services/agenda.service';
-import {Agenda, ConsultantCompany} from '../../types';
+import {Agenda, Consultant, ConsultantCompany} from '../../types';
 import 'rxjs/add/operator/delay';
 import {FormControl} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
-import 'rxjs/add/operator/partition';
+import 'rxjs/add/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {ConsultantCompanyComponent} from '../consultant-company/consultant-company.component';
 import {MatAutocompleteSelectedEvent, MatDialog} from '@angular/material';
 import {ConsultantCompanyService} from '../../services/consultant-company.service';
+import {ConsultantEmployeeComponent} from '../consultant-employee/consultant-employee.component';
+import {ConsultantEmployeeService} from '../../services/consultant-employee.service';
 
 
 @Component({
@@ -23,14 +25,18 @@ export class DetailComponent implements OnInit {
   @Input() agenda: Agenda;
   @Input() open: boolean;
   @Input() companies: Array<ConsultantCompany>;
+  employees: Array<Consultant> = [];
   filteredCompanies: Observable<Array<ConsultantCompany>>;
+  filteredEmployees: Observable<Array<Consultant>>;
   consultantCompany: ConsultantCompany;
+  consultant: Consultant;
   voteTie = false;
   propVoteTie = false;
 
   detailControl: FormControl = new FormControl();
+  employeeControl: FormControl = new FormControl();
 
-  constructor(private agendas: AgendaService, private dialog: MatDialog, private consultantCompanies: ConsultantCompanyService) {
+  constructor(private agendas: AgendaService, private dialog: MatDialog, private consultantCompanies: ConsultantCompanyService, private consultants: ConsultantEmployeeService) {
   }
 
   ngOnInit() {
@@ -38,37 +44,67 @@ export class DetailComponent implements OnInit {
       if (this.agenda) {
         throw new Error('[agendaUrl] and [agenda] cannot both have values');
       }
-      const parts = this.agendas.getFor(this.agendaUrl).partition(data => data.cannabis_consultant_company ? true : false);
-      // parts[0] are those agendas with consultant company
-      parts[0].switchMap(data => {
+      this.agendas.getFor(this.agendaUrl).switchMap(data => {
         this.agenda = data;
-        return this.consultantCompanies.getFor(data.cannabis_consultant_company);
-      }).subscribe(data => this.consultantCompany = data);
-      // parts[1] are those agendas without consultant company
-      parts[1].subscribe(data => this.agenda = data);
+        return Observable.forkJoin(
+          this.consultantCompanies.getFor(data.cannabis_consultant_company),
+          this.consultants.getFor(data.cannabis_consultant_employee)
+        );
+      }).subscribe(data => {
+        this.consultantCompany = data[0];
+        this.consultant = data[1];
+      });
     }
     this.filteredCompanies = this.detailControl.valueChanges
       .pipe(
         startWith({} as ConsultantCompany),
         map<any, string>(company => company && typeof company === 'object' ? company.name : company),
-        map<string, ConsultantCompany[]>(val => val ? this.filter(val) : this.companies.slice())
+        map<string, ConsultantCompany[]>(val => val ? this.filterCompanies(val) : this.companies.slice())
+      );
+
+    this.filteredEmployees = this.employeeControl.valueChanges
+      .pipe(
+        startWith({} as Consultant),
+        map<any, string>(employee => employee && typeof employee === 'object' ? employee.name : employee),
+        map<string, Consultant[]>(val => val ? this.filterEmployees(val) : this.employees.slice())
       );
   }
 
   clearConsultantCompany($event): void {
     this.consultantCompany = null;
     this.agenda.cannabis_consultant_company = null;
+    this.employees = [];
+    this.clearConsultant($event);
+  }
+
+  clearConsultant($event): void {
+    this.consultant = null;
+    this.agenda.cannabis_consultant_employee = null;
   }
 
 
-  filter(val: string): ConsultantCompany[] {
+  filterCompanies(val: string): ConsultantCompany[] {
     return this.companies.filter(company =>
       company.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+  }
+
+  filterEmployees(val: string): Consultant[] {
+    return this.employees.filter(employee =>
+      employee.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
   }
 
   updateConsultantCompany($event: MatAutocompleteSelectedEvent): void {
     this.consultantCompany = $event.option.value as ConsultantCompany;
     this.agenda.cannabis_consultant_company = this.consultantCompany.url;
+    this.consultants.getList({company__id: this.consultantCompany.id}).subscribe(data => {
+      this.employees = data.results;
+      this.employeeControl.setValue('');
+    });
+  }
+
+  updateConsultant($event: MatAutocompleteSelectedEvent): void {
+    this.consultant = $event.option.value as Consultant;
+    this.agenda.cannabis_consultant_employee = this.consultant.url;
   }
 
   createConsultantCompanyDialog(): void {
@@ -78,8 +114,24 @@ export class DetailComponent implements OnInit {
     }).switchMap(data => {
       this.consultantCompany = data;
       this.agenda.cannabis_consultant_company = this.consultantCompany.url;
+      this.consultants.getList({company__id: this.consultantCompany.id}).subscribe(r => {
+        this.employees = r.results;
+        this.employeeControl.setValue('');
+      });
       return this.consultantCompanies.getList();
     }).subscribe(data => this.companies = data.results);
+  }
+
+  createConsultantDialog(): void {
+    const dialogRef = this.dialog.open(ConsultantEmployeeComponent);
+    dialogRef.afterClosed().switchMap(result => {
+      result.company = this.consultantCompany.url;
+      return this.consultants.save(result);
+    }).switchMap(data => {
+      this.consultant = data;
+      this.agenda.cannabis_consultant_employee = this.consultant.url;
+      return this.consultants.getList({company__id: this.consultantCompany.id});
+    }).subscribe(data => this.employees = data.results);
   }
 
   adjustRepublicans($event): void {
@@ -116,7 +168,7 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  displayCompany(c: ConsultantCompany): string {
+  display(c: ConsultantCompany | Consultant): string {
     return c ? c.name : '';
   }
 

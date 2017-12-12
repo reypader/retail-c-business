@@ -81,22 +81,25 @@ class CityAgendaSerializer(CustomSerializer):
     class Meta:
         model = City
         fields = "__all__"
-        extra_fields = ["id"]
+        extra_fields = ["id", ]
 
 
 class AgendaSerializer(CustomSerializer):
     class Meta:
         model = Agenda
         fields = "__all__"
+        extra_fields = ["id", ]
 
 
 class ConsultantCompanySerializer(CustomSerializer):
     class Meta:
         model = ConsultantCompany
         fields = "__all__"
+        extra_fields = ["id", ]
 
 
 class ConsultantSerializer(CustomSerializer):
     class Meta:
         model = Consultant
         fields = "__all__"
+        extra_fields = ["id", ]

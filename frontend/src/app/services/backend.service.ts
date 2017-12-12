@@ -56,7 +56,7 @@ export class BackendService {
   private normalize(url: string): string {
     let u = url.replace(/([^:]\/)\/+/g, '$1');
     let n;
-    if (u.lastIndexOf('/') == u.length - 1) {
+    if (u.lastIndexOf('/') === u.length - 1) {
       n = new URL(u);
     } else {
       n = new URL(u + '/');
@@ -65,7 +65,7 @@ export class BackendService {
     if (this.HOST.length > 0) {
       return n.toString();
     } else {
-      let s = n.protocol + '://' + n.host;
+      const s = n.protocol + '://' + n.host;
       return u.substr(s.length - 1);
     }
   }
@@ -74,8 +74,8 @@ export class BackendService {
     let z = params;
     if (q) {
       const p = q.split('&');
-      for (let i of p) {
-        let x = i.split('=');
+      for (const i of p) {
+        const x = i.split('=');
         if (x[1]) {
           z = z.set(x[0], x[1]);
         }

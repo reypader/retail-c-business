@@ -20,6 +20,8 @@ import {EditingSnackbarComponent} from './agenda/editing-snackbar/editing-snackb
 import {ConsultantCompanyService} from './services/consultant-company.service';
 import {ConsultantCompanyResolver} from './resolvers/consultant-company.resolver';
 import {ConsultantCompanyComponent} from './agenda/consultant-company/consultant-company.component';
+import {ConsultantEmployeeService} from './services/consultant-employee.service';
+import {ConsultantEmployeeComponent} from './agenda/consultant-employee/consultant-employee.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +40,8 @@ import {ConsultantCompanyComponent} from './agenda/consultant-company/consultant
     AppRoutingModule,
     AgendaModule
   ],
-  entryComponents: [DateDialogComponent, EditingSnackbarComponent, ConsultantCompanyComponent],
-  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver, ConsultantCompanyService, ConsultantCompanyResolver],
+  entryComponents: [DateDialogComponent, EditingSnackbarComponent, ConsultantCompanyComponent, ConsultantEmployeeComponent],
+  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver, ConsultantCompanyService, ConsultantEmployeeService, ConsultantCompanyResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule {

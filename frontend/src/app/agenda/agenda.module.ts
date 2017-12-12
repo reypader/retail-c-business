@@ -28,6 +28,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DateDialogComponent} from './date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.component';
 import {ConsultantCompanyComponent} from './consultant-company/consultant-company.component';
+import { ConsultantEmployeeComponent } from './consultant-employee/consultant-employee.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import {ConsultantCompanyComponent} from './consultant-company/consultant-compan
     DetailComponent,
     DateDialogComponent,
     EditingSnackbarComponent,
-    ConsultantCompanyComponent
+    ConsultantCompanyComponent,
+    ConsultantEmployeeComponent
   ]
 })
 export class AgendaModule {
