@@ -2,6 +2,7 @@ import {BackendService} from './backend.service';
 import {Observable} from 'rxjs';
 import {PaginatedResult} from '../types';
 import {HttpParams} from '@angular/common/http';
+import {deepCopy} from '../utils';
 
 export abstract class ResultListingService<T> {
 
@@ -53,7 +54,7 @@ export abstract class ResultListingService<T> {
   save(t: T): Observable<T> {
     return this.backend.getUrl(this.getType())
       .switchMap(url => {
-          const o = this.prepareSave(this.deepCopy(t) as T);
+          const o = this.prepareSave(deepCopy(t) as T);
           return this.backend.post<T>(url, o);
         }
       )
@@ -64,38 +65,6 @@ export abstract class ResultListingService<T> {
 
   protected prepareSave(t: T): T {
     return t;
-  }
-
-  private deepCopy(obj: Object): Object {
-    let copy;
-
-    if (null == obj || 'object' !== typeof obj) {
-      return obj;
-    }
-
-    if (obj instanceof Date) {
-      copy = new Date();
-      copy.setTime(obj.getTime());
-      return copy;
-    }
-    if (obj instanceof Array) {
-      copy = [];
-      for (let i = 0, len = obj.length; i < len; i++) {
-        copy[i] = this.deepCopy(obj[i]);
-      }
-      return copy;
-    }
-    if (obj instanceof Object) {
-      copy = {};
-      for (const attr in obj) {
-        if (obj.hasOwnProperty(attr)) {
-          copy[attr] = this.deepCopy(obj[attr]);
-        }
-      }
-      return copy;
-    }
-
-    throw new Error('Unable to copy obj! Its type isn\'t supported.');
   }
 
   abstract getType(): string;

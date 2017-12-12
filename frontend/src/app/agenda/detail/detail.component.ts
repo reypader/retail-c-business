@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AgendaService} from '../../services/agenda.service';
 import {Agenda, Consultant, ConsultantCompany} from '../../types';
 import 'rxjs/add/operator/delay';
@@ -25,6 +25,8 @@ export class DetailComponent implements OnInit {
   @Input() agenda: Agenda;
   @Input() open: boolean;
   @Input() companies: Array<ConsultantCompany>;
+  @Output() agendaLoaded = new EventEmitter<Agenda>();
+
   employees: Array<Consultant> = [];
   filteredCompanies: Observable<Array<ConsultantCompany>>;
   filteredEmployees: Observable<Array<Consultant>>;
@@ -46,6 +48,7 @@ export class DetailComponent implements OnInit {
       }
       this.agendas.getFor(this.agendaUrl).switchMap(data => {
         this.agenda = data;
+        this.agendaLoaded.emit(this.agenda);
         return Observable.forkJoin(
           this.consultantCompanies.getFor(data.cannabis_consultant_company),
           this.consultants.getFor(data.cannabis_consultant_employee)

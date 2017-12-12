@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {formatDate} from '../../utils';
 
 @Component({
   selector: 'app-date-dialog',
@@ -8,12 +9,24 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 })
 export class DateDialogComponent implements OnInit {
 
-  date: Date = new Date();
+  output: DateDialogOutput;
+  lastDateString: string;
 
-  constructor() {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    this.output = {
+      date: new Date(),
+      copyOfLatest: true
+    } as DateDialogOutput;
+    this.lastDateString = data.last ? formatDate(data.last) : null;
   }
 
   ngOnInit() {
   }
 
+}
+
+export interface DateDialogOutput {
+
+  date: Date;
+  copyOfLatest: boolean;
 }
