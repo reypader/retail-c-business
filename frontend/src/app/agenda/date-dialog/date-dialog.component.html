@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>What date is the agenda for?</h2>
 <mat-dialog-content fxLayout="column">
   <mat-form-field>
-    <input matInput [matDatepicker]='picker' placeholder='Choose a date' [(ngModel)]='output.date'>
+    <input matInput [matDatepicker]='picker' [max]="maxDate" placeholder='Choose a date' [(ngModel)]='output.date'>
     <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
