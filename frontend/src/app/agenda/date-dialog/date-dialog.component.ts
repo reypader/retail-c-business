@@ -8,7 +8,6 @@ import {formatDate} from '../../utils';
   styleUrls: ['./date-dialog.component.css']
 })
 export class DateDialogComponent implements OnInit {
-
   maxDate = new Date();
   output: DateDialogOutput;
   lastDateString: string;

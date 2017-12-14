@@ -75,6 +75,42 @@
     </mat-card>
     <mat-card class="detail-section" fxFlex="100">
       <mat-card-header>
+        <mat-card-title><span class="detail-title"><mat-icon>gavel</mat-icon>&nbsp;<h3>Board Members</h3></span>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="row column" fxLayoutAlign="center center">
+        <app-attendee-card *ngFor="let member of agenda.attendees"
+                           [attendeeUrl]="member" [disabled]="!agenda.new" (removed)="removeAttendee($event)"></app-attendee-card>
+        <mat-card class="member-card" *ngIf="agenda.new">
+          <mat-card-content fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="10px"
+                            style="height: 100%">
+            <mat-form-field>
+              <input placeholder="Search for a consultant" matInput [matAutocomplete]="members"
+                     [formControl]="politicianControl">
+            </mat-form-field>
+            <mat-autocomplete #members="matAutocomplete" [displayWith]="display"
+                              (optionSelected)="updatePolitician($event)">
+              <mat-option *ngFor="let option of filteredPoliticians | async" [value]="option">
+                <img style="vertical-align:middle;" aria-hidden
+                     src="{{option.image_url}}" height="25"/>
+                <span>{{ option.name }}</span>
+                <small>({{option.job_title}})</small>
+              </mat-option>
+            </mat-autocomplete>
+            <div fxFlex="grow">
+              OR
+            </div>
+            <div fxFlex="grow">
+              <button mat-raised-button color="accent" (click)="createAttendeeDialog($event)">
+                <mat-icon>add</mat-icon>&nbsp;Add a board member
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="detail-section" fxFlex="100">
+      <mat-card-header>
         <mat-card-title><span class="detail-title"><mat-icon>assignment_turned_in</mat-icon>&nbsp;<h3>Licenses</h3></span>
         </mat-card-title>
       </mat-card-header>

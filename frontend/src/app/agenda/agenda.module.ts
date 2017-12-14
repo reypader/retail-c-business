@@ -19,7 +19,7 @@ import {
   MatRadioModule,
   MatSelectModule,
   MatSliderModule,
-  MatSnackBarModule
+  MatSnackBarModule, MatStepperModule
 } from '@angular/material';
 import {AgendaComponent} from './agenda.component';
 import {AppRoutingModule} from '../app-routing.module';
@@ -29,6 +29,9 @@ import {DateDialogComponent} from './date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.component';
 import {ConsultantCompanyComponent} from './consultant-company/consultant-company.component';
 import { ConsultantEmployeeComponent } from './consultant-employee/consultant-employee.component';
+import { AttendeeCardComponent } from './attendee-card/attendee-card.component';
+import { AttendeeDialogComponent } from './attendee-dialog/attendee-dialog.component';
+import { AttendeeCreateDialogComponent } from './attendee-create-dialog/attendee-create-dialog.component';
 
 @NgModule({
   imports: [
@@ -54,7 +57,8 @@ import { ConsultantEmployeeComponent } from './consultant-employee/consultant-em
     MatNativeDateModule,
     MatSnackBarModule,
     MatCardModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatStepperModule
   ],
   exports: [AgendaComponent],
   declarations: [
@@ -63,7 +67,10 @@ import { ConsultantEmployeeComponent } from './consultant-employee/consultant-em
     DateDialogComponent,
     EditingSnackbarComponent,
     ConsultantCompanyComponent,
-    ConsultantEmployeeComponent
+    ConsultantEmployeeComponent,
+    AttendeeCardComponent,
+    AttendeeDialogComponent,
+    AttendeeCreateDialogComponent
   ]
 })
 export class AgendaModule {

@@ -49,8 +49,16 @@ export class BackendService {
     const s = url.split('?', 2);
     const u = this.normalize(s[0]);
     const p = this.addParams(s[1], params);
-    console.log('Sending PUTT request to ' + u);
+    console.log('Sending PUT request to ' + u);
     return this.http.put<T>(u, body, {headers: headers, params: p, withCredentials: true});
+  }
+
+  patch<T>(url: string, body: Object, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<T> {
+    const s = url.split('?', 2);
+    const u = this.normalize(s[0]);
+    const p = this.addParams(s[1], params);
+    console.log('Sending PATCH request to ' + u);
+    return this.http.patch<T>(u, body, {headers: headers, params: p, withCredentials: true});
   }
 
   private normalize(url: string): string {

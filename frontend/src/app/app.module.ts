@@ -23,6 +23,12 @@ import {ConsultantCompanyComponent} from './agenda/consultant-company/consultant
 import {ConsultantEmployeeService} from './services/consultant-employee.service';
 import {ConsultantEmployeeComponent} from './agenda/consultant-employee/consultant-employee.component';
 
+import {AttendeeDialogComponent} from './agenda/attendee-dialog/attendee-dialog.component';
+import {AttendeeCreateDialogComponent} from './agenda/attendee-create-dialog/attendee-create-dialog.component';
+import {PoliticianResolver} from './resolvers/politician.resolver';
+import {PoliticianService} from './services/politician.service';
+import {AttendeeService} from './services/attendee.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -40,8 +46,8 @@ import {ConsultantEmployeeComponent} from './agenda/consultant-employee/consulta
     AppRoutingModule,
     AgendaModule
   ],
-  entryComponents: [DateDialogComponent, EditingSnackbarComponent, ConsultantCompanyComponent, ConsultantEmployeeComponent],
-  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver, ConsultantCompanyService, ConsultantEmployeeService, ConsultantCompanyResolver],
+  entryComponents: [DateDialogComponent, EditingSnackbarComponent, ConsultantCompanyComponent, ConsultantEmployeeComponent, AttendeeDialogComponent, AttendeeCreateDialogComponent],
+  providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver, ConsultantCompanyService, ConsultantEmployeeService, ConsultantCompanyResolver, PoliticianService, PoliticianResolver, AttendeeService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

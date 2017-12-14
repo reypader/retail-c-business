@@ -1,0 +1,98 @@
+<!--<form [formGroup]="formGroup">-->
+<form>
+  <!--<mat-horizontal-stepper formArrayName="formArray" linear>-->
+  <mat-vertical-stepper linear>
+    <!--<mat-step label="Step 1" formGroupName="0" [stepControl]="formArray.get([0])">-->
+    <mat-step label="Personal Information">
+      <div fxLayout="column" fxLayoutAlign='space-around center'>
+        <mat-form-field fxFlex>
+          <input matInput [disabled]='exists' placeholder='Name' name="name" [(ngModel)]="attendee.name">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput [disabled]='exists' placeholder='District' name="district" [(ngModel)]="attendee.district">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput [disabled]='exists' placeholder='Image URL' type="url" name="image_url"
+                 [(ngModel)]="attendee.image_path">
+        </mat-form-field>
+        <div fxFlex>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </div>
+    </mat-step>
+    <!--<mat-step label="Step 2" formGroupName="1" [stepControl]="formArray.get([1])">-->
+    <mat-step label="Political Information">
+      <div fxLayout="column" fxLayoutAlign='space-around center'>
+
+        <mat-form-field fxFlex>
+          <input matInput name="job_title" placeholder='Job Title'
+                 [(ngModel)]='attendee.job_title'>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Group" [(ngModel)]='attendee.group' name="group">
+            <mat-option [value]="'CNT_SUP'">
+              County Board of Supervisors
+            </mat-option>
+            <mat-option [value]="'CNT_SHR'">
+              County Sheriff
+            </mat-option>
+            <mat-option [value]="'CNT_HPL'">
+              County Head Planner
+            </mat-option>
+            <mat-option [value]="'CNT_MGR'">
+              County Manager
+            </mat-option>
+            <mat-option [value]="'CTY_CNL'">
+              City Council
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput name="department" placeholder='Department'
+                 [(ngModel)]='attendee.department'>
+        </mat-form-field>
+        <div fxFlex>
+          <mat-checkbox name="supports_cannabis_usage"
+                        [(ngModel)]='attendee.supports_cannabis_usage'>Supports Cannabis Usage
+          </mat-checkbox>
+        </div>
+        <div fxFlex>
+          <br/>
+          <label for="board_political_stance"><span>Political Stance:&nbsp;&nbsp;&nbsp;&nbsp;</span></label>
+          <mat-radio-group id="board_political_stance" name="political_stance"
+                           [(ngModel)]="attendee.political_stance" fxLayout="column">
+            <mat-radio-button value="D">Democrat</mat-radio-button>
+            <mat-radio-button value="R">Republican</mat-radio-button>
+          </mat-radio-group>
+          <br/>
+        </div>
+        <div fxFlex>
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step label="Notes">
+      <div fxLayout="column" fxLayoutAlign='space-around center'>
+        <mat-form-field fxFlex>
+        <textarea matInput matAutosizeMinRows='5' name="notes"
+                  matAutosizeMaxRows='10' matTextareaAutosize placeholder='Notes'
+                  [(ngModel)]='attendee.notes'></textarea>
+        </mat-form-field>
+        <div fxFlex>
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step label="Confirmation" fxLayout="column" fxLayoutAlign='space-around center'>
+      <div fxFlex>
+        Confirm addition of new Board Member {{attendee.name}}?
+      </div>
+      <div fxFlex>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button color="accent" [mat-dialog-close]='attendee'>Add</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+</form>

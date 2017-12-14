@@ -71,8 +71,11 @@ export interface Agenda extends Entity {
   dateString: string;
   notes: string;
   city: URL;
+  subregion: URL;
   cannabis_consultant_company: URL;
   cannabis_consultant_employee: URL;
+  politicians: URL[];
+  attendees: URL[];
 }
 
 
@@ -95,4 +98,25 @@ export interface Consultant extends Entity {
   fax_number: string;
   notes: string;
   company: URL;
+}
+
+export interface Politician extends Entity {
+  name: string;
+  subregion: URL;
+  city: URL;
+  subregion_name: string;
+  city_name: string;
+  district: string;
+  image_path: string;
+}
+
+export interface Attendee extends Politician {
+  agenda: URL;
+  politician: URL;
+  group: string;
+  job_title: string;
+  department: string;
+  political_stance: string;
+  supports_cannabis_usage: boolean;
+  notes: string;
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Agenda, City, ConsultantCompany, Region, SubRegion} from '../types';
+import {Agenda, Attendee, City, ConsultantCompany, Politician, Region, SubRegion} from '../types';
 import {ActivatedRoute} from '@angular/router';
 import {SubregionService} from '../services/subregion.service';
 import {RegionService} from '../services/region.service';
@@ -9,6 +9,7 @@ import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.comp
 import {AgendaService} from '../services/agenda.service';
 import {CityService} from '../services/city.service';
 import {deepCopy} from '../utils';
+import {AttendeeService} from '../services/attendee.service';
 
 @Component({
   selector: 'app-agenda-list',
@@ -24,22 +25,25 @@ export class AgendaComponent implements OnInit {
   latestAgenda: Agenda;
   snackBarRef: MatSnackBarRef<EditingSnackbarComponent>;
   consultantCompanies: Array<ConsultantCompany>;
+  politicians: Array<Politician>;
 
   constructor(private route: ActivatedRoute,
-              private cities: CityService,
+              private cityService: CityService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
-              private regions: RegionService,
-              private subregions: SubregionService,
-              private agendas: AgendaService) {
+              private regionService: RegionService,
+              private subregionService: SubregionService,
+              private agendaService: AgendaService,
+              private attendeeService: AttendeeService) {
   }
 
 
   ngOnInit() {
     this.city = this.route.snapshot.data['city'];
     this.consultantCompanies = this.route.snapshot.data['companies'].results;
-    this.regions.getFor(this.city.region).subscribe(data => this.region = data);
-    this.subregions.getFor(this.city.subregion).subscribe(data => this.subregion = data);
+    this.politicians = this.route.snapshot.data['politicians'].results;
+    this.regionService.getFor(this.city.region).subscribe(data => this.region = data);
+    this.subregionService.getFor(this.city.subregion).subscribe(data => this.subregion = data);
   }
 
   trackLatest($event): void {
@@ -62,18 +66,25 @@ export class AgendaComponent implements OnInit {
         this.newAgenda.new = true;
         this.newAgenda.date = r.date;
         this.newAgenda.dateString = r.date.toDateString();
+        this.newAgenda.url = null;
+        this.newAgenda.attendees = [];
+        this.newAgenda.politicians = [];
       } else {
         this.newAgenda = {
           'new': true,
-          city: this.city.url,
           date: r.date,
           dateString: r.date.toDateString(),
           vote_percent_democrat: 50,
           vote_percent_republican: 50,
           vote_percent_prop_64: 50,
-          dominant_political_stance: 'R'
+          dominant_political_stance: 'R',
+          politicians: [],
+          attendees: []
         } as Agenda;
       }
+      this.newAgenda.city = this.city.url;
+      this.newAgenda.subregion = this.subregion.url;
+
       this.snackBarRef = this.snackbar.openFromComponent(EditingSnackbarComponent);
       scrollTarget.scrollIntoView();
     });
@@ -85,8 +96,11 @@ export class AgendaComponent implements OnInit {
   }
 
   save($event): void {
-    this.agendas.save(this.newAgenda)
-      .switchMap(data => this.cities.getFor(this.city.url))
+    this.agendaService.save(this.newAgenda)
+      .do(data => {
+        data.attendees.forEach((v, i) => this.attendeeService.partialUpdate(v, {agenda: data.url} as Attendee));
+      })
+      .switchMap(data => this.cityService.getFor(this.city.url))
       .subscribe(data => {
         this.city = data;
         this.newAgenda = null;

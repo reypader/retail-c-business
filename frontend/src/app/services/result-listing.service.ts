@@ -63,6 +63,17 @@ export abstract class ResultListingService<T> {
       });
   }
 
+  partialUpdate(url: URL, t: T): Observable<T> {
+    const o = this.prepareSave(deepCopy(t) as T);
+    return this.backend.patch<T>(url.toString(), o).map(data => {
+      return this.enrich(data);
+    });
+  }
+
+  remove(url: URL): Observable<T> {
+    return this.backend.delete(url.toString());
+  }
+
   protected prepareSave(t: T): T {
     return t;
   }

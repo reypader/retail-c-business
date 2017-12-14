@@ -41,3 +41,22 @@ hr {
   width: 100px;
   margin: 10px;
 }
+
+.member-card {
+  max-width: 200px;
+  max-height: 300px;
+  min-width: 200px;
+  min-height: 300px;
+  margin: 10px;
+}
+
+//.member-card img {
+//  max-height: 100px;
+//}
+
+.center-cropped {
+  object-fit: cover; /* Scale the image so it covers whole area, thus will likely crop */
+  object-position: center; /* Center the image within the element */
+  height: 200px;
+  width: 248px;
+}

@@ -2,9 +2,9 @@ from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
-from ordinances.models import Consultant
+from ordinances.models import Consultant, Politician, Attendee
 from ordinances.models import SubRegion, City, Region, Agenda, ConsultantCompany
-from ordinances.serializers import ConsultantSerializer
+from ordinances.serializers import ConsultantSerializer, PoliticianSerializer, AttendeeSerializer
 from ordinances.serializers import UserSerializer, SubRegionSerializer, CitySerializer, RegionSerializer, \
     AgendaSerializer, ConsultantCompanySerializer
 
@@ -60,3 +60,13 @@ class ConsultantViewSet(viewsets.ModelViewSet):
     page_size = 1000
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('company__id',)
+
+
+class PoliticianViewSet(viewsets.ModelViewSet):
+    queryset = Politician.objects.all()
+    serializer_class = PoliticianSerializer
+
+
+class AttendeeViewSet(viewsets.ModelViewSet):
+    queryset = Attendee.objects.all()
+    serializer_class = AttendeeSerializer

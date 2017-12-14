@@ -24,7 +24,7 @@ from django.views.generic import TemplateView
 from rest_framework import routers
 
 from ordinances.viewsets import UserViewSet, SubRegionViewSet, RegionViewSet, CityViewSet, AgendaViewSet, \
-    ConsultantCompanyViewSet, ConsultantViewSet
+    ConsultantCompanyViewSet, ConsultantViewSet, AttendeeViewSet, PoliticianViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -34,6 +34,8 @@ router.register(r'cities', CityViewSet)
 router.register(r'agendas', AgendaViewSet)
 router.register(r'consultants', ConsultantViewSet)
 router.register(r'consultant_companies', ConsultantCompanyViewSet)
+router.register(r'attendees', AttendeeViewSet)
+router.register(r'politicians', PoliticianViewSet)
 
 urlpatterns = [
                   url(r'^$', TemplateView.as_view(template_name='index.html'),

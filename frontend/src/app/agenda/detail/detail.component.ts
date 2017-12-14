@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AgendaService} from '../../services/agenda.service';
-import {Agenda, Consultant, ConsultantCompany} from '../../types';
+import {Agenda, Consultant, ConsultantCompany, Politician} from '../../types';
 import 'rxjs/add/operator/delay';
 import {FormControl} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
@@ -12,6 +12,10 @@ import {MatAutocompleteSelectedEvent, MatDialog} from '@angular/material';
 import {ConsultantCompanyService} from '../../services/consultant-company.service';
 import {ConsultantEmployeeComponent} from '../consultant-employee/consultant-employee.component';
 import {ConsultantEmployeeService} from '../../services/consultant-employee.service';
+import {AttendeeCreateDialogComponent} from '../attendee-create-dialog/attendee-create-dialog.component';
+import {PoliticianService} from '../../services/politician.service';
+import {AttendeeService} from '../../services/attendee.service';
+import {AttendeeLinks} from '../attendee-card/attendee-card.component';
 
 
 @Component({
@@ -25,11 +29,13 @@ export class DetailComponent implements OnInit {
   @Input() agenda: Agenda;
   @Input() open: boolean;
   @Input() companies: Array<ConsultantCompany>;
+  @Input() officials: Array<Politician>;
   @Output() agendaLoaded = new EventEmitter<Agenda>();
 
   employees: Array<Consultant> = [];
   filteredCompanies: Observable<Array<ConsultantCompany>>;
   filteredEmployees: Observable<Array<Consultant>>;
+  filteredPoliticians: Observable<Array<Politician>>;
   consultantCompany: ConsultantCompany;
   consultant: Consultant;
   voteTie = false;
@@ -37,8 +43,14 @@ export class DetailComponent implements OnInit {
 
   detailControl: FormControl = new FormControl();
   employeeControl: FormControl = new FormControl();
+  politicianControl: FormControl = new FormControl();
 
-  constructor(private agendas: AgendaService, private dialog: MatDialog, private consultantCompanies: ConsultantCompanyService, private consultants: ConsultantEmployeeService) {
+  constructor(private agendaService: AgendaService,
+              private dialog: MatDialog,
+              private consultantCompanyService: ConsultantCompanyService,
+              private consultantService: ConsultantEmployeeService,
+              private politicianService: PoliticianService,
+              private attendeeService: AttendeeService) {
   }
 
   ngOnInit() {
@@ -46,12 +58,12 @@ export class DetailComponent implements OnInit {
       if (this.agenda) {
         throw new Error('[agendaUrl] and [agenda] cannot both have values');
       }
-      this.agendas.getFor(this.agendaUrl).switchMap(data => {
+      this.agendaService.getFor(this.agendaUrl).switchMap(data => {
         this.agenda = data;
         this.agendaLoaded.emit(this.agenda);
         return Observable.forkJoin(
-          this.consultantCompanies.getFor(data.cannabis_consultant_company),
-          this.consultants.getFor(data.cannabis_consultant_employee)
+          this.consultantCompanyService.getFor(data.cannabis_consultant_company),
+          this.consultantService.getFor(data.cannabis_consultant_employee)
         );
       }).subscribe(data => {
         this.consultantCompany = data[0];
@@ -70,6 +82,13 @@ export class DetailComponent implements OnInit {
         startWith({} as Consultant),
         map<any, string>(employee => employee && typeof employee === 'object' ? employee.name : employee),
         map<string, Consultant[]>(val => val ? this.filterEmployees(val) : this.employees.slice())
+      );
+
+    this.filteredPoliticians = this.politicianControl.valueChanges
+      .pipe(
+        startWith({} as Politician),
+        map<any, string>(politician => politician && typeof politician === 'object' ? politician.name : politician),
+        map<string, Politician[]>(val => val ? this.filterPoliticians(val) : this.filterPoliticians(''))
       );
   }
 
@@ -96,10 +115,15 @@ export class DetailComponent implements OnInit {
       employee.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
   }
 
+  filterPoliticians(val: string): Politician[] {
+    return this.officials.filter(member => (this.agenda.politicians.indexOf(member.url) < 0) &&
+      (member.name.toLowerCase().indexOf(val.toLowerCase()) > -1));
+  }
+
   updateConsultantCompany($event: MatAutocompleteSelectedEvent): void {
     this.consultantCompany = $event.option.value as ConsultantCompany;
     this.agenda.cannabis_consultant_company = this.consultantCompany.url;
-    this.consultants.getList({company__id: this.consultantCompany.id}).subscribe(data => {
+    this.consultantService.getList({company__id: this.consultantCompany.id}).subscribe(data => {
       this.employees = data.results;
       this.employeeControl.setValue('');
     });
@@ -110,31 +134,61 @@ export class DetailComponent implements OnInit {
     this.agenda.cannabis_consultant_employee = this.consultant.url;
   }
 
+  updatePolitician($event: MatAutocompleteSelectedEvent): void {
+    const politician = $event.option.value as Politician;
+    const dialogRef = this.dialog.open(AttendeeCreateDialogComponent, {
+      data: {politician: politician}
+    });
+    dialogRef.afterClosed()
+      .switchMap(result => {
+        result.politician = politician.url;
+        return this.attendeeService.save(result);
+      }).subscribe(data => this.agenda.attendees.push(data.url));
+    this.agenda.politicians.push(politician.url);
+    this.politicianControl.setValue('');
+  }
+
   createConsultantCompanyDialog(): void {
     const dialogRef = this.dialog.open(ConsultantCompanyComponent);
-    dialogRef.afterClosed().switchMap(result => {
-      return this.consultantCompanies.save(result);
-    }).switchMap(data => {
-      this.consultantCompany = data;
-      this.agenda.cannabis_consultant_company = this.consultantCompany.url;
-      this.consultants.getList({company__id: this.consultantCompany.id}).subscribe(r => {
-        this.employees = r.results;
-        this.employeeControl.setValue('');
-      });
-      return this.consultantCompanies.getList();
-    }).subscribe(data => this.companies = data.results);
+    dialogRef.afterClosed().switchMap(result => this.consultantCompanyService.save(result))
+      .switchMap(data => {
+        this.consultantCompany = data;
+        this.agenda.cannabis_consultant_company = this.consultantCompany.url;
+        this.consultantService.getList({company__id: this.consultantCompany.id}).subscribe(r => {
+          this.employees = r.results;
+          this.employeeControl.setValue('');
+        });
+        return this.consultantCompanyService.getList();
+      }).subscribe(data => this.companies = data.results);
   }
 
   createConsultantDialog(): void {
     const dialogRef = this.dialog.open(ConsultantEmployeeComponent);
     dialogRef.afterClosed().switchMap(result => {
       result.company = this.consultantCompany.url;
-      return this.consultants.save(result);
+      return this.consultantService.save(result);
     }).switchMap(data => {
       this.consultant = data;
       this.agenda.cannabis_consultant_employee = this.consultant.url;
-      return this.consultants.getList({company__id: this.consultantCompany.id});
+      return this.consultantService.getList({company__id: this.consultantCompany.id});
     }).subscribe(data => this.employees = data.results);
+  }
+
+  createAttendeeDialog(): void {
+    const dialogRef = this.dialog.open(AttendeeCreateDialogComponent);
+    dialogRef.afterClosed()
+      .switchMap(result => {
+        result.subregion = this.agenda.subregion;
+        result.city = this.agenda.city;
+        return this.politicianService.save(result)
+          .do(politician => {
+            result.politician = politician.url;
+            this.attendeeService.save(result)
+              .subscribe(data => this.agenda.attendees.push(data.url));
+          }).do(politician => this.politicianService.getList()
+            .subscribe(data => this.officials = data.results));
+      })
+      .subscribe(data => this.agenda.politicians.push(data.url));
   }
 
   adjustRepublicans($event): void {
@@ -145,6 +199,13 @@ export class DetailComponent implements OnInit {
   adjustDemocrats($event): void {
     this.agenda.vote_percent_democrat = 100 - this.agenda.vote_percent_republican;
     this.recalculateVotes();
+  }
+
+  removeAttendee($event): void {
+    const links = $event as AttendeeLinks;
+    this.attendeeService.remove(links.attendeeUrl).subscribe(data => console.log('Deleted ' + links.attendeeUrl));
+    this.agenda.attendees = this.agenda.attendees.filter(u => u !== links.attendeeUrl);
+    this.agenda.politicians = this.agenda.politicians.filter(u => u !== links.politicianUrl);
   }
 
   recalculatePropVotes($val): void {

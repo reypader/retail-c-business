@@ -42,8 +42,11 @@ class Place(django_models.Model):
         abstract = True
         ordering = ('name',)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name_std
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
 
 class Region(Place):
@@ -94,35 +97,11 @@ class Consultant(django_models.Model):
         ordering = ('name',)
 
 
-class BoardMember(django_models.Model):
-    created_at = django_models.DateTimeField(auto_now_add=True)
-    updated_at = django_models.DateTimeField(auto_now=True)
-    group = django_models.CharField(max_length=10, choices=LGU_STAFF_GROUPS)
-    name = django_models.CharField(max_length=100)
-    date_of_birth = django_models.DateField()
-    gender = django_models.CharField(max_length=5, choices=GENDERS)
-    address = django_models.CharField(max_length=255)
-    postal_code = django_models.CharField(max_length=20)
-    email = django_models.EmailField()
-    civil_status = django_models.CharField(max_length=5, choices=CIVIL_STATUSES)
-    job_title = django_models.CharField(max_length=20)
-    department = django_models.CharField(max_length=50)
-    political_stance = django_models.CharField(max_length=5, choices=POLITICAL_STANCES)
-    supports_cannabis_usage = django_models.BooleanField(default=False)
-    annual_financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
-    annual_tax = django_models.DecimalField(max_digits=12, decimal_places=2)
-    organizations = django_models.TextField()
-    notes = django_models.TextField()
-    city = django_models.ForeignKey(City, related_name="board_members", on_delete=django_models.CASCADE, null=True)
-
-    class Meta:
-        verbose_name = "Board Member"
-
-
 class Agenda(django_models.Model):
     created_at = django_models.DateTimeField(auto_now_add=True)
     updated_at = django_models.DateTimeField(auto_now=True)
     city = django_models.ForeignKey(City, related_name="agendas", on_delete=django_models.CASCADE, null=True)
+    subregion = django_models.ForeignKey(SubRegion, related_name="agendas", on_delete=django_models.CASCADE)
     land_area = django_models.DecimalField(max_digits=12, decimal_places=4)
     population = django_models.PositiveIntegerField()
     financial_income = django_models.DecimalField(max_digits=12, decimal_places=2)
@@ -160,3 +139,32 @@ class Agenda(django_models.Model):
 
     def __str__(self):
         return "[%s] %s" % (self.date, self.city)
+
+
+class Politician(django_models.Model):
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
+    name = django_models.CharField(max_length=100)
+    subregion = django_models.ForeignKey(SubRegion, related_name="politicians", on_delete=django_models.CASCADE)
+    city = django_models.ForeignKey(City, related_name="politicians", on_delete=django_models.CASCADE, null=True)
+    district = django_models.CharField(max_length=100)
+    image_path = django_models.CharField(max_length=200,null=True, blank=True, default="assets/blank_male_avatar.jpg")
+
+    class Meta:
+        ordering = ('name',)
+
+
+class Attendee(django_models.Model):
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
+    group = django_models.CharField(max_length=10, choices=LGU_STAFF_GROUPS)
+    job_title = django_models.CharField(max_length=20)
+    department = django_models.CharField(max_length=50)
+    political_stance = django_models.CharField(max_length=5, choices=POLITICAL_STANCES)
+    supports_cannabis_usage = django_models.BooleanField(default=False)
+    notes = django_models.TextField()
+    politician = django_models.ForeignKey(Politician, related_name="participations", on_delete=django_models.CASCADE)
+    agenda = django_models.ForeignKey(Agenda, related_name="attendees", on_delete=django_models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = "Board Member"
