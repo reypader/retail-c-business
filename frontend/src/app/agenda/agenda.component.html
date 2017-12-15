@@ -1,10 +1,17 @@
 <h1 #target>{{city.name}}</h1>
 <h3><span *ngIf='subregion'>{{subregion.name}}, </span><span *ngIf='region'>{{region.name}}</span></h3>
-<mat-accordion [multi]='true'>
+<div style="width:100%; text-align: center" *ngIf="city.agendas.length < 1 && !newAgenda">
+  <br/>
+  <br/>
+<h3>There's no ordinance meeting for this city yet.</h3>
+  <button mat-raised-button color="primary" (click)='createAgendaDialog(target)'>Add new meeting notes.</button>
+</div>
+<mat-accordion [multi]='true' *ngIf="city.agendas.length > 0 || newAgenda">
   <app-agenda-detail *ngIf='newAgenda' [agenda]='newAgenda' [open]='true'
                      [companies]="consultantCompanies" [officials]="politicians"></app-agenda-detail>
   <app-agenda-detail [agendaUrl]='item' *ngFor='let item of city.agendas'
-                     [companies]="consultantCompanies" [officials]="politicians" (agendaLoaded)="trackLatest($event)"></app-agenda-detail>
+                     [companies]="consultantCompanies" [officials]="politicians"
+                     (agendaLoaded)="trackLatest($event)"></app-agenda-detail>
 </mat-accordion>
 <button mat-fab class='add-agenda-button' (click)='createAgendaDialog(target)' *ngIf='!newAgenda'>
   <mat-icon>add</mat-icon>
