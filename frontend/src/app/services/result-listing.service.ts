@@ -74,10 +74,6 @@ export abstract class ResultListingService<T> {
     return this.backend.delete(url.toString());
   }
 
-  protected prepareSave(t: T): T {
-    return t;
-  }
-
   abstract getType(): string;
 
   enrich(o: T): T {
@@ -93,6 +89,10 @@ export abstract class ResultListingService<T> {
       });
     }
     return o;
+  }
+
+  protected prepareSave(t: T): T {
+    return t;
   }
 
   private getFilter(filter: Object): HttpParams {

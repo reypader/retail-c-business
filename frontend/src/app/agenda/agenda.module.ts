@@ -19,7 +19,8 @@ import {
   MatRadioModule,
   MatSelectModule,
   MatSliderModule,
-  MatSnackBarModule, MatStepperModule
+  MatSnackBarModule,
+  MatStepperModule
 } from '@angular/material';
 import {AgendaComponent} from './agenda.component';
 import {AppRoutingModule} from '../app-routing.module';
@@ -28,10 +29,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DateDialogComponent} from './date-dialog/date-dialog.component';
 import {EditingSnackbarComponent} from './editing-snackbar/editing-snackbar.component';
 import {ConsultantCompanyComponent} from './consultant-company/consultant-company.component';
-import { ConsultantEmployeeComponent } from './consultant-employee/consultant-employee.component';
-import { AttendeeCardComponent } from './attendee-card/attendee-card.component';
-import { AttendeeDialogComponent } from './attendee-dialog/attendee-dialog.component';
-import { AttendeeCreateDialogComponent } from './attendee-create-dialog/attendee-create-dialog.component';
+import {ConsultantEmployeeComponent} from './consultant-employee/consultant-employee.component';
+import {AttendeeCardComponent} from './attendee-card/attendee-card.component';
+import {AttendeeDialogComponent} from './attendee-dialog/attendee-dialog.component';
+import {AttendeeCreateDialogComponent} from './attendee-create-dialog/attendee-create-dialog.component';
 
 @NgModule({
   imports: [

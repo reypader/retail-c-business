@@ -80,7 +80,8 @@
       </mat-card-header>
       <mat-card-content fxLayout="row column" fxLayoutAlign="center center">
         <app-attendee-card *ngFor="let member of agenda.attendees"
-                           [attendeeUrl]="member" [disabled]="!agenda.new" (removed)="removeAttendee($event)"></app-attendee-card>
+                           [attendeeUrl]="member" [disabled]="!agenda.new"
+                           (removed)="removeAttendee($event)"></app-attendee-card>
         <mat-card class="member-card" *ngIf="agenda.new">
           <mat-card-content fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="10px"
                             style="height: 100%">
@@ -94,7 +95,8 @@
                 <img style="vertical-align:middle;" aria-hidden
                      src="{{option.image_path}}" height="25"/>
                 <span>{{ option.name }}</span>
-                <small>(<span *ngIf='option.city_name'>{{option.city_name}}, </span><span *ngIf='option.subregion_name'>{{option.subregion_name}}</span>)</small>
+                <small>(<span *ngIf='option.city_name'>{{option.city_name}}, </span><span *ngIf='option.subregion_name'>{{option.subregion_name}}</span>)
+                </small>
               </mat-option>
             </mat-autocomplete>
             <div fxFlex="grow">

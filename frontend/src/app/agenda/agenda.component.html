@@ -3,7 +3,7 @@
 <div style="width:100%; text-align: center" *ngIf="city.agendas.length < 1 && !newAgenda">
   <br/>
   <br/>
-<h3>There's no ordinance meeting for this city yet.</h3>
+  <h3>There's no ordinance meeting for this city yet.</h3>
   <button mat-raised-button color="primary" (click)='createAgendaDialog(target)'>Add new meeting notes.</button>
 </div>
 <mat-accordion [multi]='true' *ngIf="city.agendas.length > 0 || newAgenda">

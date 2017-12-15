@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Politician} from '../../types';
-import {FormArray, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-attendee-dialog',

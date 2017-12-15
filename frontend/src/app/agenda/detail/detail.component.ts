@@ -220,6 +220,10 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  display(c: ConsultantCompany | Consultant): string {
+    return c ? c.name : '';
+  }
+
   private recalculateVotes(): void {
     if (this.agenda.vote_percent_republican > this.agenda.vote_percent_democrat) {
       this.agenda.dominant_political_stance = 'R';
@@ -230,10 +234,6 @@ export class DetailComponent implements OnInit {
       this.agenda.dominant_political_stance = 'D';
       this.voteTie = false;
     }
-  }
-
-  display(c: ConsultantCompany | Consultant): string {
-    return c ? c.name : '';
   }
 
 }
