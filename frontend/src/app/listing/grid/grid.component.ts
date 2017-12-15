@@ -41,11 +41,11 @@ export abstract class GridComponent implements OnInit {
   getItems(): void {
     this.resultList = [];
     if (this._currentURL) {
-      this.service.getListFor(this._currentURL).subscribe(page => {
+      this.service.getListFor(this._currentURL).delay(1000).subscribe(page => {
         this.collectResult(page);
       });
     } else {
-      this.service.getList().subscribe(page => {
+      this.service.getList().delay(1000).subscribe(page => {
         this.collectResult(page);
       });
     }
