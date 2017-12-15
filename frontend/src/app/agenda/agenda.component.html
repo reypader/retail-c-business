@@ -1,5 +1,6 @@
 <h1 #target>{{city.name}}</h1>
-<h3><span *ngIf='subregion'>{{subregion.name}}, </span><span *ngIf='region'>{{region.name}}</span></h3>
+<h3><span *ngIf='subregion'>{{subregion.name}}, </span><span *ngIf='region'>{{region.name}}</span><span *ngIf='!subregion'>&nbsp;</span></h3>
+<a [routerLink]="'/'"><span class="detail-title"><mat-icon>keyboard_arrow_left</mat-icon>&nbsp;<h3>Back to listing</h3></span></a>
 <div style="width:100%; text-align: center" *ngIf="city.agendas.length < 1 && !newAgenda">
   <br/>
   <br/>

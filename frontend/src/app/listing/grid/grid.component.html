@@ -1,3 +1,5 @@
+<mat-progress-bar *ngIf="resultList.length < 1" [mode]="indeterminate"
+                  style="width:100%;"></mat-progress-bar>
 <div fxLayout='row column' fxLayoutAlign='center center'>
   <mat-card class='card-item' *ngFor='let item of resultList' (click)='select(item.subdivisions, item.id, item.name)'>
     <mat-card-header>

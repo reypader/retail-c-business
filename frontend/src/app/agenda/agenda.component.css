@@ -11,3 +11,8 @@
   right: 0;
   margin: 50px;
 }
+
+.detail-title {
+  display: inline-flex;
+  vertical-align: middle;
+}
