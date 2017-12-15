@@ -1,3 +1,4 @@
+<h2><span *ngIf='currentSubegionsName'>{{currentSubegionsName}}</span><span *ngIf='currentCitiesName'>, {{currentCitiesName}}</span></h2>
 <mat-tab-group class='gov-listing-tab-group' [selectedIndex]='currentTab' (selectedIndexChange)='updateTab($event)'>
   <!--<mat-tab label='States'>-->
   <!--<div class='gov-listing-tab-content'>-->
@@ -6,12 +7,12 @@
   <!--</mat-tab>-->
   <mat-tab label='Counties'>
     <div class='gov-listing-tab-content'>
-      <subregion-grid [currentURL]='currentSubregionsURL' (itemSelected)='updateCities($event)'></subregion-grid>
+      <subregion-grid [currentURL]='currentSubregionsURL' [currentName]='currentSubegionsName' (itemSelected)='updateCities($event)'></subregion-grid>
     </div>
   </mat-tab>
   <mat-tab label='Cities'>
     <div class='gov-listing-tab-content'>
-      <city-grid [currentURL]='currentCitiesURL' (itemSelected)='viewAgendas($event)'></city-grid>
+      <city-grid [currentURL]='currentCitiesURL' [currentName]='currentCitiesName'  (itemSelected)='viewAgendas($event)'></city-grid>
     </div>
   </mat-tab>
 </mat-tab-group>

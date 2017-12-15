@@ -10,10 +10,13 @@ import {CityService} from '../services/city.service';
   styleUrls: ['./listing.component.css']
 })
 export class ListingComponent {
-  currentTab: number = 0;
+  currentTab = 0;
   currentRegionsURL: URL;
+  currentRegionsName: string;
   currentSubregionsURL: URL;
+  currentSubegionsName = 'California';
   currentCitiesURL: URL;
+  currentCitiesName: string;
 
   constructor(private router: Router, private cities: CityService) {
   }
@@ -25,17 +28,20 @@ export class ListingComponent {
   updateRegions($e: Entity) {
     console.log('Updating regions with ' + $e.url);
     this.currentRegionsURL = $e.url;
+    this.currentRegionsName = $e.name;
   }
 
   updateSubregions($e: Entity) {
     console.log('Updating subregions with ' + $e.url);
     this.currentSubregionsURL = $e.url;
+    this.currentSubegionsName = $e.name;
     this.currentTab = 1;
   }
 
   updateCities($e: Entity) {
     console.log('Updating cities with ' + $e.url);
     this.currentCitiesURL = $e.url;
+    this.currentCitiesName = $e.name;
     this.currentTab = 2;
   }
 

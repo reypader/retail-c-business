@@ -1,5 +1,5 @@
 <div fxLayout='row column' fxLayoutAlign='center center'>
-  <mat-card class='card-item' *ngFor='let item of resultList' (click)='select(item.subdivisions, item.id)'>
+  <mat-card class='card-item' *ngFor='let item of resultList' (click)='select(item.subdivisions, item.id, item.name)'>
     <mat-card-header>
       <mat-card-title class='government-name'>{{item.name}}</mat-card-title>
     </mat-card-header>
@@ -8,6 +8,6 @@
     <!--</mat-card-content>-->
   </mat-card>
 </div>
-<div style='width: 100%; text-align: center '>
+<div style='width: 100%; text-align: center ' *ngIf="currentPage.next">
   <button mat-raised-button color='primary' (click)='next()'>Load More</button>
 </div>

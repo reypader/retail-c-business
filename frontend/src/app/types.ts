@@ -1,6 +1,7 @@
 export interface Entity {
   url: URL;
   id: number;
+  name: string;
 }
 
 export interface PaginatedResult<T> {
@@ -11,7 +12,6 @@ export interface PaginatedResult<T> {
 }
 
 export interface Place extends Entity {
-  name: string;
   subdivisions: URL;
   subdivisionRoute: string;
 }
@@ -31,13 +31,8 @@ export interface City extends Place {
   subregion: URL;
 }
 
-export interface User {
+export interface User extends Entity {
   username: string;
-}
-
-export interface AgendaListItem extends Entity {
-  city: URL;
-  date: Date;
 }
 
 export interface Agenda extends Entity {
@@ -80,7 +75,6 @@ export interface Agenda extends Entity {
 
 
 export interface ConsultantCompany extends Entity {
-  name: string;
   address: string;
   postal_code: string;
   email: string;
@@ -90,7 +84,6 @@ export interface ConsultantCompany extends Entity {
 }
 
 export interface Consultant extends Entity {
-  name: string;
   address: string;
   postal_code: string;
   email: string;
@@ -101,7 +94,6 @@ export interface Consultant extends Entity {
 }
 
 export interface Politician extends Entity {
-  name: string;
   subregion: URL;
   city: URL;
   subregion_name: string;
