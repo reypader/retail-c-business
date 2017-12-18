@@ -4,6 +4,7 @@ import {Agenda, Consultant, ConsultantCompany, Politician} from '../../types';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
+import {filter} from 'rxjs/operators/filter';
 import 'rxjs/add/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {ConsultantCompanyComponent} from '../consultant-company/consultant-company.component';
@@ -175,35 +176,48 @@ export class DetailComponent implements OnInit {
 
   updateConsultantCompany($event: MatAutocompleteSelectedEvent): void {
     this.consultantCompany = $event.option.value as ConsultantCompany;
-    this.agenda.cannabis_consultant_company = this.consultantCompany.url;
-    this.consultantService.getList({company__id: this.consultantCompany.id}).subscribe(data => {
-      this.employees = data.results;
-      this.employeeControl.setValue('');
-    });
+    if (this.consultantCompany) {
+      this.agenda.cannabis_consultant_company = this.consultantCompany.url;
+      this.consultantService.getList({company__id: this.consultantCompany.id}).subscribe(data => {
+        this.employees = data.results;
+        this.employeeControl.setValue('');
+      });
+    }
   }
 
   updateConsultant($event: MatAutocompleteSelectedEvent): void {
     this.consultant = $event.option.value as Consultant;
-    this.agenda.cannabis_consultant_employee = this.consultant.url;
+    if (this.consultant) {
+      this.agenda.cannabis_consultant_employee = this.consultant.url;
+    }
   }
 
   updatePolitician($event: MatAutocompleteSelectedEvent): void {
     const politician = $event.option.value as Politician;
-    const dialogRef = this.dialog.open(AttendeeCreateDialogComponent, {
-      data: {politician: politician}
-    });
-    dialogRef.afterClosed()
-      .switchMap(result => {
-        result.politician = politician.url;
-        return this.attendeeService.save(result);
-      }).subscribe(data => this.agenda.attendees.push(data.url));
-    this.agenda.politicians.push(politician.url);
-    this.politicianControl.setValue('');
+    if (politician) {
+      const dialogRef = this.dialog.open(AttendeeCreateDialogComponent, {
+        data: {politician: politician}
+      });
+      dialogRef.afterClosed()
+        .pipe(filter(result => result != null))
+        .switchMap(result => {
+          result.politician = politician.url;
+          if (!result.image_path) {
+            result.image_path = '/static/assets/blank_male_avatar.jpg';
+          }
+          return this.attendeeService.save(result)
+            .do(r => this.politicianService.partialUpdate(politician.url, {image_path: result.image_path} as Politician)
+              .subscribe(data => console.log('updated image_path for attendee')));
+        })
+        .subscribe(data => this.agenda.attendees.push(data.url));
+      this.agenda.politicians.push(politician.url);
+      this.politicianControl.setValue('');
+    }
   }
 
   createConsultantCompanyDialog(): void {
     const dialogRef = this.dialog.open(ConsultantCompanyComponent);
-    dialogRef.afterClosed().switchMap(result => this.consultantCompanyService.save(result))
+    dialogRef.afterClosed().pipe(filter(result => result != null)).switchMap(result => this.consultantCompanyService.save(result))
       .switchMap(data => {
         this.consultantCompany = data;
         this.agenda.cannabis_consultant_company = this.consultantCompany.url;
@@ -217,7 +231,7 @@ export class DetailComponent implements OnInit {
 
   createConsultantDialog(): void {
     const dialogRef = this.dialog.open(ConsultantEmployeeComponent);
-    dialogRef.afterClosed().switchMap(result => {
+    dialogRef.afterClosed().pipe(filter(result => result != null)).switchMap(result => {
       result.company = this.consultantCompany.url;
       return this.consultantService.save(result);
     }).switchMap(data => {
@@ -230,9 +244,13 @@ export class DetailComponent implements OnInit {
   createAttendeeDialog(): void {
     const dialogRef = this.dialog.open(AttendeeCreateDialogComponent);
     dialogRef.afterClosed()
+      .pipe(filter(result => result != null))
       .switchMap(result => {
         result.subregion = this.agenda.subregion;
         result.city = this.agenda.city;
+        if (!result.image_path) {
+          result.image_path = '/static/assets/blank_male_avatar.jpg';
+        }
         return this.politicianService.save(result)
           .do(politician => {
             result.politician = politician.url;
@@ -259,6 +277,7 @@ export class DetailComponent implements OnInit {
     this.attendeeService.remove(links.attendeeUrl).subscribe(data => console.log('Deleted ' + links.attendeeUrl));
     this.agenda.attendees = this.agenda.attendees.filter(u => u !== links.attendeeUrl);
     this.agenda.politicians = this.agenda.politicians.filter(u => u !== links.politicianUrl);
+    this.politicianControl.setValue('');
   }
 
   recalculatePropVotes($val): void {

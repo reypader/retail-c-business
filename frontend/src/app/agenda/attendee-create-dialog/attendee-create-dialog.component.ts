@@ -18,7 +18,6 @@ export class AttendeeCreateDialogComponent implements OnInit {
 
   nameControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
   districtControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
-  imageControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
 
   titleControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
   groupControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
@@ -26,8 +25,7 @@ export class AttendeeCreateDialogComponent implements OnInit {
 
   personalFormGroup = new FormGroup({
     nameControl: this.nameControl,
-    districtControl: this.districtControl,
-    imageControl: this.imageControl
+    districtControl: this.districtControl
   });
 
   attendeeFormGroup = new FormGroup({
@@ -50,8 +48,6 @@ export class AttendeeCreateDialogComponent implements OnInit {
       this.attendee.political_stance = 'D';
       this.exists = true;
       this.personalFormGroup.disable();
-    } else {
-      this.attendee.image_path = 'assets/blank_male_avatar.jpg';
     }
   }
 

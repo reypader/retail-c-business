@@ -147,7 +147,7 @@ class Politician(django_models.Model):
     subregion = django_models.ForeignKey(SubRegion, related_name="politicians", on_delete=django_models.CASCADE)
     city = django_models.ForeignKey(City, related_name="politicians", on_delete=django_models.CASCADE, null=True)
     district = django_models.CharField(max_length=100)
-    image_path = django_models.CharField(max_length=200,null=True, blank=True, default="assets/blank_male_avatar.jpg")
+    image_path = django_models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         ordering = ('name',)

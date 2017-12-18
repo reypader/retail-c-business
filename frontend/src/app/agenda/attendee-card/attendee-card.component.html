@@ -7,8 +7,8 @@
   </mat-card-header>
   <mat-card-content>
     &nbsp;
-    <img *ngIf="attendee" class="center-cropped" mat-card-image
-         src="{{attendee.image_path}}">
+    <img *ngIf="attendee" class="center-cropped clickable" mat-card-image
+         src="{{attendee.image_path}}" (click)="open($event)">
 
     <mat-spinner *ngIf="!attendee" [diameter]='50'></mat-spinner>
   </mat-card-content>

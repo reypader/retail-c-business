@@ -16,11 +16,8 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex="100">
-          <input matInput [formControl]='imageControl' placeholder='Image URL' type="url" name="image_url"
+          <input matInput placeholder='Image URL' type="url" name="image_url"
                  [(ngModel)]="attendee.image_path">
-          <mat-error *ngIf="imageControl.hasError('required')">
-            This field is <strong>required</strong>
-          </mat-error>
         </mat-form-field>
         <div fxFlex="100">
           <button mat-button matStepperNext type="button">Next</button>

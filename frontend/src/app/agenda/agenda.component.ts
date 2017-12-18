@@ -10,6 +10,7 @@ import {AgendaService} from '../services/agenda.service';
 import {CityService} from '../services/city.service';
 import {deepCopy} from '../utils';
 import {AttendeeService} from '../services/attendee.service';
+import {filter} from 'rxjs/operators/filter';
 
 @Component({
   selector: 'app-agenda-list',
@@ -60,35 +61,36 @@ export class AgendaComponent implements OnInit {
       {
         data: {last: this.latestAgenda ? this.latestAgenda.date : null}
       });
-    dialogRef.afterClosed().subscribe(result => {
-      const r = result as DateDialogOutput;
-      if (r.copyOfLatest && this.latestAgenda) {
-        this.newAgenda = deepCopy(this.latestAgenda) as Agenda;
-        this.newAgenda.new = true;
-        this.newAgenda.date = r.date;
-        this.newAgenda.dateString = r.date.toDateString();
-        this.newAgenda.url = null;
-        this.newAgenda.attendees = [];
-        this.newAgenda.politicians = [];
-      } else {
-        this.newAgenda = {
-          'new': true,
-          date: r.date,
-          dateString: r.date.toDateString(),
-          vote_percent_democrat: 50,
-          vote_percent_republican: 50,
-          vote_percent_prop_64: 0,
-          dominant_political_stance: 'R',
-          politicians: [],
-          attendees: []
-        } as Agenda;
-      }
-      this.newAgenda.city = this.city.url;
-      this.newAgenda.subregion = this.subregion.url;
+    dialogRef.afterClosed().pipe(filter(result => result != null))
+      .subscribe(result => {
+        const r = result as DateDialogOutput;
+        if (r.copyOfLatest && this.latestAgenda) {
+          this.newAgenda = deepCopy(this.latestAgenda) as Agenda;
+          this.newAgenda.new = true;
+          this.newAgenda.date = r.date;
+          this.newAgenda.dateString = r.date.toDateString();
+          this.newAgenda.url = null;
+          this.newAgenda.attendees = [];
+          this.newAgenda.politicians = [];
+        } else {
+          this.newAgenda = {
+            'new': true,
+            date: r.date,
+            dateString: r.date.toDateString(),
+            vote_percent_democrat: 50,
+            vote_percent_republican: 50,
+            vote_percent_prop_64: 0,
+            dominant_political_stance: 'R',
+            politicians: [],
+            attendees: []
+          } as Agenda;
+        }
+        this.newAgenda.city = this.city.url;
+        this.newAgenda.subregion = this.subregion.url;
 
-      this.snackBarRef = this.snackbar.openFromComponent(EditingSnackbarComponent);
-      scrollTarget.scrollIntoView();
-    });
+        this.snackBarRef = this.snackbar.openFromComponent(EditingSnackbarComponent);
+        scrollTarget.scrollIntoView();
+      });
   }
 
   cancel($event): void {

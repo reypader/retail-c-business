@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Attendee} from '../../types';
 import {AttendeeService} from '../../services/attendee.service';
+import {MatDialog} from '@angular/material';
+import {AttendeeInfoComponent} from '../attendee-info/attendee-info.component';
 
 @Component({
   selector: 'app-attendee-card',
@@ -15,7 +17,7 @@ export class AttendeeCardComponent implements OnInit {
 
   @Output() removed = new EventEmitter<AttendeeLinks>();
 
-  constructor(private attendees: AttendeeService) {
+  constructor(private dialog: MatDialog, private attendees: AttendeeService) {
   }
 
   ngOnInit() {
@@ -29,6 +31,13 @@ export class AttendeeCardComponent implements OnInit {
 
   remove($event): void {
     this.removed.emit({attendeeUrl: this.attendeeUrl, politicianUrl: this.attendee.politician} as AttendeeLinks);
+  }
+
+  open($event): void {
+    const dialogRef = this.dialog.open(AttendeeInfoComponent,
+      {
+        data: {attendee: this.attendee}
+      });
   }
 
 }

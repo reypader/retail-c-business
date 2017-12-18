@@ -28,6 +28,7 @@ import {AttendeeCreateDialogComponent} from './agenda/attendee-create-dialog/att
 import {PoliticianResolver} from './resolvers/politician.resolver';
 import {PoliticianService} from './services/politician.service';
 import {AttendeeService} from './services/attendee.service';
+import {AttendeeInfoComponent} from './agenda/attendee-info/attendee-info.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import {AttendeeService} from './services/attendee.service';
     AppRoutingModule,
     AgendaModule
   ],
-  entryComponents: [DateDialogComponent, EditingSnackbarComponent, ConsultantCompanyComponent, ConsultantEmployeeComponent, AttendeeDialogComponent, AttendeeCreateDialogComponent],
+  entryComponents: [DateDialogComponent, EditingSnackbarComponent, ConsultantCompanyComponent, ConsultantEmployeeComponent, AttendeeDialogComponent, AttendeeCreateDialogComponent, AttendeeInfoComponent],
   providers: [SessionService, BackendService, RegionService, SubregionService, CityService, AgendaService, CityResolver, ConsultantCompanyService, ConsultantEmployeeService, ConsultantCompanyResolver, PoliticianService, PoliticianResolver, AttendeeService],
   bootstrap: [AppComponent]
 })
