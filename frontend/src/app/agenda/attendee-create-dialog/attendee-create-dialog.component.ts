@@ -18,16 +18,13 @@ export class AttendeeCreateDialogComponent implements OnInit {
 
   nameControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
   districtControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
-
-  titleControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
-  groupControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
-  departmentControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
-
   personalFormGroup = new FormGroup({
     nameControl: this.nameControl,
     districtControl: this.districtControl
   });
-
+  titleControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
+  groupControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
+  departmentControl = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
   attendeeFormGroup = new FormGroup({
     titleControl: this.titleControl,
     groupControl: this.groupControl,

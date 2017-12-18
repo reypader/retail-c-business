@@ -20,7 +20,8 @@ import {
   MatSelectModule,
   MatSliderModule,
   MatSnackBarModule,
-  MatStepperModule, MatTabsModule
+  MatStepperModule,
+  MatTabsModule
 } from '@angular/material';
 import {AgendaComponent} from './agenda.component';
 import {AppRoutingModule} from '../app-routing.module';
@@ -33,7 +34,7 @@ import {ConsultantEmployeeComponent} from './consultant-employee/consultant-empl
 import {AttendeeCardComponent} from './attendee-card/attendee-card.component';
 import {AttendeeDialogComponent} from './attendee-dialog/attendee-dialog.component';
 import {AttendeeCreateDialogComponent} from './attendee-create-dialog/attendee-create-dialog.component';
-import { AttendeeInfoComponent } from './attendee-info/attendee-info.component';
+import {AttendeeInfoComponent} from './attendee-info/attendee-info.component';
 
 @NgModule({
   imports: [

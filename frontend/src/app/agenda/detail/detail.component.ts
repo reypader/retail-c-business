@@ -96,12 +96,6 @@ export class DetailComponent implements OnInit {
               private attendeeService: AttendeeService) {
   }
 
-  private disableFields(): void {
-    if (!this.agenda.new) {
-      this.detailFormGroup.disable();
-    }
-  }
-
   ngOnInit() {
     if (this.agendaUrl) {
       if (this.agenda) {
@@ -158,7 +152,6 @@ export class DetailComponent implements OnInit {
     this.agenda.cannabis_consultant_employee = null;
   }
 
-
   filterCompanies(val: string): ConsultantCompany[] {
     return this.companies.filter(company =>
       company.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
@@ -202,6 +195,7 @@ export class DetailComponent implements OnInit {
         .pipe(filter(result => result != null))
         .switchMap(result => {
           result.politician = politician.url;
+          this.agenda.politicians.push(politician.url);
           if (!result.image_path) {
             result.image_path = '/static/assets/blank_male_avatar.jpg';
           }
@@ -210,7 +204,6 @@ export class DetailComponent implements OnInit {
               .subscribe(data => console.log('updated image_path for attendee')));
         })
         .subscribe(data => this.agenda.attendees.push(data.url));
-      this.agenda.politicians.push(politician.url);
       this.politicianControl.setValue('');
     }
   }
@@ -294,6 +287,12 @@ export class DetailComponent implements OnInit {
 
   display(c: ConsultantCompany | Consultant): string {
     return c ? c.name : '';
+  }
+
+  private disableFields(): void {
+    if (!this.agenda.new) {
+      this.detailFormGroup.disable();
+    }
   }
 
   private recalculateVotes(): void {

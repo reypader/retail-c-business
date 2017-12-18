@@ -7,8 +7,6 @@ import {CityService} from '../../services/city.service';
 
 export abstract class GridComponent implements OnInit {
 
-  _currentURL: URL;
-  _currentName: string;
   @Output() itemSelected = new EventEmitter<Entity>();
   currentPage: PaginatedResult<Place>;
   resultList: Place[] = [];
@@ -19,11 +17,14 @@ export abstract class GridComponent implements OnInit {
     console.log('init');
   }
 
+  _currentURL: URL;
 
   @Input() set currentURL(value: URL) {
     this._currentURL = value;
     this.getItems();
   }
+
+  _currentName: string;
 
   @Input() set currentName(value: string) {
     console.log('Current name ' + value);
