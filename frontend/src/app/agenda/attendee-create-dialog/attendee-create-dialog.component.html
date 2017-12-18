@@ -1,35 +1,44 @@
-<!--<form [formGroup]="formGroup">-->
 <form>
-  <!--<mat-horizontal-stepper formArrayName="formArray" linear>-->
-  <mat-vertical-stepper linear>
-    <!--<mat-step label="Step 1" formGroupName="0" [stepControl]="formArray.get([0])">-->
+  <mat-horizontal-stepper linear>
     <mat-step label="Personal Information">
-      <div fxLayout="column" fxLayoutAlign='space-around center'>
-        <mat-form-field fxFlex>
-          <input matInput [disabled]='exists' placeholder='Name' name="name" [(ngModel)]="attendee.name">
+      <div fxLayout="row" fxLayoutAlign='space-around center' fxLayoutWrap>
+        <mat-form-field fxFlex="100">
+          <input matInput [formControl]='nameControl' placeholder='Name' name="name" [(ngModel)]="attendee.name">
+          <mat-error *ngIf="nameControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex>
-          <input matInput [disabled]='exists' placeholder='District' name="district" [(ngModel)]="attendee.district">
+        <mat-form-field fxFlex="100">
+          <input matInput [formControl]='districtControl' placeholder='District' name="district"
+                 [(ngModel)]="attendee.district">
+          <mat-error *ngIf="districtControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex>
-          <input matInput [disabled]='exists' placeholder='Image URL' type="url" name="image_url"
+        <mat-form-field fxFlex="100">
+          <input matInput [formControl]='imageControl' placeholder='Image URL' type="url" name="image_url"
                  [(ngModel)]="attendee.image_path">
+          <mat-error *ngIf="imageControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <div fxFlex>
+        <div fxFlex="100">
           <button mat-button matStepperNext type="button">Next</button>
         </div>
       </div>
     </mat-step>
-    <!--<mat-step label="Step 2" formGroupName="1" [stepControl]="formArray.get([1])">-->
     <mat-step label="Political Information">
-      <div fxLayout="column" fxLayoutAlign='space-around center'>
+      <div fxLayout="row" fxLayoutAlign='space-around center' fxLayoutWrap>
 
-        <mat-form-field fxFlex>
-          <input matInput name="job_title" placeholder='Job Title'
+        <mat-form-field fxFlex="100">
+          <input matInput name="job_title" [formControl]='titleControl' placeholder='Job Title'
                  [(ngModel)]='attendee.job_title'>
+          <mat-error *ngIf="titleControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex>
-          <mat-select placeholder="Group" [(ngModel)]='attendee.group' name="group">
+        <mat-form-field fxFlex="100">
+          <mat-select placeholder="Group" [formControl]='groupControl' [(ngModel)]='attendee.group' name="group">
             <mat-option [value]="'CNT_SUP'">
               County Board of Supervisors
             </mat-option>
@@ -46,17 +55,23 @@
               City Council
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="groupControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex>
-          <input matInput name="department" placeholder='Department'
+        <mat-form-field fxFlex="100">
+          <input matInput name="department" [formControl]='departmentControl' placeholder='Department'
                  [(ngModel)]='attendee.department'>
+          <mat-error *ngIf="departmentControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <div fxFlex>
+        <div fxFlex="100">
           <mat-checkbox name="supports_cannabis_usage"
                         [(ngModel)]='attendee.supports_cannabis_usage'>Supports Cannabis Usage
           </mat-checkbox>
         </div>
-        <div fxFlex>
+        <div fxFlex="100">
           <br/>
           <label for="board_political_stance"><span>Political Stance:&nbsp;&nbsp;&nbsp;&nbsp;</span></label>
           <mat-radio-group id="board_political_stance" name="political_stance"
@@ -66,33 +81,42 @@
           </mat-radio-group>
           <br/>
         </div>
-        <div fxFlex>
+        <div fxFlex="100">
           <button mat-button matStepperPrevious type="button">Back</button>
           <button mat-button matStepperNext type="button">Next</button>
         </div>
       </div>
     </mat-step>
     <mat-step label="Notes">
-      <div fxLayout="column" fxLayoutAlign='space-around center'>
-        <mat-form-field fxFlex>
+      <div fxLayout="row" fxLayoutAlign='space-around center' fxLayoutWrap>
+        <mat-form-field fxFlex="100">
         <textarea matInput matAutosizeMinRows='5' name="notes"
-                  matAutosizeMaxRows='10' matTextareaAutosize placeholder='Notes'
+                  matAutosizeMaxRows='10' [formControl]="notesControl" matTextareaAutosize placeholder='Notes'
                   [(ngModel)]='attendee.notes'></textarea>
+          <mat-error *ngIf="notesControl.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
-        <div fxFlex>
+        <div fxFlex="100">
           <button mat-button matStepperPrevious type="button">Back</button>
           <button mat-button matStepperNext type="button">Next</button>
         </div>
       </div>
     </mat-step>
     <mat-step label="Confirmation" fxLayout="column" fxLayoutAlign='space-around center'>
-      <div fxFlex>
+      <div fxFlex="100">
+        <span *ngIf="valid">
         Confirm addition of new Board Member {{attendee.name}}?
+          </span>
+        <span *ngIf="!valid">
+          Please provide the required fields
+        </span>
       </div>
-      <div fxFlex>
+
+      <div fxFlex="100">
         <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button color="accent" [mat-dialog-close]='attendee'>Add</button>
+        <button mat-button color="accent" [mat-dialog-close]='attendee' [disabled]="!valid">Add</button>
       </div>
     </mat-step>
-  </mat-vertical-stepper>
+  </mat-horizontal-stepper>
 </form>

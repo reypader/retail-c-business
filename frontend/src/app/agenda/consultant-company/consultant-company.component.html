@@ -3,28 +3,55 @@
     <mat-icon>business</mat-icon>&nbsp;Add a consultant company
   </h3>
   <mat-form-field fxFlex>
-    <input matInput [disabled]='disabled' placeholder='Company Name' [(ngModel)]='consultantCompany.name'>
+    <input matInput [formControl]="nameControl" placeholder='Company Name' [(ngModel)]='consultantCompany.name'>
+    <mat-error *ngIf="nameControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field fxFlex>
-    <input matInput [disabled]='disabled' placeholder='Address' [(ngModel)]='consultantCompany.address'>
+    <input matInput [formControl]="addressControl" placeholder='Address' [(ngModel)]='consultantCompany.address'>
+    <mat-error *ngIf="addressControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field fxFlex>
-    <input matInput [disabled]='disabled' placeholder='Postal Code' [(ngModel)]='consultantCompany.postal_code'>
+    <input matInput [formControl]="postalCodeControl" placeholder='Postal Code'
+           [(ngModel)]='consultantCompany.postal_code'>
+    <mat-error *ngIf="postalCodeControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field fxFlex>
-    <input matInput [disabled]='disabled' placeholder='Email Address' [(ngModel)]='consultantCompany.email'>
+    <input matInput [formControl]="emailControl" placeholder='Email Address' [(ngModel)]='consultantCompany.email'>
+    <mat-error *ngIf="emailControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="emailControl.hasError('email')">
+      Must be a valid email address
+    </mat-error>
   </mat-form-field>
   <mat-form-field fxFlex>
-    <input matInput [disabled]='disabled' placeholder='Telephone Number'
+    <input matInput [formControl]="phoneControl" placeholder='Telephone Number'
            [(ngModel)]='consultantCompany.telephone_number'>
+    <mat-error *ngIf="phoneControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field fxFlex>
-    <input matInput [disabled]='disabled' placeholder='Fax Number' [(ngModel)]='consultantCompany.fax_number'>
+    <input matInput [formControl]="faxControl" placeholder='Fax Number' [(ngModel)]='consultantCompany.fax_number'>
+    <mat-error *ngIf="faxControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field fxFlex>
     <textarea matInput matTextareaAutosize matAutosizeMinRows='3'
-              matAutosizeMaxRows='10' [disabled]='disabled' placeholder='Notes'
+              matAutosizeMaxRows='10' [formControl]="notesControl" placeholder='Notes'
               [(ngModel)]='consultantCompany.notes'></textarea>
+    <mat-error *ngIf="notesControl.hasError('required')">
+      This field is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
-  <button mat-raised-button color="accent" *ngIf="!disabled" [mat-dialog-close]='consultantCompany'>Save</button>
+  <button mat-raised-button color="accent" *ngIf="!disabled" [disabled]="!valid" [mat-dialog-close]='consultantCompany'>
+    Save
+  </button>
 </div>

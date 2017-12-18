@@ -6,7 +6,7 @@
   </mat-expansion-panel-header>
   <div style='width:100%; text-align: center' *ngIf='!agenda'>
     <h3>Loading agenda details</h3>
-    <mat-progress-bar [mode]="indeterminate"
+    <mat-progress-bar [mode]="'indeterminate'"
                       style="width:100%;"></mat-progress-bar>
   </div>
   <div *ngIf='agenda' class='detail-container' fxLayout="row" fxLayoutWrap>
@@ -18,28 +18,69 @@
       <mat-card-content>
         <div fxLayout='row' fxLayoutGap="10px">
           <mat-form-field fxFlex>
-            <input matInput [disabled]='!agenda.new' placeholder='Land Area' [(ngModel)]='agenda.land_area'>
+            <input [formControl]="landArea" matInput placeholder='Land Area'
+                   [(ngModel)]='agenda.land_area'>
+            <mat-error *ngIf="landArea.hasError('pattern')">
+              Please enter a valid number
+            </mat-error>
+            <mat-error *ngIf="landArea.hasError('required')">
+              This field is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
           <mat-form-field fxFlex>
-            <input matInput [disabled]='!agenda.new' placeholder='Population' [(ngModel)]='agenda.population'>
+            <input [formControl]="population" matInput placeholder='Population'
+                   [(ngModel)]='agenda.population'>
+            <mat-error *ngIf="population.hasError('pattern')">
+              Please enter a valid number
+            </mat-error>
+            <mat-error *ngIf="population.hasError('required')">
+              This field is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
         <div fxLayout='row' fxLayoutGap="10px">
           <mat-form-field fxFlex>
-            <input matInput [disabled]='!agenda.new' placeholder='Financial Income'
+            <input [formControl]="financialIncome" matInput placeholder='Financial Income'
                    [(ngModel)]='agenda.financial_income'>
+            <mat-error *ngIf="financialIncome.hasError('pattern')">
+              Please enter a valid number
+            </mat-error>
+            <mat-error *ngIf="financialIncome.hasError('required')">
+              This field is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
           <mat-form-field fxFlex>
-            <input matInput [disabled]='!agenda.new' placeholder='Financial Income Per Capita'
+            <input [formControl]="financialIncomePerCapita" matInput
+                   placeholder='Financial Income Per Capita'
                    [(ngModel)]='agenda.financial_income_per_capita'>
+            <mat-error *ngIf="financialIncomePerCapita.hasError('pattern')">
+              Please enter a valid number
+            </mat-error>
+            <mat-error *ngIf="financialIncomePerCapita.hasError('required')">
+              This field is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
         <div fxLayout='row' fxLayoutGap="10px">
           <mat-form-field fxFlex>
-            <input matInput [disabled]='!agenda.new' placeholder='Business Tax' [(ngModel)]='agenda.business_tax'>
+            <input [formControl]="businessTax" matInput placeholder='Business Tax'
+                   [(ngModel)]='agenda.business_tax'>
+            <mat-error *ngIf="businessTax.hasError('pattern')">
+              Please enter a valid number
+            </mat-error>
+            <mat-error *ngIf="businessTax.hasError('required')">
+              This field is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
           <mat-form-field fxFlex>
-            <input matInput [disabled]='!agenda.new' placeholder='Cannabis Tax' [(ngModel)]='agenda.cannabis_tax'>
+            <input [formControl]="cannabisTax" matInput placeholder='Cannabis Tax'
+                   [(ngModel)]='agenda.cannabis_tax'>
+            <mat-error *ngIf="cannabisTax.hasError('pattern')">
+              Please enter a valid number
+            </mat-error>
+            <mat-error *ngIf="cannabisTax.hasError('required')">
+              This field is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
       </mat-card-content>
@@ -63,12 +104,13 @@
         <h4><i>Proposition 64</i></h4>
         <div fxLayout='row' fxLayoutGap="10px">
           <span>Voted 'Yes'<br/>({{ agenda.vote_percent_prop_64 }})</span>
-          <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='50'
+          <mat-slider [disabled]='!agenda.new' min='0' thumbLabel max='100' step='1' value='0'
                       [(ngModel)]='agenda.vote_percent_prop_64' (change)='recalculatePropVotes($event)'></mat-slider>
         </div>
         <div fxLayout="row" fxLayoutGap="10px">
           <mat-checkbox disabled [(ngModel)]='agenda.prop_64_vote'>Agreed to Proposition 64</mat-checkbox>
-          <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.approved_cannabis'>Approved Cannabis</mat-checkbox>
+          <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.approved_cannabis'>Approved Cannabis
+          </mat-checkbox>
           <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.medical_use'>Medical Use</mat-checkbox>
         </div>
       </mat-card-content>
@@ -86,7 +128,7 @@
           <mat-card-content fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="10px"
                             style="height: 100%">
             <mat-form-field>
-              <input placeholder="Search for a consultant" matInput [matAutocomplete]="members"
+              <input placeholder="Search for a politician" matInput [matAutocomplete]="members"
                      [formControl]="politicianControl">
             </mat-form-field>
             <mat-autocomplete #members="matAutocomplete" [displayWith]="display"
@@ -95,7 +137,8 @@
                 <img style="vertical-align:middle;" aria-hidden
                      src="{{option.image_path}}" height="25"/>
                 <span>{{ option.name }}</span>
-                <small>(<span *ngIf='option.city_name'>{{option.city_name}}, </span><span *ngIf='option.subregion_name'>{{option.subregion_name}}</span>)
+                <small>(<span *ngIf='option.city_name'>{{option.city_name}}, </span><span
+                  *ngIf='option.subregion_name'>{{option.subregion_name}}</span>)
                 </small>
               </mat-option>
             </mat-autocomplete>
@@ -141,7 +184,8 @@
         </mat-checkbox>
         <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.microbusiness_license'>Microbusiness License
         </mat-checkbox>
-        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.laboratory_license'>Laboratory License</mat-checkbox>
+        <mat-checkbox [disabled]='!agenda.new' [(ngModel)]='agenda.laboratory_license'>Laboratory License
+        </mat-checkbox>
       </mat-card-content>
     </mat-card>
     <div fxLayout="row" fxFlex="100">
@@ -163,7 +207,7 @@
           <div *ngIf="!consultantCompany && agenda.new" fxLayout="column">
             <mat-form-field>
               <input placeholder="Search for a consultant company" matInput [matAutocomplete]="companies"
-                     [formControl]="detailControl">
+                     [formControl]="companyControl">
             </mat-form-field>
             <mat-autocomplete #companies="matAutocomplete" [displayWith]="display"
                               (optionSelected)="updateConsultantCompany($event)">
@@ -229,13 +273,21 @@
       </mat-card-header>
       <mat-card-content fxLayout="column">
         <mat-form-field fxFlex>
-          <input matInput [disabled]='!agenda.new' placeholder='Link to agenda video' type='url'
+          <input [formControl]="videoLink" matInput placeholder='Link to agenda video' type='url'
                  [(ngModel)]='agenda.link_to_video'>
-          <mat-error></mat-error>
+          <mat-error *ngIf="videoLink.hasError('pattern')">
+            Please enter a valid URL
+          </mat-error>
+          <mat-error *ngIf="videoLink.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-      <textarea matInput [disabled]='!agenda.new' placeholder='Agenda notes' matTextareaAutosize matAutosizeMinRows='3'
+      <textarea [formControl]="notes" matInput placeholder='Agenda notes' matTextareaAutosize matAutosizeMinRows='3'
                 matAutosizeMaxRows='10' matTextareaAutosize [(ngModel)]='agenda.notes'></textarea>
+          <mat-error *ngIf="notes.hasError('required')">
+            This field is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
       </mat-card-content>
     </mat-card>

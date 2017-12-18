@@ -84,7 +84,6 @@ class Consultant(django_models.Model):
     created_at = django_models.DateTimeField(auto_now_add=True)
     updated_at = django_models.DateTimeField(auto_now=True)
     name = django_models.CharField(max_length=100)
-    age = django_models.PositiveSmallIntegerField()
     address = django_models.CharField(max_length=255)
     postal_code = django_models.CharField(max_length=20)
     email = django_models.EmailField()

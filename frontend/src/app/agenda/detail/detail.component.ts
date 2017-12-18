@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AgendaService} from '../../services/agenda.service';
 import {Agenda, Consultant, ConsultantCompany, Politician} from '../../types';
-import 'rxjs/add/operator/delay';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import 'rxjs/add/observable/forkJoin';
@@ -31,6 +30,7 @@ export class DetailComponent implements OnInit {
   @Input() companies: Array<ConsultantCompany>;
   @Input() officials: Array<Politician>;
   @Output() agendaLoaded = new EventEmitter<Agenda>();
+  @Output() validityChange = new EventEmitter<boolean>();
 
   employees: Array<Consultant> = [];
   filteredCompanies: Observable<Array<ConsultantCompany>>;
@@ -41,9 +41,51 @@ export class DetailComponent implements OnInit {
   voteTie = false;
   propVoteTie = false;
 
-  detailControl: FormControl = new FormControl();
-  employeeControl: FormControl = new FormControl();
-  politicianControl: FormControl = new FormControl();
+  companyControl = new FormControl();
+  employeeControl = new FormControl();
+  politicianControl = new FormControl();
+
+  landArea = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.min(0), Validators.pattern(new RegExp('^[0-9]+(\.[0-9]+)?$'))]
+  });
+  population = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.min(0), Validators.pattern(new RegExp('^[0-9]+$'))]
+  });
+  financialIncome = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.min(0), Validators.pattern(new RegExp('^[0-9]+(\.[0-9]+)?$'))]
+  });
+  financialIncomePerCapita = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.min(0), Validators.pattern(new RegExp('^[0-9]+(\.[0-9]+)?$'))]
+  });
+  businessTax = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.min(0), Validators.pattern(new RegExp('^[0-9]+(\.[0-9]+)?$'))]
+  });
+  cannabisTax = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.min(0), Validators.pattern(new RegExp('^[0-9]+(\.[0-9]+)?$'))]
+  });
+  videoLink = new FormControl('', {
+    updateOn: 'blur',
+    validators: [Validators.required, Validators.pattern(new RegExp('(http[s]?|ftp):\\/\\/.+\\..*'))]
+  });
+  notes = new FormControl('', {updateOn: 'blur', validators: [Validators.required]});
+
+  detailFormGroup = new FormGroup({
+    landArea: this.landArea,
+    population: this.population,
+    financialIncome: this.financialIncome,
+    financialIncomePerCapita: this.financialIncomePerCapita,
+    businessTax: this.businessTax,
+    cannabisTax: this.cannabisTax,
+    videoLink: this.videoLink,
+    notes: this.notes
+  });
+
 
   constructor(private agendaService: AgendaService,
               private dialog: MatDialog,
@@ -53,6 +95,12 @@ export class DetailComponent implements OnInit {
               private attendeeService: AttendeeService) {
   }
 
+  private disableFields(): void {
+    if (!this.agenda.new) {
+      this.detailFormGroup.disable();
+    }
+  }
+
   ngOnInit() {
     if (this.agendaUrl) {
       if (this.agenda) {
@@ -60,6 +108,7 @@ export class DetailComponent implements OnInit {
       }
       this.agendaService.getFor(this.agendaUrl).switchMap(data => {
         this.agenda = data;
+        this.disableFields();
         this.agendaLoaded.emit(this.agenda);
         return Observable.forkJoin(
           this.consultantCompanyService.getFor(data.cannabis_consultant_company),
@@ -70,7 +119,10 @@ export class DetailComponent implements OnInit {
         this.consultant = data[1];
       });
     }
-    this.filteredCompanies = this.detailControl.valueChanges
+    if (this.agenda) {
+      this.disableFields();
+    }
+    this.filteredCompanies = this.companyControl.valueChanges
       .pipe(
         startWith({} as ConsultantCompany),
         map<any, string>(company => company && typeof company === 'object' ? company.name : company),
@@ -90,6 +142,7 @@ export class DetailComponent implements OnInit {
         map<any, string>(politician => politician && typeof politician === 'object' ? politician.name : politician),
         map<string, Politician[]>(val => val ? this.filterPoliticians(val) : this.filterPoliticians(''))
       );
+    this.detailFormGroup.statusChanges.subscribe(data => this.validityChange.emit(this.detailFormGroup.valid));
   }
 
   clearConsultantCompany($event): void {

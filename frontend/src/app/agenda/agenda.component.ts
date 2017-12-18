@@ -26,6 +26,7 @@ export class AgendaComponent implements OnInit {
   snackBarRef: MatSnackBarRef<EditingSnackbarComponent>;
   consultantCompanies: Array<ConsultantCompany>;
   politicians: Array<Politician>;
+  saveEnabled = false;
 
   constructor(private route: ActivatedRoute,
               private cityService: CityService,
@@ -76,7 +77,7 @@ export class AgendaComponent implements OnInit {
           dateString: r.date.toDateString(),
           vote_percent_democrat: 50,
           vote_percent_republican: 50,
-          vote_percent_prop_64: 50,
+          vote_percent_prop_64: 0,
           dominant_political_stance: 'R',
           politicians: [],
           attendees: []
@@ -96,16 +97,23 @@ export class AgendaComponent implements OnInit {
   }
 
   save($event): void {
-    this.agendaService.save(this.newAgenda)
-      .do(data => {
-        data.attendees.forEach((v, i) => this.attendeeService.partialUpdate(v, {agenda: data.url} as Attendee));
-      })
-      .switchMap(data => this.cityService.getFor(this.city.url))
-      .subscribe(data => {
-        this.city = data;
-        this.newAgenda = null;
-        this.snackBarRef.dismiss();
-      });
+    if (this.saveEnabled) {
+      this.agendaService.save(this.newAgenda)
+        .do(data => {
+          data.attendees.forEach((v, i) => this.attendeeService.partialUpdate(v, {agenda: data.url} as Attendee));
+        })
+        .switchMap(data => this.cityService.getFor(this.city.url))
+        .subscribe(data => {
+          this.city = data;
+          this.newAgenda = null;
+          this.snackBarRef.dismiss();
+        });
+    }
+  }
+
+  enableSave($event): void {
+    this.saveEnabled = $event as boolean;
+    console.log('Detail form changed validity: ' + this.saveEnabled);
   }
 
 }
