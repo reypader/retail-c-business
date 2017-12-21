@@ -8,6 +8,7 @@ handlers:
   static_dir: static/
 - url: .*
   script: retail_cannabis_business_app.wsgi.application
+  secure: always
 
 
 # Only pure Python libraries can be vendored
