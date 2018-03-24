@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['retail-cannabis-business-test.appspot.com', '127.0.0.1']
+ALLOWED_HOSTS = ['retail-cannabis-business.appspot.com', '127.0.0.1']
 
 # Application definition
 
